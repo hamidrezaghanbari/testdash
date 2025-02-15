@@ -5,6 +5,14 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply box-border h-screen overflow-hidden;
+}
+
+#root {
+  @apply size-full;
+}
+
 :root {
   --base-white-color: #ffffff;
   --base-black-color: #000000;
