@@ -1,9 +1,10 @@
+import { injectThemeConfig } from '@smartech/ui/theme';
+
 import { type Config } from 'tailwindcss';
 
-export default {
-  content: ['./src/**/*.{ts,tsx}'],
-  theme: {
-    extend: {},
-  },
+const config = {
+  content: ['./src/**/*.{ts,tsx,html}'],
   plugins: [],
 } satisfies Config;
+
+export default injectThemeConfig(config);

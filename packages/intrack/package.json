@@ -3,14 +3,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 4002 --open",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router": "7.1.5"
+    "react-router": "7.1.5",
+    "@smartech/ui": "0.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",
