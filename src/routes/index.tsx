@@ -11,6 +11,7 @@ const router = createBrowserRouter([
     Component: Root,
     loader: rootLoader,
     ErrorBoundary,
+    HydrateFallback: null,
     hasErrorBoundary: true,
     children: [
       {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
     path: '/account',
     Component: Account,
     ErrorBoundary,
+    HydrateFallback: null,
     loader: accountLoader,
     children: [
       {
