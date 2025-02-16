@@ -8,8 +8,6 @@ const rootLoader = async () => {
 
     return user;
   } catch (error) {
-    console.error(error);
-
     throw replace('/account/login');
   }
 };
