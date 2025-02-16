@@ -1,11 +1,8 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
-import { ErrorBoundary } from '$/components';
-
+import { ErrorBoundary } from './errorBoundary';
 import { Account, Root } from './handlers';
-import { accountLoader } from './loaders/account';
-import { lazyLoad } from './loaders/lazyLoad';
-import { rootLoader } from './loaders/root';
+import { accountLoader, lazyLoad, rootLoader } from './loaders';
 
 const router = createBrowserRouter([
   {
@@ -14,11 +11,12 @@ const router = createBrowserRouter([
     Component: Root,
     loader: rootLoader,
     ErrorBoundary,
+    hasErrorBoundary: true,
     children: [
       {
         index: true,
         path: '/',
-        lazy: lazyLoad('home'),
+        lazy: lazyLoad('dashboard'),
       },
       {
         path: 'about',
@@ -61,4 +59,4 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default router;
+export { router };

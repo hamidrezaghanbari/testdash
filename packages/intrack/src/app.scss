@@ -1,0 +1,21 @@
+@use './variables.scss';
+
+@use '@smartech/ui/base';
+@use '@smartech/ui/presets';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply box-border h-screen overflow-hidden bg-gray-100;
+  direction: ltr;
+}
+
+#root {
+  @apply size-full;
+}
+
+#nprogress .bar {
+  background: var(--primary-500-color) !important;
+}

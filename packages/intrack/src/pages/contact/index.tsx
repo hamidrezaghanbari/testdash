@@ -1,10 +1,10 @@
-import { AnimatedPage } from '$/components';
+import { Page } from '$/layouts';
 
 function Contact() {
   return (
-    <AnimatedPage className="bg-error-300">
+    <Page className="bg-error-300">
       <div>Contact</div>
-    </AnimatedPage>
+    </Page>
   );
 }
 

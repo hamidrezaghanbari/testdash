@@ -1,6 +1,6 @@
 import { LazyRouteFunction, RouteObject } from 'react-router-dom';
 
-import { ErrorBoundary } from '$/components';
+import { ErrorBoundary } from '../errorBoundary';
 
 function lazyLoad(name: string): LazyRouteFunction<RouteObject> {
   return async () => {

@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 
-import './App.css';
+import './app.scss';
+import 'nprogress/nprogress.css';
 
 import App from './App.tsx';
 

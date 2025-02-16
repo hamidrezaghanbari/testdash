@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 
 import { cn } from '$/common';
 
-interface AnimatedPageProps {
+interface PageProps {
   children: React.ReactNode;
   className?: string;
 }
@@ -12,13 +12,13 @@ const variants = {
   animate: { opacity: 1 },
 };
 
-const AnimatedPage = ({ children, className }: AnimatedPageProps) => {
+const Page = ({ children, className }: PageProps) => {
   return (
     <motion.div
       initial="initial"
       animate="animate"
       variants={variants}
-      className={cn('bg-base-white flex w-full flex-1 overflow-auto', className)}
+      className={cn('flex w-full flex-1 overflow-auto bg-gray-100', className)}
       transition={{ ease: 'easeInOut' }}
     >
       {children}
@@ -26,4 +26,4 @@ const AnimatedPage = ({ children, className }: AnimatedPageProps) => {
   );
 };
 
-export { AnimatedPage };
+export { Page };

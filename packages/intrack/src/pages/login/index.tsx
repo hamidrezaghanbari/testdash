@@ -1,10 +1,10 @@
-import { AnimatedPage } from '$/components';
+import { Page } from '$/layouts';
 
 function Login() {
   return (
-    <AnimatedPage>
+    <Page>
       <div>Login</div>
-    </AnimatedPage>
+    </Page>
   );
 }
 
