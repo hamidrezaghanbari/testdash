@@ -6,7 +6,8 @@
 @tailwind utilities;
 
 body {
-  @apply box-border h-screen overflow-hidden;
+  @apply bg-gray-25 box-border h-screen overflow-hidden;
+  direction: ltr;
 }
 
 #root {

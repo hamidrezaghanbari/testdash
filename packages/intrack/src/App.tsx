@@ -1,18 +1,16 @@
-import { Suspense } from 'react';
-import { RouterProvider } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RouterProvider } from 'react-router-dom';
 
+import { DEFAULT_QUERY_CONFIG } from './constants';
 import router from './routes';
+
+const client = new QueryClient(DEFAULT_QUERY_CONFIG);
 
 function App() {
   return (
-    <div className="flex size-full">
-      <div className="bg-error-200 flex w-[300px] items-center justify-center">sidebar</div>
-      <main className="bg-primary-200 flex flex-1 overflow-auto">
-        <Suspense fallback={<h1>Loading...</h1>}>
-          <RouterProvider router={router} />
-        </Suspense>
-      </main>
-    </div>
+    <QueryClientProvider client={client}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
 
