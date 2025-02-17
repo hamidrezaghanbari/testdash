@@ -106,7 +106,7 @@ class Route<
   }
 }
 
-class RouteBuilder {
+class RouteBuilder_experimental {
   defineRoutes<T extends Record<string, RouteDefinition<string>>>(
     builder: (r: Route<string>) => T,
   ): T {
@@ -120,4 +120,4 @@ class RouteBuilder {
   }
 }
 
-export { RouteBuilder };
+export { RouteBuilder_experimental };

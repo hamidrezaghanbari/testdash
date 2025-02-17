@@ -1,13 +1,12 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import { ErrorBoundary } from './errorBoundary';
-import { Root } from './handlers';
-import { lazyLoad, rootLoader } from './loaders';
-import { routes } from './routes';
+import { Account, Root } from './handlers';
+import { accountLoader, lazyLoad, rootLoader } from './loaders';
 
 const router = createBrowserRouter([
   {
-    path: routes.root.pathname,
+    path: '/',
     id: 'root',
     Component: Root,
     loader: rootLoader,
@@ -17,48 +16,48 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: routes.root.pathname,
+        path: '/',
         lazy: lazyLoad('dashboard'),
       },
       {
-        path: routes.root.children.about.pathname,
+        path: 'about',
         lazy: lazyLoad('about'),
       },
       {
-        path: routes.root.children.contact.pathname,
+        path: 'contact',
         lazy: lazyLoad('contact'),
       },
     ],
   },
-  // {
-  //   path: routes.account.pathname,
-  //   Component: Account,
-  //   ErrorBoundary,
-  //   HydrateFallback: null,
-  //   loader: accountLoader,
-  //   children: [
-  //     {
-  //       index: true,
-  //       path: routes.account.pathname,
-  //       element: <Navigate to={routes.account.navigateTo} />,
-  //     },
-  //     {
-  //       path: routes.account.children.login.pathname,
-  //       lazy: lazyLoad('login'),
-  //     },
-  //     {
-  //       path: routes.account.children.register.pathname,
-  //       lazy: lazyLoad('register'),
-  //     },
-  //     {
-  //       path: '*',
-  //       element: <Navigate to={routes.account.navigateTo} />,
-  //     },
-  //   ],
-  // },
+  {
+    path: '/account',
+    Component: Account,
+    ErrorBoundary,
+    HydrateFallback: null,
+    loader: accountLoader,
+    children: [
+      {
+        index: true,
+        path: '/account',
+        element: <Navigate to="/login" />,
+      },
+      {
+        path: 'login',
+        lazy: lazyLoad('login'),
+      },
+      {
+        path: 'register',
+        lazy: lazyLoad('register'),
+      },
+      {
+        path: '*',
+        element: <Navigate to="login" />,
+      },
+    ],
+  },
   {
     path: '*',
-    element: <Navigate to="/product/1" />,
+    element: <Navigate to="/" />,
   },
 ]);
 
