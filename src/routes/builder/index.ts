@@ -1,3 +1,5 @@
+import { IconName } from '@smartech/ui';
+
 type RouteDefinition<
   P extends string,
   N extends string = string,
@@ -6,8 +8,10 @@ type RouteDefinition<
   Children extends Record<string, RouteDefinition<any, any>> = {},
 > = {
   pathname: P;
-  title: string;
   navigateTo: N;
+  title: string;
+  groupTitle: string;
+  iconName: IconName;
 } & (keyof PathParams extends never ? {} : { params: PathParams }) &
   (keyof QueryParams extends never ? {} : { queries: QueryParams }) &
   (keyof Children extends never ? {} : { children: Children });
@@ -27,6 +31,8 @@ class Route<
 > {
   private pathname!: P;
   private docTitle!: string;
+  private groupTitle!: string;
+  private iconName!: IconName;
   private navigateTo!: N;
   private queries!: QueryParams;
   private childRoutes!: Children;
@@ -36,19 +42,28 @@ class Route<
   ): Route<Path, N, ExtractPathParams<Path>, QueryParams, {}> {
     const instance = new Route<Path, N, ExtractPathParams<Path>, QueryParams, {}>();
     instance.pathname = pathname;
+
     instance.docTitle = this.docTitle;
     instance.queries = this.queries;
-    instance.navigateTo ??= pathname as unknown as N;
+    instance.navigateTo = this.navigateTo;
+    instance.groupTitle = this.groupTitle;
+    instance.iconName = this.iconName;
+    instance.childRoutes = this.childRoutes;
+
     return instance;
   }
 
   title(title: string): Route<P, N, PathParams, QueryParams, Children> {
     const instance = new Route<P, N, PathParams, QueryParams, Children>();
-    instance.pathname = this.pathname;
     instance.docTitle = title;
+
+    instance.pathname = this.pathname;
     instance.queries = this.queries;
     instance.navigateTo = this.navigateTo;
+    instance.groupTitle = this.groupTitle;
+    instance.iconName = this.iconName;
     instance.childRoutes = this.childRoutes;
+
     return instance;
   }
 
@@ -57,10 +72,42 @@ class Route<
   ): Route<P, Fallback, ExtractPathParams<P>, QueryParams, {}> {
     const instance = new Route<P, Fallback, ExtractPathParams<P>, QueryParams, {}>();
     instance.navigateTo = [this.pathname, to].join('/').replace(/\/\//g, '/') as Fallback;
+
     instance.pathname = this.pathname;
-    instance.docTitle = this.docTitle;
     instance.queries = this.queries;
+    instance.docTitle = this.docTitle;
+    instance.groupTitle = this.groupTitle;
+    instance.iconName = this.iconName;
     instance.childRoutes = this.childRoutes;
+
+    return instance;
+  }
+
+  groupBy<T extends Record<string, RouteDefinition<P, N, PathParams, QueryParams, Children>>>(
+    group: string,
+    builder: (r: Route<P, N, PathParams, QueryParams, Children>) => T,
+  ): T {
+    const routes = builder(new Route<P, N, PathParams, QueryParams, Children>());
+
+    const groupedRoutes = Object.entries(routes).reduce((acc, [key]) => {
+      acc[key].groupTitle = group;
+      return acc;
+    }, {} as T);
+
+    return groupedRoutes;
+  }
+
+  icon(name: IconName): Route<P, N, PathParams, QueryParams, Children> {
+    const instance = new Route<P, N, PathParams, QueryParams, Children>();
+    instance.iconName = name;
+
+    instance.pathname = this.pathname;
+    instance.queries = this.queries;
+    instance.docTitle = this.docTitle;
+    instance.navigateTo = this.navigateTo;
+    instance.groupTitle = this.groupTitle;
+    instance.childRoutes = this.childRoutes;
+
     return instance;
   }
 
@@ -68,11 +115,15 @@ class Route<
     queries: Query,
   ): Route<P, N, PathParams, Query, Children> {
     const instance = new Route<P, N, PathParams, Query, Children>();
-    instance.navigateTo = this.navigateTo;
-    instance.pathname = this.pathname;
-    instance.docTitle = this.docTitle;
     instance.queries = queries;
+
+    instance.pathname = this.pathname;
+    instance.iconName = this.iconName;
+    instance.docTitle = this.docTitle;
+    instance.navigateTo = this.navigateTo;
+    instance.groupTitle = this.groupTitle;
     instance.childRoutes = this.childRoutes;
+
     return instance;
   }
 
@@ -83,9 +134,11 @@ class Route<
     instance.navigateTo = this.navigateTo;
     instance.pathname = this.pathname;
     instance.docTitle = this.docTitle;
+    instance.groupTitle = this.groupTitle;
     instance.queries = this.queries;
+    instance.iconName = this.iconName;
 
-    instance.childRoutes = childBuilder(new Route<P, N>().path(`${this.pathname}` as P));
+    instance.childRoutes = childBuilder(new Route<P, N>().path(this.pathname));
 
     return instance;
   }
@@ -94,7 +147,9 @@ class Route<
     return {
       pathname: this.pathname,
       title: this.docTitle,
+      groupTitle: this.groupTitle,
       navigateTo: this.navigateTo,
+      iconName: this.iconName,
       params: (this.pathname.includes(':')
         ? (Object.fromEntries(
             this.pathname.match(/:([^/]+)/g)?.map((p) => [p.slice(1), '']) || [],
