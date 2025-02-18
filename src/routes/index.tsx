@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       {
         index: true,
         path: '/account',
-        element: <Navigate to="login" />,
+        element: <Navigate to="/login" />,
       },
       {
         path: 'login',
