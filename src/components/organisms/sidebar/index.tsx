@@ -1,9 +1,14 @@
 import { Text } from '@smartech/ui';
 
+import './sidebar.scss';
+
+import { SIDEBAR_DATASET } from './dataset';
+import SidebarMenu from './menu';
+
 const Sidebar = () => {
   return (
-    <div className="flex w-[272px] items-center justify-center bg-gray-900">
-      <Text className="text-base-white">Sidebar</Text>
+    <div className="sidebar">
+      <SidebarMenu data={SIDEBAR_DATASET} />
     </div>
   );
 };
