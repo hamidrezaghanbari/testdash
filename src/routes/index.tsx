@@ -1,12 +1,13 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import { ErrorBoundary } from './errorBoundary';
-import { Account, Root } from './handlers';
-import { accountLoader, lazyLoad, rootLoader } from './loaders';
+import { Root } from './handlers';
+import { lazyLoad, rootLoader } from './loaders';
+import { routes } from './routes';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: routes.root.pathname,
     id: 'root',
     Component: Root,
     loader: rootLoader,
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: '/',
+        path: routes.root.pathname,
         lazy: lazyLoad('dashboard'),
       },
       {
@@ -29,35 +30,35 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: '/account',
-    Component: Account,
-    ErrorBoundary,
-    HydrateFallback: null,
-    loader: accountLoader,
-    children: [
-      {
-        index: true,
-        path: '/account',
-        element: <Navigate to="/login" />,
-      },
-      {
-        path: 'login',
-        lazy: lazyLoad('login'),
-      },
-      {
-        path: 'register',
-        lazy: lazyLoad('register'),
-      },
-      {
-        path: '*',
-        element: <Navigate to="login" />,
-      },
-    ],
-  },
+  // {
+  //   path: '/account',
+  //   Component: Account,
+  //   ErrorBoundary,
+  //   HydrateFallback: null,
+  //   loader: accountLoader,
+  //   children: [
+  //     {
+  //       index: true,
+  //       path: '/account',
+  //       element: <Navigate to="/login" />,
+  //     },
+  //     {
+  //       path: 'login',
+  //       lazy: lazyLoad('login'),
+  //     },
+  //     {
+  //       path: 'register',
+  //       lazy: lazyLoad('register'),
+  //     },
+  //     {
+  //       path: '*',
+  //       element: <Navigate to="login" />,
+  //     },
+  //   ],
+  // },
   {
     path: '*',
-    element: <Navigate to="/" />,
+    element: <Navigate to={routes.root.pathname} />,
   },
 ]);
 

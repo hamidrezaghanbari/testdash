@@ -1,9 +1,9 @@
-import { RouteBuilder_experimental } from './builder';
+import { RouteBuilder } from './builder';
 
 /**
  * @experimental
  */
-const builder = new RouteBuilder_experimental();
+const builder = new RouteBuilder();
 
 enum GroupTitle {
   DATA_AND_INSIGHT = 'data and insight',
