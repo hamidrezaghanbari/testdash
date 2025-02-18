@@ -1,53 +1,53 @@
 .sidebar {
-  @apply flex w-[272px] flex-col gap-8 overflow-auto bg-gray-900 px-4 py-6;
+  @apply flex w-[272px] flex-col gap-3 overflow-auto bg-gray-900 px-4 py-6;
 
   .sidebarGroupItem {
-    @apply flex w-full flex-1 flex-col gap-3;
+    @apply flex flex-col gap-3;
+  }
 
-    .sidebarGroupTitle {
-      @apply uppercase text-gray-400;
+  .sidebarGroupTitle {
+    @apply uppercase text-gray-400;
+  }
+
+  .sidebarItems {
+    @apply flex w-full flex-col gap-1;
+
+    .sidebarItem {
+      @apply flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 transition-colors hover:bg-primary-600;
+
+      &.layer-1 {
+        @apply ps-[36px];
+      }
+
+      &.layer-2 {
+        @apply ps-[72px];
+      }
+
+      .sidebarItemTitle {
+        @apply w-full capitalize text-gray-100;
+      }
+
+      .sidebarItemIcon {
+        @apply text-lg text-gray-100;
+      }
+
+      .sidebarItemToggleIcon {
+        @apply rotate-0 text-md text-gray-400 transition-all duration-[250];
+
+        &.visible {
+          @apply rotate-180;
+        }
+      }
+
+      &:hover {
+        .sidebarItemToggleIcon {
+          @apply text-gray-100;
+        }
+      }
     }
 
-    .sidebarItems {
-      @apply flex w-full flex-col gap-1;
-
-      .sidebarItem {
-        @apply flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 transition-colors hover:bg-primary-600;
-
-        &.layer-1 {
-          @apply ps-[36px];
-        }
-
-        &.layer-2 {
-          @apply ps-[72px];
-        }
-
-        .sidebarItemTitle {
-          @apply w-full capitalize text-gray-100;
-        }
-
-        .sidebarItemIcon {
-          @apply text-lg text-gray-100;
-        }
-
-        .sidebarItemToggleIcon {
-          @apply rotate-0 text-md text-gray-400 transition-all duration-[250];
-
-          &.visible {
-            @apply rotate-180;
-          }
-        }
-
-        &:hover {
-          .sidebarItemToggleIcon {
-            @apply text-gray-100;
-          }
-        }
-      }
-
-      .sidebar-sub-items {
-        @apply overflow-hidden;
-      }
+    .sidebar-sub-items {
+      @apply overflow-hidden;
     }
   }
 }

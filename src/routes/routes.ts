@@ -1,11 +1,8 @@
 import { RouteBuilder } from './builder';
 
-/**
- * @experimental
- */
 const builder = new RouteBuilder();
 
-enum GroupTitle {
+enum Group {
   DATA_AND_INSIGHT = 'data and insight',
   CAMPAIGN_MANAGER = 'campaign maanger',
   PERSONALIZATION = 'personalization',
@@ -13,6 +10,7 @@ enum GroupTitle {
   BACK_OFFICE = 'back office',
 }
 
+// analytics subroutes
 const analytics = builder.defineChildren((route) => ({
   event: route.path('event').title('event').icon('rocket-01').create(),
   funnel: route.path('funnel').title('funnel').icon('filter-funnel-01').create(),
@@ -20,11 +18,13 @@ const analytics = builder.defineChildren((route) => ({
   uninstall: route.path('uninstall').title('uninstall').icon('log-out-01').create(),
 }));
 
+// segment subroutes
 const segment = builder.defineChildren((route) => ({
   live: route.path('live').title('live segment').icon('bar-chart-square-02').create(),
   static: route.path('static').title('static segment').icon('bar-chart-square-02').create(),
 }));
 
+// data platform subroutes
 const dataPlatform = builder.defineChildren((route) => ({
   management: route
     .path('data-management')
@@ -35,6 +35,7 @@ const dataPlatform = builder.defineChildren((route) => ({
   alert: route.path('alert').title('alert').icon('bell-ringing-03').create(),
 }));
 
+// channels subroutes
 const channels = builder.defineChildren((route) => ({
   push: route.path('push').title('push').icon('notification-message').create(),
   webPush: route.path('web-push').title('web push').icon('notification-box').create(),
@@ -45,28 +46,22 @@ const channels = builder.defineChildren((route) => ({
   telegram: route.path('telegram').title('telegram').icon('telegram-line').create(),
 }));
 
+// web personalization subroutes
 const webPersonalization = builder.defineChildren((route) => ({
   onSite: route.path('on-site').title('on site').icon('monitor-02').create(),
   survey: route.path('survey').title('survey').icon('bar-chart-square-02').create(),
 }));
 
+// app personalization subroutes
 const appPersonalization = builder.defineChildren((route) => ({
   inApp: route.path('in-app').title('in app').icon('phone-02').create(),
 }));
 
+// root routes
 const root = builder.defineChildren((route) => ({
-  ...route.groupBy(GroupTitle.DATA_AND_INSIGHT, (route) => ({
+  ...route.groupBy(Group.DATA_AND_INSIGHT, (route) => ({
     dashboard: route.path('dashboard').title('dashboard').icon('dashboard').create(),
     user: route.path('user').title('user').icon('user-01').create(),
-    overview: route.path('overview').title('overview').icon('eye').create(),
-    channels: route
-      .path('channels')
-      .title('channels')
-      .icon('server-06')
-      .children(channels)
-      .create(),
-    journey: route.path('journey').title('journey').icon('rocket-02').create(),
-    relays: route.path('relays').title('relays').icon('announcement-01').create(),
     analytics: route
       .path('analytics')
       .title('analytics')
@@ -82,7 +77,19 @@ const root = builder.defineChildren((route) => ({
       .create(),
   })),
 
-  ...route.groupBy(GroupTitle.PERSONALIZATION, (route) => ({
+  ...route.groupBy(Group.CAMPAIGN_MANAGER, (route) => ({
+    overview: route.path('overview').title('overview').icon('eye').create(),
+    channels: route
+      .path('channels')
+      .title('channels')
+      .icon('server-06')
+      .children(channels)
+      .create(),
+    journey: route.path('journey').title('journey').icon('rocket-02').create(),
+    relays: route.path('relays').title('relays').icon('announcement-01').create(),
+  })),
+
+  ...route.groupBy(Group.PERSONALIZATION, (route) => ({
     webPersonalization: route
       .path('web-personalization')
       .title('web personalization')
@@ -97,7 +104,7 @@ const root = builder.defineChildren((route) => ({
       .create(),
   })),
 
-  ...route.groupBy(GroupTitle.SETTINGS, (route) => ({
+  ...route.groupBy(Group.SETTINGS, (route) => ({
     channel: route.path('channel').title('channel').icon('server-06').create(),
     sdk: route.path('sdk').title('SDK').icon('layers-three-01').create(),
     webhook: route.path('webhook').title('webhook').icon('Webhook').create(),
@@ -107,13 +114,10 @@ const root = builder.defineChildren((route) => ({
     billing: route.path('billing').title('billing').icon('receipt').create(),
   })),
 
-  ...route.groupBy(GroupTitle.BACK_OFFICE, (route) => ({
+  ...route.groupBy(Group.BACK_OFFICE, (route) => ({
     financial: route.path('financial').title('financial').icon('bank-note-01').create(),
     role: route.path('role').title('role').icon('image-user-check').create(),
     users: route.path('users').title('users').icon('user-square').create(),
-    contracts: route.path('contracts').title('contracts').icon('file-check-02').create(),
-    fileStorage: route.path('file-storage').title('file storage').icon('server-04').create(),
-    configuration: route.path('configuration').title('configuration').icon('settings-01').create(),
     manageProducts: route
       .path('manage-products')
       .title('manage products')
@@ -124,6 +128,9 @@ const root = builder.defineChildren((route) => ({
       .title('create product')
       .icon('package-plus')
       .create(),
+    contracts: route.path('contracts').title('contracts').icon('file-check-02').create(),
+    fileStorage: route.path('file-storage').title('file storage').icon('server-04').create(),
+    configuration: route.path('configuration').title('configuration').icon('settings-01').create(),
   })),
 }));
 
