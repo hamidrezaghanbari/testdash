@@ -1,6 +1,6 @@
 import { IconName } from '@smartech/ui';
 
-type RouteDefinition<
+export type RouteDefinition<
   P extends string,
   N extends string = string,
   PathParams extends Record<string, string> = {},
@@ -22,7 +22,7 @@ type ExtractPathParams<T extends string> = T extends `${infer _Start}:${infer Pa
     ? { [K in Param]: string }
     : {};
 
-class Route<
+export class Route<
   P extends string,
   N extends string = string,
   PathParams extends Record<string, string> = {},
@@ -87,14 +87,13 @@ class Route<
     group: string,
     builder: (r: Route<P, N, PathParams, QueryParams, Children>) => T,
   ): T {
-    const routes = builder(new Route<P, N, PathParams, QueryParams, Children>());
+    const routes = builder(this);
 
-    const groupedRoutes = Object.entries(routes).reduce((acc, [key]) => {
-      acc[key].groupTitle = group;
-      return acc;
-    }, {} as T);
+    Object.entries(routes).forEach(([key]) => {
+      if (routes[key]) routes[key].groupTitle = group;
+    });
 
-    return groupedRoutes;
+    return routes;
   }
 
   icon(name: IconName): Route<P, N, PathParams, QueryParams, Children> {
@@ -138,7 +137,7 @@ class Route<
     instance.queries = this.queries;
     instance.iconName = this.iconName;
 
-    instance.childRoutes = childBuilder(new Route<P, N>().path(this.pathname));
+    instance.childRoutes = childBuilder(instance);
 
     return instance;
   }
@@ -171,7 +170,7 @@ class RouteBuilder_experimental {
   defineChildren<T extends Record<string, RouteDefinition<string>>>(
     builder: (r: Route<string>) => T,
   ) {
-    return (r: Route<string>) => this.defineRoutes<T>(() => builder(r));
+    return builder;
   }
 }
 

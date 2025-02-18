@@ -59,7 +59,12 @@ const root = builder.defineChildren((route) => ({
     dashboard: route.path('dashboard').title('dashboard').icon('dashboard').create(),
     user: route.path('user').title('user').icon('user-01').create(),
     overview: route.path('overview').title('overview').icon('eye').create(),
-    channels: route.path('cannels').title('channels').icon('server-06').children(channels).create(),
+    channels: route
+      .path('channels')
+      .title('channels')
+      .icon('server-06')
+      .children(channels)
+      .create(),
     journey: route.path('journey').title('journey').icon('rocket-02').create(),
     relays: route.path('relays').title('relays').icon('announcement-01').create(),
     analytics: route
