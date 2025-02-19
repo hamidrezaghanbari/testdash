@@ -1,11 +1,11 @@
 import { Page } from '$/layouts';
 
-function Dashboard() {
+function ManageProducts() {
   return (
     <Page className="bg-success-300">
-      <div>Dashboard</div>
+      <div>ManageProducts</div>
     </Page>
   );
 }
 
-export default Dashboard;
+export default ManageProducts;

@@ -1,9 +1,20 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { LazyRouteFunction, Navigate, RouteObject, createBrowserRouter } from 'react-router-dom';
 
 import { ErrorBoundary } from './errorBoundary';
 import { Root } from './handlers';
-import { lazyLoad, rootLoader } from './loaders';
-import { routes } from './routes';
+import { rootLoader } from './loaders';
+import { routerChildren, routes } from './routes';
+
+function lazy(name: string): LazyRouteFunction<RouteObject> {
+  return async () => {
+    const { default: Component } = await import(`$/pages/${name}/index.tsx`);
+
+    return {
+      Component,
+      ErrorBoundary,
+    };
+  };
+}
 
 const router = createBrowserRouter([
   {
@@ -18,15 +29,15 @@ const router = createBrowserRouter([
       {
         index: true,
         path: routes.root.pathname,
-        lazy: lazyLoad('dashboard'),
+        lazy: lazy('dashboard'),
       },
       {
         path: 'about',
-        lazy: lazyLoad('about'),
+        lazy: lazy('about'),
       },
       {
         path: 'contact',
-        lazy: lazyLoad('contact'),
+        lazy: lazy('contact'),
       },
     ],
   },

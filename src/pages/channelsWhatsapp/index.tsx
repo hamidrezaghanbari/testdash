@@ -1,11 +1,11 @@
 import { Page } from '$/layouts';
 
-function Dashboard() {
+function WhatsApp() {
   return (
     <Page className="bg-success-300">
-      <div>Dashboard</div>
+      <div>WhatsApp</div>
     </Page>
   );
 }
 
-export default Dashboard;
+export default WhatsApp;

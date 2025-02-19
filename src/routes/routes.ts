@@ -60,7 +60,7 @@ const appPersonalization = builder.defineChildren((route) => ({
 // root routes
 const root = builder.defineChildren((route) => ({
   ...route.groupBy(Group.DATA_AND_INSIGHT, (route) => ({
-    dashboard: route.path('dashboard').title('dashboard').icon('dashboard').create(),
+    dashboard: route.path('/').title('dashboard').icon('dashboard').create(true),
     user: route.path('user').title('user').icon('user-01').create(),
     analytics: route
       .path('analytics')
@@ -144,4 +144,6 @@ const routes = builder.defineRoutes((route) => ({
   account: route.path('/account').fallback('/login').children(account).create(),
 }));
 
-export { routes };
+const routerChildren = builder.reactRouterChildren(routes, 'root');
+
+export { routes, routerChildren };

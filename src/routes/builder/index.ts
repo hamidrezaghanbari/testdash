@@ -1,16 +1,17 @@
 import { IconName } from '@smartech/ui';
+import { LazyRouteFunction, RouteObject } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 
-import { ExtractPathParams, RouteDefinition } from './types';
+import { ErrorBoundary } from '../errorBoundary';
+import { GetPathParams, TRoute } from './types';
 
 export class Route<
   P extends string,
   N extends string = string,
   PathParams extends Record<string, string> = {},
   QueryParams extends Record<string, string> = {},
-  Children extends Record<string, RouteDefinition<string>> = {},
+  Children extends Record<string, TRoute<string>> = {},
 > {
-  private id!: string;
   private pathname!: P;
   private docTitle!: string;
   private group!: string;
@@ -19,7 +20,7 @@ export class Route<
   private queries!: QueryParams;
   private childRoutes!: Children;
 
-  private getParams() {
+  private get params() {
     const hasParams = this.pathname.includes(':');
 
     return (
@@ -29,12 +30,8 @@ export class Route<
     ) as PathParams;
   }
 
-  path<Path extends string>(
-    pathname: Path,
-  ): Route<Path, N, ExtractPathParams<Path>, QueryParams, {}> {
-    const instance = new Route<Path, N, ExtractPathParams<Path>, QueryParams, {}>();
-    instance.id = uuidV4();
-
+  path<Path extends string>(pathname: Path): Route<Path, N, GetPathParams<Path>, QueryParams, {}> {
+    const instance = new Route<Path, N, GetPathParams<Path>, QueryParams, {}>();
     instance.pathname = pathname;
 
     instance.docTitle = this.docTitle;
@@ -51,7 +48,6 @@ export class Route<
     const instance = new Route<P, N, PathParams, QueryParams, Children>();
     instance.docTitle = title;
 
-    instance.id = this.id;
     instance.pathname = this.pathname;
     instance.queries = this.queries;
     instance.navigateTo = this.navigateTo;
@@ -64,11 +60,10 @@ export class Route<
 
   fallback<Fallback extends string>(
     to: Fallback,
-  ): Route<P, Fallback, ExtractPathParams<P>, QueryParams, {}> {
-    const instance = new Route<P, Fallback, ExtractPathParams<P>, QueryParams, {}>();
+  ): Route<P, Fallback, GetPathParams<P>, QueryParams, {}> {
+    const instance = new Route<P, Fallback, GetPathParams<P>, QueryParams, {}>();
     instance.navigateTo = [this.pathname, to].join('/').replace(/\/\//g, '/') as Fallback;
 
-    instance.id = this.id;
     instance.pathname = this.pathname;
     instance.queries = this.queries;
     instance.docTitle = this.docTitle;
@@ -83,7 +78,6 @@ export class Route<
     const instance = new Route<P, N, PathParams, QueryParams, Children>();
     instance.iconName = name;
 
-    instance.id = this.id;
     instance.pathname = this.pathname;
     instance.queries = this.queries;
     instance.docTitle = this.docTitle;
@@ -100,7 +94,6 @@ export class Route<
     const instance = new Route<P, N, PathParams, Query, Children>();
     instance.queries = queries;
 
-    instance.id = this.id;
     instance.pathname = this.pathname;
     instance.iconName = this.iconName;
     instance.docTitle = this.docTitle;
@@ -111,12 +104,11 @@ export class Route<
     return instance;
   }
 
-  children<C extends Record<string, RouteDefinition<string>>>(
+  children<C extends Record<string, TRoute<string>>>(
     childBuilder: (r: Route<P, N>) => C,
   ): Route<P, N, PathParams, QueryParams, C> {
     const instance = new Route<P, N, PathParams, QueryParams, C>();
 
-    instance.id = this.id;
     instance.navigateTo = this.navigateTo;
     instance.pathname = this.pathname;
     instance.docTitle = this.docTitle;
@@ -129,7 +121,7 @@ export class Route<
     return instance;
   }
 
-  groupBy<T extends Record<string, RouteDefinition<P, N, PathParams, QueryParams, Children>>>(
+  groupBy<T extends Record<string, TRoute<P, N, PathParams, QueryParams, Children>>>(
     group: string,
     builder: (route: Route<P, N, PathParams, QueryParams, Children>) => T,
   ): T {
@@ -142,32 +134,72 @@ export class Route<
     return routes;
   }
 
-  create(): RouteDefinition<P, N, PathParams, QueryParams, Children> {
-    return {
-      id: this.id,
-      pathname: this.pathname,
-      title: this.docTitle,
-      group: this.group,
-      navigateTo: this.navigateTo,
-      iconName: this.iconName,
-      params: this.getParams(),
-      queries: this.queries,
-      children: this.childRoutes,
-    };
+  create(index?: boolean): TRoute<P, N, PathParams, QueryParams, Children> {
+    const id = uuidV4();
+
+    const result = { id } as TRoute<P, N, PathParams, QueryParams, Children>;
+
+    if (typeof index !== 'undefined') result['index'] = index;
+
+    result['params'] = this.params;
+
+    if (this.pathname) result['pathname'] = this.pathname;
+    if (this.docTitle) result['title'] = this.docTitle;
+    if (this.group) result['group'] = this.group;
+    if (this.iconName) result['iconName'] = this.iconName;
+    if (this.navigateTo) result['navigateTo'] = this.navigateTo;
+    if (this.childRoutes) result['children'] = this.childRoutes;
+    if (this.queries) result['queries'] = this.queries;
+
+    return result;
   }
 }
 
 class RouteBuilder {
-  defineRoutes<T extends Record<string, RouteDefinition<string>>>(
-    builder: (r: Route<string>) => T,
-  ): T {
+  private lazy(name: string): LazyRouteFunction<RouteObject> {
+    return async () => {
+      const { default: Component } = await import(`$/pages/${name}/index.tsx`);
+
+      return {
+        Component,
+        ErrorBoundary,
+      };
+    };
+  }
+
+  private concatFilename(parent: string, name: string) {
+    const camelCasedName = name.slice(0, 1).toUpperCase() + name.slice(1);
+
+    return parent + camelCasedName;
+  }
+
+  defineRoutes<T extends Record<string, TRoute<string>>>(builder: (r: Route<string>) => T): T {
     return builder(new Route());
   }
 
-  defineChildren<T extends Record<string, RouteDefinition<string>>>(
-    builder: (r: Route<string>) => T,
-  ) {
+  defineChildren<T extends Record<string, TRoute<string>>>(builder: (r: Route<string>) => T) {
     return builder;
+  }
+
+  reactRouterChildren<T extends Record<string, TRoute<any>>, K extends keyof T>(routes: T, key: K) {
+    const children = (routes[key].children ?? {}) as T[K];
+
+    const toList = (data: T[K], parent: string | null = null): RouteObject[] => {
+      return Object.entries(data).map(([name, { index, pathname, children }]) => {
+        const result: RouteObject = { path: pathname };
+
+        if (index) result['index'] = index;
+
+        if (children) result['children'] = toList(children, name);
+        else {
+          result['lazy'] = this.lazy(parent ? this.concatFilename(parent, name) : name);
+        }
+
+        return result;
+      });
+    };
+
+    return toList(children);
   }
 }
 

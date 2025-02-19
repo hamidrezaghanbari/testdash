@@ -1,11 +1,11 @@
 import { Page } from '$/layouts';
 
-function Dashboard() {
+function SegmentStatic() {
   return (
     <Page className="bg-success-300">
-      <div>Dashboard</div>
+      <div>SegmentStatic</div>
     </Page>
   );
 }
 
-export default Dashboard;
+export default SegmentStatic;

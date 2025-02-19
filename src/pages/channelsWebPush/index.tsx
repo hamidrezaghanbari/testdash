@@ -1,11 +1,11 @@
 import { Page } from '$/layouts';
 
-function Dashboard() {
+function Webpush() {
   return (
     <Page className="bg-success-300">
-      <div>Dashboard</div>
+      <div>Webpush</div>
     </Page>
   );
 }
 
-export default Dashboard;
+export default Webpush;

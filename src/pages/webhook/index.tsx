@@ -1,11 +1,11 @@
 import { Page } from '$/layouts';
 
-function Dashboard() {
+function Webhook() {
   return (
     <Page className="bg-success-300">
-      <div>Dashboard</div>
+      <div>Webhook</div>
     </Page>
   );
 }
 
-export default Dashboard;
+export default Webhook;

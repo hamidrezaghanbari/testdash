@@ -1,11 +1,11 @@
 import { Page } from '$/layouts';
 
-function Dashboard() {
+function Custom() {
   return (
     <Page className="bg-success-300">
-      <div>Dashboard</div>
+      <div>Custom</div>
     </Page>
   );
 }
 
-export default Dashboard;
+export default Custom;

@@ -1,11 +1,11 @@
 import { Page } from '$/layouts';
 
-function About() {
+function Funnel() {
   return (
     <Page className="bg-success-300">
-      <div>about</div>
+      <div>Funnel</div>
     </Page>
   );
 }
 
-export default About;
+export default Funnel;

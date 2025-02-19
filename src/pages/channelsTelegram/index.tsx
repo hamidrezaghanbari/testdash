@@ -1,11 +1,11 @@
 import { Page } from '$/layouts';
 
-function Dashboard() {
+function Telegram() {
   return (
     <Page className="bg-success-300">
-      <div>Dashboard</div>
+      <div>Telegram</div>
     </Page>
   );
 }
 
-export default Dashboard;
+export default Telegram;
