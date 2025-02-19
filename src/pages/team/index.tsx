@@ -1,4 +1,4 @@
-import { Page } from '$/layouts';
+import Page from '$/layouts/container';
 
 function Team() {
   return (

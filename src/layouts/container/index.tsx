@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { memo } from 'react';
 
 import { cn } from '$/common';
 
@@ -26,4 +27,4 @@ const Page = ({ children, className }: PageProps) => {
   );
 };
 
-export { Page };
+export default memo(Page);

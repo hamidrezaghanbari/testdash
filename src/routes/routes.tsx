@@ -1,3 +1,5 @@
+import { Navigate } from 'react-router-dom';
+
 import { RouteBuilder } from './builder';
 
 const builder = new RouteBuilder();
@@ -12,15 +14,18 @@ enum Group {
 
 // analytics subroutes
 const analytics = builder.defineChildren((route) => ({
-  event: route.path('event').title('event').icon('rocket-01').create(),
+  event: route.path('event').title('event').icon('rocket-01').create(true),
   funnel: route.path('funnel').title('funnel').icon('filter-funnel-01').create(),
   cohort: route.path('cohort').title('cohort').icon('data').create(),
   uninstall: route.path('uninstall').title('uninstall').icon('log-out-01').create(),
+
+  // parent: route.path('analytics').notFound(() => <Navigate to="/analytics/event" />),
+  missmatch: route.path('*').notFound(() => <Navigate to="/analytics/event" />),
 }));
 
 // segment subroutes
 const segment = builder.defineChildren((route) => ({
-  live: route.path('live').title('live segment').icon('bar-chart-square-02').create(),
+  live: route.path('live').title('live segment').icon('bar-chart-square-02').create(true),
   static: route.path('static').title('static segment').icon('bar-chart-square-02').create(),
 }));
 
@@ -30,14 +35,14 @@ const dataPlatform = builder.defineChildren((route) => ({
     .path('data-management')
     .title('data management')
     .icon('bar-chart-square-02')
-    .create(),
+    .create(true),
   uploadData: route.path('upload-data').title('upload data').icon('upload-cloud-01').create(),
   alert: route.path('alert').title('alert').icon('bell-ringing-03').create(),
 }));
 
 // channels subroutes
 const channels = builder.defineChildren((route) => ({
-  push: route.path('push').title('push').icon('notification-message').create(),
+  push: route.path('push').title('push').icon('notification-message').create(true),
   webPush: route.path('web-push').title('web push').icon('notification-box').create(),
   sms: route.path('sms').title('SMS').icon('message-dots-square').create(),
   email: route.path('email').title('email').icon('mail-01').create(),
@@ -48,13 +53,13 @@ const channels = builder.defineChildren((route) => ({
 
 // web personalization subroutes
 const webPersonalization = builder.defineChildren((route) => ({
-  onSite: route.path('on-site').title('on site').icon('monitor-02').create(),
+  onSite: route.path('on-site').title('on site').icon('monitor-02').create(true),
   survey: route.path('survey').title('survey').icon('bar-chart-square-02').create(),
 }));
 
 // app personalization subroutes
 const appPersonalization = builder.defineChildren((route) => ({
-  inApp: route.path('in-app').title('in app').icon('phone-02').create(),
+  inApp: route.path('in-app').title('in app').icon('phone-02').create(true),
 }));
 
 // root routes
@@ -146,4 +151,6 @@ const routes = builder.defineRoutes((route) => ({
 
 const routerChildren = builder.reactRouterChildren(routes, 'root');
 
-export { routes, routerChildren };
+const sidebarRoutes = builder.sidebarRoutes(routes, 'root');
+
+export { routes, sidebarRoutes, routerChildren };

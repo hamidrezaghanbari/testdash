@@ -1,15 +1,12 @@
 import { Text } from '@smartech/ui';
 import { useState } from 'react';
 
-import { groupByEntries } from '$/common';
-import { routes } from '$/routes/routes';
+import { sidebarRoutes } from '$/routes/routes';
 import { Render } from '$/utils';
 
 import './sidebar.scss';
 
 import MenuItems from './menu';
-
-const SIDEBAR_DATA = groupByEntries(Object.values(routes.root.children), 'group');
 
 const Sidebar = () => {
   const [menuIds, setMenuIds] = useState<string[]>([]);
@@ -23,7 +20,7 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      {SIDEBAR_DATA.map(([group, items]) => (
+      {sidebarRoutes.map(([group, items]) => (
         <div key={group} className="sidebarGroupItem">
           <Render when={group}>
             <Text className="sidebarGroupTitle" size="md" variant="medium">

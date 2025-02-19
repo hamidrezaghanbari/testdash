@@ -2,6 +2,8 @@ import { IconName } from '@smartech/ui';
 import { LazyRouteFunction, RouteObject } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 
+import { groupByEntries } from '$/common';
+
 import { ErrorBoundary } from '../errorBoundary';
 import { GetPathParams, TRoute } from './types';
 
@@ -19,6 +21,7 @@ export class Route<
   private navigateTo!: N;
   private queries!: QueryParams;
   private childRoutes!: Children;
+  private element?: JSX.Element;
 
   private get params() {
     const hasParams = this.pathname.includes(':');
@@ -39,6 +42,7 @@ export class Route<
     instance.navigateTo = this.navigateTo;
     instance.group = this.group;
     instance.iconName = this.iconName;
+    instance.element = this.element;
     instance.childRoutes = this.childRoutes;
 
     return instance;
@@ -53,6 +57,7 @@ export class Route<
     instance.navigateTo = this.navigateTo;
     instance.group = this.group;
     instance.iconName = this.iconName;
+    instance.element = this.element;
     instance.childRoutes = this.childRoutes;
 
     return instance;
@@ -69,6 +74,7 @@ export class Route<
     instance.docTitle = this.docTitle;
     instance.group = this.group;
     instance.iconName = this.iconName;
+    instance.element = this.element;
     instance.childRoutes = this.childRoutes;
 
     return instance;
@@ -83,6 +89,7 @@ export class Route<
     instance.docTitle = this.docTitle;
     instance.navigateTo = this.navigateTo;
     instance.group = this.group;
+    instance.element = this.element;
     instance.childRoutes = this.childRoutes;
 
     return instance;
@@ -99,9 +106,26 @@ export class Route<
     instance.docTitle = this.docTitle;
     instance.navigateTo = this.navigateTo;
     instance.group = this.group;
+    instance.element = this.element;
     instance.childRoutes = this.childRoutes;
 
     return instance;
+  }
+
+  notFound(callback: () => JSX.Element): TRoute<P, N, PathParams, QueryParams, Children> {
+    const instance = new Route<P, N, PathParams, QueryParams, Children>();
+
+    instance.element = callback();
+
+    instance.pathname = this.pathname;
+    instance.iconName = this.iconName;
+    instance.docTitle = this.docTitle;
+    instance.navigateTo = this.navigateTo;
+    instance.group = this.group;
+    instance.queries = this.queries;
+    instance.childRoutes = this.childRoutes;
+
+    return instance.create();
   }
 
   children<C extends Record<string, TRoute<string>>>(
@@ -114,6 +138,7 @@ export class Route<
     instance.docTitle = this.docTitle;
     instance.group = this.group;
     instance.queries = this.queries;
+    instance.element = this.element;
     instance.iconName = this.iconName;
 
     instance.childRoutes = childBuilder(instance);
@@ -150,6 +175,7 @@ export class Route<
     if (this.navigateTo) result['navigateTo'] = this.navigateTo;
     if (this.childRoutes) result['children'] = this.childRoutes;
     if (this.queries) result['queries'] = this.queries;
+    if (this.element) result['element'] = this.element;
 
     return result;
   }
@@ -181,18 +207,30 @@ class RouteBuilder {
     return builder;
   }
 
+  sidebarRoutes<T extends Record<string, TRoute<string>>, K extends keyof T>(routes: T, key: K) {
+    return groupByEntries<T>(Object.values(routes[key].children), 'group');
+  }
+
   reactRouterChildren<T extends Record<string, TRoute<any>>, K extends keyof T>(routes: T, key: K) {
     const children = (routes[key].children ?? {}) as T[K];
 
     const toList = (data: T[K], parent: string | null = null): RouteObject[] => {
-      return Object.entries(data).map(([name, { index, pathname, children }]) => {
+      const entries = Object.entries(data);
+
+      return entries.map(([name, { index, pathname, children, element }]) => {
         const result: RouteObject = { path: pathname };
 
         if (index) result['index'] = index;
 
         if (children) result['children'] = toList(children, name);
         else {
-          result['lazy'] = this.lazy(parent ? this.concatFilename(parent, name) : name);
+          const missMatched = pathname === '*';
+
+          if (missMatched) result['element'] = element ?? null;
+          else {
+            const lazyModule = parent ? this.concatFilename(parent, name) : name;
+            result['lazy'] = this.lazy(lazyModule);
+          }
         }
 
         return result;

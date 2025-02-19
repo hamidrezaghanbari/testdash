@@ -17,6 +17,7 @@ type TRoute<
   children: Children;
   params: PathParams;
   queries: QueryParams;
+  element?: JSX.Element;
 };
 
 type GetPathParams<T extends string> = T extends `${infer _Start}:${infer Param}/${infer Rest}`

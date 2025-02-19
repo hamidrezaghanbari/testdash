@@ -3,24 +3,19 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Fragment, memo } from 'react';
 
 import { cn, prefix } from '$/common';
-import { RouteDefinition } from '$/routes/builder/types';
+import { TRoute } from '$/routes/builder/types';
 import { Render } from '$/utils';
 
 import { sidebarVariants } from './variants';
 
-interface MenuProps<T extends RouteDefinition<string>> {
+interface MenuProps<T extends TRoute<string>> {
   items: T[];
   layer?: number;
   menuIds: string[];
   toggle: (id: string) => void;
 }
 
-const Menu = <T extends RouteDefinition<string>>({
-  items,
-  menuIds,
-  toggle,
-  layer = 0,
-}: MenuProps<T>) => {
+const Menu = <T extends TRoute<string>>({ items, menuIds, toggle, layer = 0 }: MenuProps<T>) => {
   return (
     <div className="sidebarItems">
       {items.map(({ id, children, title, iconName }) => {

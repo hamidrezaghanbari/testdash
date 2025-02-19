@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, memo } from 'react';
 
 import { Sidebar } from '$/components';
 
@@ -17,4 +17,4 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   );
 };
 
-export { RootLayout };
+export default memo(RootLayout);
