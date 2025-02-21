@@ -1,45 +1,91 @@
-import { Icon, Text } from '@smartech/ui';
+import { Icon, IconName, Text } from '@smartech/ui';
 import { AnimatePresence, motion } from 'motion/react';
-import { Fragment, memo } from 'react';
+import { Fragment, memo, useMemo } from 'react';
+import { NavLink } from 'react-router-dom';
 
 import { cn, prefix } from '$/common';
-import { TRoute } from '$/routes/builder/types';
+import { ListOfChildren, TRoute } from '$/routes/builder/types';
 import { Render } from '$/utils';
 
 import { sidebarVariants } from './variants';
 
 interface MenuProps<T extends TRoute<string>> {
-  items: T[];
+  items: ListOfChildren<T>[];
   layer?: number;
   menuIds: string[];
   toggle: (id: string) => void;
 }
 
+interface MenuItemContentProps {
+  iconName: IconName;
+  title: string;
+  isSub: boolean;
+  isVisible: boolean;
+  shouldToggle: boolean;
+}
+
+const FLATTEN_PATHNAMES = ['settings', 'back-office'];
+
+const MenuItemContent = ({
+  iconName,
+  isSub,
+  isVisible,
+  shouldToggle,
+  title,
+}: MenuItemContentProps) => {
+  return (
+    <Fragment>
+      <Icon name={iconName} className={cn('sidebarItemIcon', { sub: isSub })} />
+      <Text className="sidebarItemTitle" size="sm" variant="regular">
+        {title}
+      </Text>
+      <Render when={shouldToggle}>
+        <Icon className={cn('sidebarItemToggleIcon', { visible: isVisible })} name="chevron-down" />
+      </Render>
+    </Fragment>
+  );
+};
+
 const Menu = <T extends TRoute<string>>({ items, menuIds, toggle, layer = 0 }: MenuProps<T>) => {
+  const data = useMemo(() => {
+    const index = items.findIndex((item) => FLATTEN_PATHNAMES.includes(item.pathname));
+
+    if (index === -1) return items;
+
+    items.splice(index, 1, ...((items[index].children ?? []) as ListOfChildren<T>[]));
+
+    return items;
+  }, [items]);
+
   return (
     <div className="sidebarItems">
-      {items.map(({ id, children, title, iconName }) => {
-        const list = (children ? Object.values(children) : []) as T[];
+      {data.map(({ id, children, title, iconName, href }) => {
+        const list = (children ? Object.values(children) : []) as ListOfChildren<T>[];
+
+        const content = (
+          <MenuItemContent
+            title={title}
+            iconName={iconName}
+            isSub={layer > 0}
+            isVisible={menuIds.includes(id)}
+            shouldToggle={list.length > 0}
+          />
+        );
 
         return (
           <Fragment key={id}>
-            <div
-              className={cn('sidebarItem', prefix(layer, 'layer'))}
-              onClick={() => {
-                if (list.length > 0) return toggle(id);
-              }}
+            <Render
+              when={list.length > 0}
+              fallback={
+                <NavLink end to={href} className={cn('sidebarItem', prefix(layer, 'layer'))}>
+                  {content}
+                </NavLink>
+              }
             >
-              <Icon name={iconName} className={cn('sidebarItemIcon', { sub: layer > 0 })} />
-              <Text className="sidebarItemTitle" size="sm" variant="regular">
-                {title}
-              </Text>
-              <Render when={list.length > 0}>
-                <Icon
-                  className={cn('sidebarItemToggleIcon', { visible: menuIds.includes(id) })}
-                  name="chevron-down"
-                />
-              </Render>
-            </div>
+              <div className={cn('sidebarItem', prefix(layer, 'layer'))} onClick={() => toggle(id)}>
+                {content}
+              </div>
+            </Render>
             <Render when={list.length > 0}>
               <AnimatePresence initial={false} presenceAffectsLayout>
                 {menuIds.includes(id) && (

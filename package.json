@@ -64,7 +64,11 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "@swc/core"
+      "@swc/core",
+      "esbuild"
+    ],
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher"
     ]
   }
 }

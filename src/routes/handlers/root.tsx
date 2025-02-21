@@ -1,11 +1,16 @@
 import { Outlet } from 'react-router-dom';
 
 import { useRouteProgress } from '$/hooks';
+import RootLayout from '$/layouts/root';
 
 const Root = () => {
   useRouteProgress();
 
-  return <Outlet />;
+  return (
+    <RootLayout>
+      <Outlet />
+    </RootLayout>
+  );
 };
 
 export { Root };

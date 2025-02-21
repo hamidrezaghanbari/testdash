@@ -6,8 +6,8 @@ const rootLoader = async () => {
 
     if (!user || !user.login) return replace('/account/login');
 
-    // product id
-    // permission
+    // TODO check product availablitiy
+    // TODO check user permissions
 
     return user;
   } catch (error) {
