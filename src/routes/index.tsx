@@ -1,9 +1,9 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import { ErrorBoundary } from './errorBoundary';
-import { Root } from './handlers';
-import { rootLoader } from './loaders';
-import { routerChildren, routerFallbacks, routes } from './routes';
+import { Account, Root } from './handlers';
+import { accountLoader, rootLoader } from './loaders';
+import { authRouterChildren, baseRouterChildren, fallbacks, routes } from './routes';
 
 const router = createBrowserRouter([
   {
@@ -14,17 +14,28 @@ const router = createBrowserRouter([
     ErrorBoundary,
     HydrateFallback: null,
     hasErrorBoundary: true,
-    children: routerChildren,
+    children: baseRouterChildren,
+  },
+  {
+    path: routes.account.pathname,
+    id: 'account',
+    Component: Account,
+    loader: accountLoader,
+    ErrorBoundary,
+    HydrateFallback: null,
+    hasErrorBoundary: true,
+    children: authRouterChildren,
   },
   {
     path: '*',
     element: <Navigate to={routes.root.pathname} />,
   },
-  ...routerFallbacks.map(({ path, to }) => ({
-    path,
+  {
+    path: '/account',
     index: true,
-    element: <Navigate to={to} />,
-  })),
+    element: <Navigate to={routes.account.children.login.pathname} />,
+  },
+  ...fallbacks.map(({ path, to }) => ({ path, index: true, element: <Navigate to={to} /> })),
 ]);
 
 export { router };

@@ -163,6 +163,8 @@ const root = builder.defineChildren((route) => ({
 const account = builder.defineChildren((route) => ({
   login: route.path('login').title('login').create(),
   register: route.path('register').title('register').create(),
+
+  notFound: route.notFound((parent) => <Navigate to={parent} />).create(),
 }));
 
 const routes = builder.defineRoutes((route) => ({
@@ -170,10 +172,16 @@ const routes = builder.defineRoutes((route) => ({
   account: route.path('/account').children(account).create(),
 }));
 
-const routerChildren = builder.reactRouterChildren(routes, 'root', () => <Navigate to="/" />);
+function navigateTo(to: string) {
+  return () => <Navigate to={to} />;
+}
 
-const routerFallbacks = builder.reactRouterFallbacks(routes, 'root');
+const baseRouterChildren = builder.children(routes, 'root', navigateTo('/'));
 
-const sidebarRoutes = builder.sidebarRoutes(routes, 'root');
+const authRouterChildren = builder.children(routes, 'account', navigateTo('/account'));
 
-export { routes, sidebarRoutes, routerFallbacks, routerChildren };
+const fallbacks = builder.fallbacks(routes, 'root');
+
+const sidebarRoutes = builder.sidebar(routes, 'root');
+
+export { routes, sidebarRoutes, fallbacks, authRouterChildren, baseRouterChildren };

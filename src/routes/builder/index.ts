@@ -239,7 +239,7 @@ class RouteBuilder {
     return builder;
   }
 
-  sidebarRoutes<T extends Record<string, TRoute<string>>, K extends keyof T>(routes: T, key: K) {
+  sidebar<T extends Record<string, TRoute<string>>, K extends keyof T>(routes: T, key: K) {
     const items: Array<T[K]> = Object.values(routes[key].children);
 
     const itemsWithHref = this.createHref(items);
@@ -247,10 +247,7 @@ class RouteBuilder {
     return groupByEntries<ListOfChildren<T[K]>>(this.filterMissMatchers(itemsWithHref), 'group');
   }
 
-  reactRouterFallbacks<T extends Record<string, TRoute<any>>, K extends keyof T & string>(
-    routes: T,
-    key: K,
-  ) {
+  fallbacks<T extends Record<string, TRoute<any>>, K extends keyof T & string>(routes: T, key: K) {
     const result: ReactRouterFallback[] = [];
 
     const children = (routes[key].children ?? {}) as T;
@@ -265,11 +262,10 @@ class RouteBuilder {
         result.push({ path, to: this.matchedTo(path, indexed?.pathname) });
       }
     }
-
     return result;
   }
 
-  reactRouterChildren<T extends Record<string, TRoute<any>>, K extends keyof T>(
+  children<T extends Record<string, TRoute<any>>, K extends keyof T>(
     routes: T,
     key: K,
     fallback: () => JSX.Element,

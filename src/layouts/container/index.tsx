@@ -19,7 +19,7 @@ const Page = ({ children, className }: PageProps) => {
       initial="initial"
       animate="animate"
       variants={variants}
-      className={cn('flex w-full flex-1 overflow-auto bg-gray-100', className)}
+      className={cn('flex size-full flex-1 overflow-auto bg-gray-100', className)}
       transition={{ ease: 'easeInOut' }}
     >
       {children}
