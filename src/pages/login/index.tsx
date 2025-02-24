@@ -15,12 +15,13 @@ function Login() {
   const { handleSubmit, formState, control } = useLoginForm();
 
   const onSubmit = (data: LoginForm) => {
+    // api call
     console.log(data);
   };
 
   return (
     <Page className="login-form-container">
-      <div className="login-form">
+      <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
         <Text size="2xl" variant="bold">
           {t('login.signin')}
         </Text>
@@ -31,7 +32,7 @@ function Login() {
             render={({ field, fieldState: { invalid, error } }) => (
               <Input
                 label={t('login.email')}
-                type="email"
+                autoComplete="email"
                 error={invalid}
                 hint={error?.message}
                 {...field}
@@ -42,17 +43,16 @@ function Login() {
             control={control}
             name="password"
             render={({ field }) => (
-              <InputPassword label={t('login.password')} rules={{ min: 8 }} {...field} />
+              <InputPassword
+                label={t('login.password')}
+                autoComplete="current-password"
+                rules={{ min: 8 }}
+                {...field}
+              />
             )}
           />
         </div>
-        <Button
-          variant="primary"
-          size="xl"
-          className="w-full"
-          spinning={formState.isSubmitting}
-          onClick={handleSubmit(onSubmit)}
-        >
+        <Button variant="primary" size="xl" className="w-full" spinning={formState.isSubmitting}>
           {t('login.signin')}
         </Button>
         <div className="login-form-register-hint">
@@ -65,7 +65,7 @@ function Login() {
             </Button>
           </NavLink>
         </div>
-      </div>
+      </form>
     </Page>
   );
 }
