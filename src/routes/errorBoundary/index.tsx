@@ -12,7 +12,7 @@ const ErrorBoundary = () => {
         <div>
           <span className="text-red-500">{error.message}</span>
           <Render when={error.stack}>
-            {(value) => <span className="overflow-auto text-red-500">{value}</span>}
+            {(value) => <span className="text-red-500 overflow-auto">{value}</span>}
           </Render>
         </div>
       </Render>

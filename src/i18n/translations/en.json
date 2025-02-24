@@ -1,0 +1,13 @@
+{
+  "login": {
+    "email": "Email",
+    "password": "Password",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "hintAccount": "Don't have an account?",
+    "requiredEmail": "Email is required.",
+    "validEmail": "Please enter a valid email address.",
+    "requiredPassword": "Password is required.",
+    "passwordMinLength": "Password must be at least 8 characters long."
+  }
+}

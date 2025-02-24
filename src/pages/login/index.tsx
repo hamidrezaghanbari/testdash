@@ -1,61 +1,67 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, InputPassword, Text } from '@smartech/ui';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import { z } from 'zod';
 
 import Page from '$/layouts/container';
 
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: 'Email address is required.' })
-    .email({ message: 'Please enter a valid email address.' }),
-  password: z.string().min(1, { message: 'Password is required.' }),
-});
+import './login.scss';
 
-type LoginForm = z.infer<typeof loginSchema>;
+import { type LoginForm, useLoginForm } from './form';
 
 function Login() {
-  const { control, handleSubmit } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
-  });
+  const { t } = useTranslation();
+
+  const { handleSubmit, formState, control } = useLoginForm();
 
   const onSubmit = (data: LoginForm) => {
     console.log(data);
   };
 
   return (
-    <Page className="items-center justify-center bg-gray-100 p-4">
-      <div className="flex max-h-full w-[400px] max-w-full flex-col justify-between gap-8 rounded-md bg-base-white p-6">
+    <Page className="login-form-container">
+      <div className="login-form">
         <Text size="2xl" variant="bold">
-          Sign in
+          {t('login.signin')}
         </Text>
-        <div className="flex flex-col gap-4">
+        <div className="login-form-inputs">
           <Controller
             control={control}
             name="email"
             render={({ field, fieldState: { invalid, error } }) => (
-              <Input label="Email" error={invalid} hint={error?.message} {...field} />
+              <Input
+                label={t('login.email')}
+                type="email"
+                error={invalid}
+                hint={error?.message}
+                {...field}
+              />
             )}
           />
           <Controller
             control={control}
             name="password"
-            render={({ field }) => <InputPassword label="Password" {...field} />}
+            render={({ field }) => (
+              <InputPassword label={t('login.password')} rules={{ min: 8 }} {...field} />
+            )}
           />
         </div>
-        <Button variant="primary" size="xl" className="w-full" onClick={handleSubmit(onSubmit)}>
-          Sign in
+        <Button
+          variant="primary"
+          size="xl"
+          className="w-full"
+          spinning={formState.isSubmitting}
+          onClick={handleSubmit(onSubmit)}
+        >
+          {t('login.signin')}
         </Button>
-        <div className="flex w-full justify-center gap-1">
+        <div className="login-form-register-hint">
           <Text variant="regular" size="sm" className="leading-sm">
-            Don't have an account?
+            {t('login.hintAccount')}
           </Text>
           <NavLink to="/account/register" tabIndex={-1}>
             <Button variant="link" mode="color" size="sm" className="!rounded-none">
-              Sign up
+              {t('login.signup')}
             </Button>
           </NavLink>
         </div>
