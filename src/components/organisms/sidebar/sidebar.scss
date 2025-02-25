@@ -1,5 +1,5 @@
 .sidebar {
-  @apply flex w-[272px] flex-col gap-3 overflow-auto bg-gray-900 px-4 py-6;
+  @apply flex w-[272px] flex-col gap-3 overflow-auto bg-gray-900 px-4 pt-6;
 
   .sidebarGroupItem {
     @apply flex flex-col gap-3;

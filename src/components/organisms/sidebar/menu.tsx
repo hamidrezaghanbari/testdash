@@ -4,27 +4,25 @@ import { Fragment, memo, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { cn, prefix } from '$/common';
-import { ListOfChildren, TRoute } from '$/routes/builder/types';
+import { SidebarRoutes } from '$/routes/types';
 import { Render } from '$/utils';
 
 import { sidebarVariants } from './variants';
 
-interface MenuProps<T extends TRoute<string>> {
-  items: ListOfChildren<T>[];
+interface MenuProps {
+  items: SidebarRoutes[];
   layer?: number;
   menuIds: string[];
   toggle: (id: string) => void;
 }
 
 interface MenuItemContentProps {
-  iconName: IconName;
-  title: string;
+  iconName?: IconName;
+  title?: string;
   isSub: boolean;
   isVisible: boolean;
   shouldToggle: boolean;
 }
-
-const FLATTEN_PATHNAMES = ['settings', 'back-office'];
 
 const MenuItemContent = ({
   iconName,
@@ -35,7 +33,9 @@ const MenuItemContent = ({
 }: MenuItemContentProps) => {
   return (
     <Fragment>
-      <Icon name={iconName} className={cn('sidebarItemIcon', { sub: isSub })} />
+      <Render when={iconName}>
+        {(name) => <Icon name={name} className={cn('sidebarItemIcon', { sub: isSub })} />}
+      </Render>
       <Text className="sidebarItemTitle" size="sm" variant="regular">
         {title}
       </Text>
@@ -46,36 +46,34 @@ const MenuItemContent = ({
   );
 };
 
-const Menu = <T extends TRoute<string>>({ items, menuIds, toggle, layer = 0 }: MenuProps<T>) => {
+const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
   const data = useMemo(() => {
-    const index = items.findIndex((item) => FLATTEN_PATHNAMES.includes(item.pathname));
+    const index = items.findIndex((item) => item.flatten);
 
     if (index === -1) return items;
 
-    items.splice(index, 1, ...((items[index].children ?? []) as ListOfChildren<T>[]));
+    items.splice(index, 1, ...(items[index].children ?? []));
 
     return items;
   }, [items]);
 
   return (
     <div className="sidebarItems">
-      {data.map(({ id, children, title, iconName, href }) => {
-        const list = (children ? Object.values(children) : []) as ListOfChildren<T>[];
-
+      {data.map(({ id, children = [], title, icon, href }) => {
         const content = (
           <MenuItemContent
             title={title}
-            iconName={iconName}
+            iconName={icon}
             isSub={layer > 0}
             isVisible={menuIds.includes(id)}
-            shouldToggle={list.length > 0}
+            shouldToggle={children.length > 0}
           />
         );
 
         return (
           <Fragment key={id}>
             <Render
-              when={list.length > 0}
+              when={children.length > 0}
               fallback={
                 <NavLink end to={href} className={cn('sidebarItem', prefix(layer, 'layer'))}>
                   {content}
@@ -86,7 +84,7 @@ const Menu = <T extends TRoute<string>>({ items, menuIds, toggle, layer = 0 }: M
                 {content}
               </div>
             </Render>
-            <Render when={list.length > 0}>
+            <Render when={children.length > 0}>
               <AnimatePresence initial={false} presenceAffectsLayout>
                 {menuIds.includes(id) && (
                   <motion.div
@@ -97,7 +95,7 @@ const Menu = <T extends TRoute<string>>({ items, menuIds, toggle, layer = 0 }: M
                     animate="animate"
                     exit="exit"
                   >
-                    <Menu items={list} layer={layer + 1} menuIds={menuIds} toggle={toggle} />
+                    <Menu items={children} layer={layer + 1} menuIds={menuIds} toggle={toggle} />
                   </motion.div>
                 )}
               </AnimatePresence>

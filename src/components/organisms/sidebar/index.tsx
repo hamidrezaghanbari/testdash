@@ -1,6 +1,7 @@
 import { Text } from '@smartech/ui';
 import { useState } from 'react';
 
+import { Version } from '$/components/atoms';
 import { sidebarRoutes } from '$/routes/routes';
 import { Render } from '$/utils';
 
@@ -30,6 +31,7 @@ const Sidebar = () => {
           <MenuItems items={items} menuIds={menuIds} toggle={toggle} />
         </div>
       ))}
+      <Version className="mb-2 mt-4" />
     </div>
   );
 };
