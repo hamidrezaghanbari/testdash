@@ -1,5 +1,7 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
+import { Loading } from '$/components/atoms';
+
 import { accountChildren, routerChildren, routerFallbacks } from './routes';
 import { Account, ErrorBoundary, Root, accountLoader, rootLoader } from './utils';
 
@@ -10,7 +12,7 @@ const router = createBrowserRouter([
     Component: Root,
     loader: rootLoader,
     ErrorBoundary,
-    HydrateFallback: null,
+    HydrateFallback: Loading,
     hasErrorBoundary: true,
     children: routerChildren,
   },
@@ -20,7 +22,7 @@ const router = createBrowserRouter([
     Component: Account,
     loader: accountLoader,
     ErrorBoundary,
-    HydrateFallback: null,
+    HydrateFallback: Loading,
     hasErrorBoundary: true,
     children: accountChildren,
   },

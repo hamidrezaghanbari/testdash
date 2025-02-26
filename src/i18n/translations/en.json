@@ -4,10 +4,31 @@
     "password": "Password",
     "signin": "Sign in",
     "signup": "Sign up",
+    "resetPassword": "Reset password",
+    "remember": "Remember me",
     "hintAccount": "Don't have an account?",
     "requiredEmail": "Email is required.",
     "validEmail": "Please enter a valid email address.",
     "requiredPassword": "Password is required.",
     "passwordMinLength": "Password must be at least 8 characters long."
+  },
+  "resetPassword": {
+    "email": "Email",
+    "reset": "Reset password",
+    "requiredEmail": "Email is required.",
+    "validEmail": "Please enter a valid email address.",
+    "sendVerificationCode": "Send verification code"
+  },
+  "passwordVerification": {
+    "resetPasswordVerification": "Password verification",
+    "verificationCode": "Verification code",
+    "requiredCode": "Verification code is required.",
+    "password": "Password is required.",
+    "passwordsMatched": "Passwords do not match. Please try again.",
+    "invalidCode": "Invalid code. Please enter a 6-digit code.",
+    "changePassword": "Change password",
+    "passwordLabel": "New password",
+    "confirmedPasswordLabel": "Confirm password",
+    "codeSentTo": "The code was sent to ((email))"
   }
 }

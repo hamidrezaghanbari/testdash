@@ -1,14 +1,18 @@
-.login-form-container {
+.loginFormContainer {
   @apply items-center justify-center bg-gray-100 p-4;
 
-  & .login-form {
+  & .loginForm {
     @apply flex max-h-full w-[420px] max-w-full flex-col justify-between gap-[28px] rounded-md bg-base-white p-6;
 
-    & .login-form-inputs {
+    & .loginFormInputs {
       @apply flex flex-col gap-4;
+
+      & .loginFormActions {
+        @apply flex items-center justify-between;
+      }
     }
 
-    & .login-form-register-hint {
+    & .loginFormRegisterHint {
       @apply flex w-full justify-center gap-1;
     }
   }

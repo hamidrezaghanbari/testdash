@@ -13,6 +13,9 @@ const accounts: TRoutes[] = [
     path: 'resetPassword',
   },
   {
+    path: 'passwordVerification',
+  },
+  {
     path: '*',
     element: <Navigate to="/account/login" />,
   },

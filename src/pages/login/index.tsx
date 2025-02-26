@@ -20,12 +20,12 @@ function Login() {
   };
 
   return (
-    <Page className="login-form-container">
-      <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
+    <Page className="loginFormContainer">
+      <form className="loginForm" onSubmit={handleSubmit(onSubmit)}>
         <Text size="2xl" variant="bold">
           {t('login.signin')}
         </Text>
-        <div className="login-form-inputs">
+        <div className="loginFormInputs">
           <Controller
             control={control}
             name="email"
@@ -33,6 +33,7 @@ function Login() {
               <Input
                 required
                 label={t('login.email')}
+                placeholder="example@example.com"
                 autoComplete="email"
                 error={invalid}
                 hint={error?.message}
@@ -46,19 +47,19 @@ function Login() {
             render={({ field }) => (
               <InputPassword
                 required
-                label={t('login.password')}
+                label={t('passwordVerification.passwordLabel')}
                 autoComplete="current-password"
                 {...field}
               />
             )}
           />
-          <div className="flex items-center justify-between">
+          <div className="loginFormActions">
             <Controller
               control={control}
               name="remember"
               render={({ field }) => (
                 <Checkbox
-                  label="Remember me"
+                  label={t('login.remember')}
                   size="sm"
                   onChange={field.onChange}
                   checked={field.value}
@@ -67,7 +68,7 @@ function Login() {
             />
             <NavLink to="/account/resetPassword" tabIndex={-1}>
               <Button variant="link" mode="color" size="sm">
-                Reset password
+                {t('login.resetPassword')}
               </Button>
             </NavLink>
           </div>
@@ -76,16 +77,6 @@ function Login() {
         <Button variant="primary" size="xl" className="w-full" spinning={formState.isSubmitting}>
           {t('login.signin')}
         </Button>
-        <div className="login-form-register-hint">
-          <Text variant="regular" size="sm" className="leading-sm">
-            {t('login.hintAccount')}
-          </Text>
-          <NavLink to="/account/register" tabIndex={-1}>
-            <Button variant="link" mode="color" size="sm" className="!rounded-none">
-              {t('login.signup')}
-            </Button>
-          </NavLink>
-        </div>
       </form>
     </Page>
   );

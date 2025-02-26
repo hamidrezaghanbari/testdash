@@ -6,9 +6,9 @@ import i18n from '$/i18n';
 const schema = z.object({
   email: z
     .string()
-    .min(1, { message: i18n.t('login.requiredEmail') })
+    .nonempty({ message: i18n.t('login.requiredEmail') })
     .email({ message: i18n.t('login.validEmail') }),
-  password: z.string().min(1, { message: i18n.t('login.requiredPassword') }),
+  password: z.string().nonempty({ message: i18n.t('login.requiredPassword') }),
   remember: z.boolean().optional(),
 });
 
