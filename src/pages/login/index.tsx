@@ -1,4 +1,4 @@
-import { Button, Input, InputPassword, Text } from '@smartech/ui';
+import { Button, Checkbox, Input, InputPassword, Text } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
@@ -31,6 +31,7 @@ function Login() {
             name="email"
             render={({ field, fieldState: { invalid, error } }) => (
               <Input
+                required
                 label={t('login.email')}
                 autoComplete="email"
                 error={invalid}
@@ -44,14 +45,34 @@ function Login() {
             name="password"
             render={({ field }) => (
               <InputPassword
+                required
                 label={t('login.password')}
                 autoComplete="current-password"
-                rules={{ min: 8 }}
                 {...field}
               />
             )}
           />
+          <div className="flex items-center justify-between">
+            <Controller
+              control={control}
+              name="remember"
+              render={({ field }) => (
+                <Checkbox
+                  label="Remember me"
+                  size="sm"
+                  onChange={field.onChange}
+                  checked={field.value}
+                />
+              )}
+            />
+            <NavLink to="/account/resetPassword" tabIndex={-1}>
+              <Button variant="link" mode="color" size="sm">
+                Reset password
+              </Button>
+            </NavLink>
+          </div>
         </div>
+
         <Button variant="primary" size="xl" className="w-full" spinning={formState.isSubmitting}>
           {t('login.signin')}
         </Button>

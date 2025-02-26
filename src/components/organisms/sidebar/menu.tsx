@@ -1,4 +1,3 @@
-import { Icon, IconName, Text } from '@smartech/ui';
 import { AnimatePresence, motion } from 'motion/react';
 import { Fragment, memo, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -7,6 +6,7 @@ import { cn, prefix } from '$/common';
 import { SidebarRoutes } from '$/routes/types';
 import { Render } from '$/utils';
 
+import { MenuItemContent } from './content';
 import { sidebarVariants } from './variants';
 
 interface MenuProps {
@@ -15,36 +15,6 @@ interface MenuProps {
   menuIds: string[];
   toggle: (id: string) => void;
 }
-
-interface MenuItemContentProps {
-  iconName?: IconName;
-  title?: string;
-  isSub: boolean;
-  isVisible: boolean;
-  shouldToggle: boolean;
-}
-
-const MenuItemContent = ({
-  iconName,
-  isSub,
-  isVisible,
-  shouldToggle,
-  title,
-}: MenuItemContentProps) => {
-  return (
-    <Fragment>
-      <Render when={iconName}>
-        {(name) => <Icon name={name} className={cn('sidebarItemIcon', { sub: isSub })} />}
-      </Render>
-      <Text className="sidebarItemTitle" size="sm" variant="regular">
-        {title}
-      </Text>
-      <Render when={shouldToggle}>
-        <Icon className={cn('sidebarItemToggleIcon', { visible: isVisible })} name="chevron-down" />
-      </Render>
-    </Fragment>
-  );
-};
 
 const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
   const data = useMemo(() => {

@@ -10,6 +10,9 @@ const accounts: TRoutes[] = [
     path: 'register',
   },
   {
+    path: 'resetPassword',
+  },
+  {
     path: '*',
     element: <Navigate to="/account/login" />,
   },

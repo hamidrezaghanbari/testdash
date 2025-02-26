@@ -8,15 +8,16 @@ const schema = z.object({
     .string()
     .min(1, { message: i18n.t('login.requiredEmail') })
     .email({ message: i18n.t('login.validEmail') }),
-  password: z
-    .string()
-    .min(1, { message: i18n.t('login.requiredPassword') })
-    .min(8, { message: i18n.t('login.passwordMinLength') }),
+  password: z.string().min(1, { message: i18n.t('login.requiredPassword') }),
+  remember: z.boolean().optional(),
 });
 
 type LoginForm = z.infer<typeof schema>;
 
-const useLoginForm = createFormHandler<LoginForm>({ email: '', password: '' }, schema);
+const useLoginForm = createFormHandler<LoginForm>(
+  { email: '', password: '', remember: false },
+  schema,
+);
 
 export type { LoginForm };
 

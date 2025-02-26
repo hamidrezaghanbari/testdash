@@ -1,5 +1,5 @@
 import { Text } from '@smartech/ui';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 import { Version } from '$/components/atoms';
 import { sidebarRoutes } from '$/routes/routes';
@@ -31,9 +31,11 @@ const Sidebar = () => {
           <MenuItems items={items} menuIds={menuIds} toggle={toggle} />
         </div>
       ))}
-      <Version className="mb-2 mt-4" />
+      <Version className="sidebarVersion" />
     </div>
   );
 };
 
-export { Sidebar };
+const MemoizedSidebar = memo(Sidebar);
+
+export { MemoizedSidebar as Sidebar };

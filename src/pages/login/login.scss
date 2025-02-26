@@ -2,7 +2,7 @@
   @apply items-center justify-center bg-gray-100 p-4;
 
   & .login-form {
-    @apply flex max-h-full w-[400px] max-w-full flex-col justify-between gap-8 rounded-md bg-base-white p-6;
+    @apply flex max-h-full w-[420px] max-w-full flex-col justify-between gap-[28px] rounded-md bg-base-white p-6;
 
     & .login-form-inputs {
       @apply flex flex-col gap-4;

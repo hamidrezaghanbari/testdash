@@ -1,10 +1,11 @@
 import { LazyRouteFunction, RouteObject } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 
-import { groupByEntries } from '$/common';
 import { SidebarRoutes, TRoutes } from '$/routes/types';
 
 import { ErrorBoundary } from '../errorBoundary';
+
+const lazyCache = new Map<string, RouteObject>();
 
 function createRouteObjects(
   routes: TRoutes[],
@@ -27,7 +28,12 @@ function createRouteObjects(
           break;
         default: {
           const lazyModule = parent ? concatNames(parent, path) : path;
-          result['lazy'] = lazy(lazyModule, path, cb);
+
+          if (!lazyCache.get(lazyModule)) {
+            lazyCache.set(lazyModule, { lazy: lazy(lazyModule, path, cb) });
+          }
+
+          Object.assign(result, lazyCache.get(lazyModule));
         }
       }
     }
@@ -61,10 +67,18 @@ function injectId(routes: TRoutes[]): TRoutes[] {
   }));
 }
 
-function createSidebarRoutes(routes: TRoutes[]): [string, SidebarRoutes[]][] {
-  const items = createHref(injectId(routes));
+function groupByEntries<T extends Record<string, any>>(array: T[], key: keyof T): [string, T[]][] {
+  const grouped = new Map<string, T[]>();
 
-  return groupByEntries(filterMissMatchers(items), 'group');
+  for (const item of array) {
+    const groupKey = item[key] as string;
+    if (!grouped.has(groupKey)) {
+      grouped.set(groupKey, []);
+    }
+    grouped.get(groupKey)!.push(item);
+  }
+
+  return Array.from(grouped.entries());
 }
 
 function filterMissMatchers(items: TRoutes[] = []): SidebarRoutes[] {
@@ -95,6 +109,12 @@ function createHref(routes: TRoutes[], parent: string | null = null) {
 
     return result;
   });
+}
+
+function createSidebarRoutes(routes: TRoutes[]): [string, SidebarRoutes[]][] {
+  const items = createHref(injectId(routes));
+
+  return groupByEntries(filterMissMatchers(items), 'group');
 }
 
 function concatNames(parent: string, name: string) {
