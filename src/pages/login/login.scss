@@ -2,10 +2,10 @@
   @apply items-center justify-center bg-gray-100 p-4;
 
   & .loginForm {
-    @apply flex max-h-full w-[420px] max-w-full flex-col justify-between gap-[28px] rounded-md bg-base-white p-6;
+    @apply flex max-h-full w-[420px] max-w-full flex-col justify-between gap-10 rounded-md bg-base-white p-6;
 
     & .loginFormInputs {
-      @apply flex flex-col gap-4;
+      @apply flex flex-col gap-5;
 
       & .loginFormActions {
         @apply flex items-center justify-between;

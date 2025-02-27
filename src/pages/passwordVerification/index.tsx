@@ -2,11 +2,37 @@ import { Button, Input, InputPassword, Text } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { useTimer } from '$/hooks';
 import Page from '$/layouts/container';
 
 import './passwordVerification.scss';
 
 import { type PasswordVerificationForm, usePasswordVerificationForm } from './form';
+
+const VerificationCodeTimer = () => {
+  const { t } = useTranslation();
+
+  const { timer, isCounting, reset } = useTimer({
+    immediate: true,
+    onReset() {
+      // verification code api call
+    },
+  });
+
+  if (isCounting) {
+    return (
+      <Text variant="regular" size="sm" className="text-gray-400">
+        {timer}
+      </Text>
+    );
+  }
+
+  return (
+    <Button variant="link" mode="color" size="sm" onClick={() => reset(true)}>
+      {t('passwordVerification.resend')}
+    </Button>
+  );
+};
 
 function PasswordVerification() {
   const { t } = useTranslation();
@@ -39,11 +65,7 @@ function PasswordVerification() {
                 label={t('passwordVerification.verificationCode')}
                 error={invalid}
                 hint={error?.message}
-                trailing={
-                  <Text variant="regular" size="sm" className="text-gray-400">
-                    3:00
-                  </Text>
-                }
+                trailing={<VerificationCodeTimer />}
                 {...field}
               />
             )}

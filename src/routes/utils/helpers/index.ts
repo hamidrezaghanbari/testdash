@@ -12,12 +12,14 @@ function createRouteObjects(
   cb: () => JSX.Element,
   parent: string | null = null,
 ): RouteObject[] {
-  return routes.map(({ path, children, element, index }) => {
+  return routes.map(({ id, path, children, element, index, loader }) => {
     const result: RouteObject = { path };
 
     if (!path) throw new Error(`[createRouteObjects] path is required.`);
 
-    if (index) (result as RouteObject)['index'] = index;
+    if (id) Object.assign(result, id);
+    if (index) Object.assign(result, index);
+    if (loader) Object.assign(result, loader);
 
     if (children && children.length > 0) {
       result['children'] = createRouteObjects(children, cb, path);
