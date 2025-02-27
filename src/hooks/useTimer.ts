@@ -4,7 +4,7 @@ import { CONSTANTS } from '$/constants';
 
 import { useCounter } from './useCounter';
 
-const DURATION = 15; /* 3 minutes */
+const DURATION = 180; /* 3 minutes */
 
 interface UseTimerOptions {
   immediate?: boolean;
