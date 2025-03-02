@@ -1,7 +1,12 @@
 import { Navigate } from 'react-router-dom';
 
 import { accounts, routes } from './subroutes';
-import { createRouteObjects, createSidebarRoutes, createfallbacks } from './utils';
+import {
+  createRouteObjects,
+  createRoutesPermissionMap,
+  createSidebarRoutes,
+  createfallbacks,
+} from './utils';
 
 const routerChildren = createRouteObjects(routes, () => <Navigate to="/" />);
 
@@ -11,4 +16,6 @@ const routerFallbacks = createfallbacks(routes, (to) => <Navigate to={to} />);
 
 const sidebarRoutes = createSidebarRoutes(routes);
 
-export { routerChildren, routerFallbacks, accountChildren, sidebarRoutes };
+const routesPermissionMap = createRoutesPermissionMap(routes);
+
+export { routerChildren, routerFallbacks, accountChildren, routesPermissionMap, sidebarRoutes };

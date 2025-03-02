@@ -7,6 +7,10 @@
 
   .sidebarGroupItem {
     @apply flex flex-col gap-3;
+
+    &.lastGroup {
+      @apply mb-12;
+    }
   }
 
   .sidebarGroupTitle {

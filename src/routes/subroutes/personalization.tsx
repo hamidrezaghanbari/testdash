@@ -8,11 +8,13 @@ const webPersonalizationChildren: TRoutes[] = [
     title: 'on site',
     icon: 'monitor-02',
     index: true,
+    permissions: [],
   },
   {
     path: 'survey',
     title: 'survey',
     icon: 'bar-chart-square-02',
+    permissions: [],
   },
   {
     path: '*',

@@ -9,11 +9,11 @@ type TRouteProps = Readonly<Partial<TExtraRoute>>;
 
 type NoChildrenRoutes = Omit<RouteObject, 'children'>;
 
-type TRoutes = NoChildrenRoutes & TRouteProps & { children?: TRoutes[] };
+type TRoutes = NoChildrenRoutes & TRouteProps & { children?: TRoutes[]; permissions?: string[] };
 
-type SidebarRoutes = NoChildrenRoutes &
-  TRouteProps &
-  TRequiredProps & { children?: SidebarRoutes[] };
+type TExtraRequiredProps = TRequiredProps & { children?: SidebarRoutes[]; permissions?: string[] };
+
+type SidebarRoutes = NoChildrenRoutes & TRouteProps & TExtraRequiredProps;
 
 enum Group {
   DATA_AND_INSIGHT = 'data and insight',

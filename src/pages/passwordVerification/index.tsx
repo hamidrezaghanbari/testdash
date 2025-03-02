@@ -2,6 +2,7 @@ import { Button, Input, InputPassword, Text } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { CONSTANTS } from '$/constants';
 import { useTimer } from '$/hooks';
 import Page from '$/layouts/container';
 
@@ -42,6 +43,8 @@ function PasswordVerification() {
   const onSubmit = (data: PasswordVerificationForm) => {
     // api call
     console.log(data);
+
+    sessionStorage.removeItem(CONSTANTS.OTP_TIME);
   };
 
   return (
@@ -63,6 +66,7 @@ function PasswordVerification() {
               <Input
                 required
                 label={t('passwordVerification.verificationCode')}
+                autoComplete="one-time-code"
                 error={invalid}
                 hint={error?.message}
                 trailing={<VerificationCodeTimer />}

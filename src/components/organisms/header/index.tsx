@@ -7,7 +7,7 @@ import './header.scss';
 const Header = () => {
   useDocumentTitle();
 
-  return <div className="main-header">header</div>;
+  return <header className="mainHeader">header</header>;
 };
 
 const MemoizedHeader = memo(Header);

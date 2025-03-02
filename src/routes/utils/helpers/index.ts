@@ -114,10 +114,37 @@ function createHref(routes: TRoutes[], parent: string | null = null) {
   });
 }
 
+function flattenRoutes<T extends TRoutes>(items: T[]): T[] {
+  return items.reduce<T[]>((acc, item) => {
+    const { children, ...rest } = item;
+    if (children) acc.push(...(flattenRoutes(children) as T[]));
+    else acc.push(rest as T);
+    return acc;
+  }, []);
+}
+
 function createSidebarRoutes(routes: TRoutes[]): [string, SidebarRoutes[]][] {
   const items = createHref(injectId(routes));
 
   return groupByEntries(filterMissMatchers(items), 'group');
+}
+
+function createRoutesPermissionMap(routes: TRoutes[]) {
+  const items = flattenRoutes(createHref(routes));
+
+  const neededData = items.map(({ permissions = [], href }) => ({ href, permissions }));
+
+  const data = neededData.filter((item) => !item.href.endsWith('*'));
+
+  return data.reduce(
+    (acc, item) => {
+      if ('href' in item && typeof item.href === 'string') {
+        acc[item.href] = item.permissions || [];
+      }
+      return acc;
+    },
+    {} as Record<string, string[]>,
+  );
 }
 
 function concatNames(parent: string, name: string) {
@@ -146,12 +173,4 @@ function lazy(
   };
 }
 
-export {
-  lazy,
-  concatNames,
-  createRouteObjects,
-  createfallbacks,
-  createSidebarRoutes,
-  createHref,
-  filterMissMatchers,
-};
+export { createRouteObjects, createfallbacks, createSidebarRoutes, createRoutesPermissionMap };

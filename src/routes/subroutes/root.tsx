@@ -16,12 +16,14 @@ const routes: TRoutes[] = [
     icon: 'dashboard',
     group: Group.DATA_AND_INSIGHT,
     index: true,
+    permissions: [],
   },
   {
     path: 'user',
     title: 'user',
     icon: 'user-01',
     group: Group.DATA_AND_INSIGHT,
+    permissions: [],
   },
   {
     path: 'analytics',
@@ -49,6 +51,7 @@ const routes: TRoutes[] = [
     title: 'overview',
     icon: 'eye',
     group: Group.CAMPAIGN_MANAGER,
+    permissions: [],
   },
   {
     path: 'channels',
@@ -62,12 +65,14 @@ const routes: TRoutes[] = [
     title: 'journey',
     icon: 'rocket-02',
     group: Group.CAMPAIGN_MANAGER,
+    permissions: [],
   },
   {
     path: 'relays',
     title: 'relays',
     icon: 'announcement-01',
     group: Group.CAMPAIGN_MANAGER,
+    permissions: [],
   },
   {
     path: 'personalization',
