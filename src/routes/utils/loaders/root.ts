@@ -8,7 +8,7 @@ const rootLoader = async ({ request }: LoaderFunctionArgs) => {
 
     console.info(pathname);
 
-    const user = await Promise.resolve({ login: true });
+    const user = await Promise.resolve({ login: false });
 
     if (!user || !user.login) return replace('/account/login');
 

@@ -21,7 +21,7 @@ const Page = ({ children, className }: PageProps) => {
       initial="initial"
       animate="animate"
       variants={variants}
-      className={cn('layout-container', className)}
+      className={cn('layoutContainer', className)}
       transition={{ ease: 'easeInOut' }}
     >
       {children}
