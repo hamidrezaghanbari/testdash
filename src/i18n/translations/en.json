@@ -19,6 +19,18 @@
     "validEmail": "Please enter a valid email address.",
     "sendVerificationCode": "Send verification code"
   },
+  "register": {
+    "signup": "Sign up",
+    "requiredFirstname": "First name is required.",
+    "requiredLastname": "Last name is required.",
+    "requiredPhoneNumber": "Phone number is required.",
+    "requiredPassword": "Password is required.",
+    "invalidPhoneNumber": "Please enter a valid phone number.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phoneNumber": "Phone number",
+    "password": "Password"
+  },
   "passwordVerification": {
     "resetPasswordVerification": "Password verification",
     "verificationCode": "Verification code",
@@ -29,7 +41,7 @@
     "changePassword": "Change password",
     "passwordLabel": "New password",
     "confirmedPasswordLabel": "Confirm password",
-    "resend": "resend",
+    "resend": "Resend",
     "codeSentTo": "The code was sent to ((email))"
   }
 }

@@ -1,8 +1,14 @@
-import { replace } from 'react-router-dom';
+import { LoaderFunctionArgs, replace } from 'react-router-dom';
 
-const rootLoader = async () => {
+const rootLoader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    const user = await Promise.resolve({ login: false });
+    const url = new URL(request.url);
+
+    const pathname = url.pathname;
+
+    console.info(pathname);
+
+    const user = await Promise.resolve({ login: true, permissions: ['dashboard', 'event', 'sdk'] });
 
     if (!user || !user.login) return replace('/account/login');
 

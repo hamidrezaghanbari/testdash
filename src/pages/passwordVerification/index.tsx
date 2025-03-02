@@ -73,11 +73,13 @@ function PasswordVerification() {
           <Controller
             control={control}
             name="password"
-            render={({ field }) => (
+            render={({ field, fieldState: { invalid, error } }) => (
               <InputPassword
                 required
                 autoComplete="new-password"
                 label={t('passwordVerification.passwordLabel')}
+                error={invalid}
+                hint={error?.message}
                 {...field}
               />
             )}
@@ -85,11 +87,13 @@ function PasswordVerification() {
           <Controller
             control={control}
             name="confirmPassword"
-            render={({ field }) => (
+            render={({ field, fieldState: { invalid, error } }) => (
               <InputPassword
                 required
                 autoComplete="new-password"
                 label={t('passwordVerification.confirmedPasswordLabel')}
+                error={invalid}
+                hint={error?.message}
                 {...field}
               />
             )}

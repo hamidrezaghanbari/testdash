@@ -2,7 +2,7 @@
   @apply relative flex w-[272px] flex-col gap-3 overflow-auto bg-gray-900 px-4 pt-6;
 
   .sidebarVersion {
-    @apply mb-2 mt-4;
+    @apply mb-2 mt-auto;
   }
 
   .sidebarGroupItem {

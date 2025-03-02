@@ -7,10 +7,13 @@ import { Render } from '$/utils';
 
 import './sidebar.scss';
 
+import { useSidebarFilteredRoutes } from './filterRoutes';
 import MenuItems from './menu';
 
 const Sidebar = () => {
   const [menuIds, setMenuIds] = useState<string[]>([]);
+
+  const routes = useSidebarFilteredRoutes(sidebarRoutes);
 
   const toggle = (id: string) => {
     setMenuIds((ids) => {
@@ -21,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      {sidebarRoutes.map(([group, items]) => (
+      {routes.map(([group, items]) => (
         <div key={group} className="sidebarGroupItem">
           <Render when={group}>
             <Text className="sidebarGroupTitle" size="md" variant="medium">

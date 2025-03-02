@@ -8,7 +8,10 @@ const schema = z
     code: z
       .string()
       .nonempty({ message: i18n.t('passwordVerification.requiredCode') })
-      .length(6, { message: i18n.t('passwordVerification.invalidCode') }),
+      .length(6, { message: i18n.t('passwordVerification.invalidCode') })
+      .refine((code) => /\d{6}/.test(code), {
+        message: i18n.t('passwordVerification.invalidCode'),
+      }),
     password: z.string().nonempty({ message: i18n.t('passwordVerification.password') }),
     confirmPassword: z.string(),
   })

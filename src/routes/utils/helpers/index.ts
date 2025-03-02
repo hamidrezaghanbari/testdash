@@ -1,6 +1,7 @@
 import { LazyRouteFunction, RouteObject } from 'react-router-dom';
 import { v4 as uuidV4 } from 'uuid';
 
+import { Loading } from '$/components/atoms';
 import { SidebarRoutes, TRoutes } from '$/routes/types';
 
 import { ErrorBoundary } from '../errorBoundary';
@@ -140,7 +141,7 @@ function lazy(
     } catch (error) {
       console.error('Cannot load %s module, redirect to dashboard automatically', name);
 
-      return { element: element() };
+      return { element: element(), HydrateFallback: Loading };
     }
   };
 }

@@ -44,11 +44,13 @@ function Login() {
           <Controller
             control={control}
             name="password"
-            render={({ field }) => (
+            render={({ field, fieldState: { invalid, error } }) => (
               <InputPassword
                 required
-                label={t('passwordVerification.passwordLabel')}
+                label={t('login.password')}
                 autoComplete="current-password"
+                error={invalid}
+                hint={error?.message}
                 {...field}
               />
             )}
