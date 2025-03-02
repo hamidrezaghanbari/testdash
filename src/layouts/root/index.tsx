@@ -1,6 +1,6 @@
 import { Suspense, memo } from 'react';
 
-import { Sidebar } from '$/components';
+import { Header, Sidebar } from '$/components';
 import { Loading } from '$/components/atoms';
 
 import './root.scss';
@@ -11,11 +11,14 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-    <div className="flex size-full">
+    <div className="__main">
       <Sidebar />
-      <main className="page-container">
-        <Suspense fallback={<Loading />}>{children}</Suspense>
-      </main>
+      <section className="__mainSection">
+        <Header />
+        <main className="pageContainer">
+          <Suspense fallback={<Loading />}>{children}</Suspense>
+        </main>
+      </section>
     </div>
   );
 };

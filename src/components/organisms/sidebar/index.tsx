@@ -7,13 +7,13 @@ import { Render } from '$/utils';
 
 import './sidebar.scss';
 
-import { useSidebarFilteredRoutes } from './filterRoutes';
 import MenuItems from './menu';
 
 const Sidebar = () => {
   const [menuIds, setMenuIds] = useState<string[]>([]);
 
-  const routes = useSidebarFilteredRoutes(sidebarRoutes);
+  // TODO: use it later
+  // const routes = useSidebarFilteredRoutes(sidebarRoutes);
 
   const toggle = (id: string) => {
     setMenuIds((ids) => {
@@ -23,8 +23,8 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar">
-      {routes.map(([group, items]) => (
+    <aside className="sidebar">
+      {sidebarRoutes.map(([group, items]) => (
         <div key={group} className="sidebarGroupItem">
           <Render when={group}>
             <Text className="sidebarGroupTitle" size="md" variant="medium">
@@ -35,7 +35,7 @@ const Sidebar = () => {
         </div>
       ))}
       <Version className="sidebarVersion" />
-    </div>
+    </aside>
   );
 };
 

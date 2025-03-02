@@ -58,6 +58,7 @@ function Register() {
               <Input
                 required
                 label={t('register.phoneNumber')}
+                autoComplete="mobile tel"
                 placeholder="989121000000"
                 error={invalid}
                 hint={error?.message}

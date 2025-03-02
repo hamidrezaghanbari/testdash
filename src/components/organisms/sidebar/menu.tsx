@@ -45,7 +45,12 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
             <Render
               when={children.length > 0}
               fallback={
-                <NavLink end to={href} className={cn('sidebarItem', prefix(layer, 'layer'))}>
+                <NavLink
+                  to={href}
+                  className={cn('sidebarItem', prefix(layer, 'layer'))}
+                  viewTransition
+                  end
+                >
                   {content}
                 </NavLink>
               }

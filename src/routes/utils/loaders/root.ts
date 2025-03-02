@@ -8,7 +8,7 @@ const rootLoader = async ({ request }: LoaderFunctionArgs) => {
 
     console.info(pathname);
 
-    const user = await Promise.resolve({ login: true, permissions: ['dashboard', 'event', 'sdk'] });
+    const user = await Promise.resolve({ login: true });
 
     if (!user || !user.login) return replace('/account/login');
 
