@@ -8,13 +8,11 @@ const segmentChildren: TRoutes[] = [
     title: 'live segment',
     icon: 'bar-chart-square-02',
     index: true,
-    permissions: [],
   },
   {
     path: 'static',
     title: 'static segment',
     icon: 'bar-chart-square-02',
-    permissions: [],
   },
   {
     path: '*',

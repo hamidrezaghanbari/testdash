@@ -10,7 +10,7 @@ const rootLoader = async () =>
 
       // console.info(routesPermissionMap, pathname);
 
-      const user = await Promise.resolve({ login: false });
+      const user = await Promise.resolve({ login: true });
 
       if (!user || !user.login) return replace('/account/login');
 

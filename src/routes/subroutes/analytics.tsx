@@ -8,25 +8,21 @@ const analyticsChildren: TRoutes[] = [
     title: 'event',
     icon: 'rocket-01',
     index: true,
-    permissions: [],
   },
   {
     path: 'funnel',
     title: 'funnel',
     icon: 'filter-funnel-01',
-    permissions: [],
   },
   {
     path: 'cohort',
     title: 'cohort',
     icon: 'data',
-    permissions: [],
   },
   {
     path: 'uninstall',
     title: 'uninstall',
     icon: 'log-out-01',
-    permissions: [],
   },
   {
     path: '*',

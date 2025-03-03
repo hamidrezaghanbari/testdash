@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
 import { useCurrentUser } from '$/hooks';
-import { PERMISSIONS } from '$/routes/permissions';
 import { SidebarRoutes } from '$/routes/types';
 
 type RouteMaps = [string, SidebarRoutes[]];
@@ -24,10 +23,15 @@ function filterRoutes(routes: RouteMaps[], permissions: string[]): RouteMaps[] {
         })
         .filter((route) => {
           if (!cache.has(route.href)) {
-            const routePermission = PERMISSIONS.get(route.href);
-            const hasPermission = routePermission
-              ? permissions.some((p) => routePermission.includes(p))
-              : false;
+            const hasAnyPermissions = route.permissions && Array.isArray(route.permissions);
+
+            const hasPermission = hasAnyPermissions
+              ? permissions.some((p) => {
+                  const ps = route.permissions || [];
+
+                  return ps.includes(p);
+                })
+              : true;
 
             cache.set(route.href, hasPermission);
           }

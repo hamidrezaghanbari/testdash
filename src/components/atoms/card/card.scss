@@ -1,0 +1,35 @@
+.card {
+  @apply flex rounded-lg bg-base-white p-4 shadow-md;
+
+  &.titled {
+    @apply flex-col p-0;
+  }
+
+  &.layout-fit {
+    @apply size-fit;
+  }
+
+  &.layout-fill {
+    @apply size-full;
+  }
+
+  &.layout-stretch {
+    @apply h-fit flex-1;
+  }
+
+  & .cardHeader {
+    @apply flex w-full items-center gap-4 overflow-hidden border-b border-gray-100 p-4;
+
+    & .cardTitle {
+      @apply overflow-ellipsis whitespace-nowrap text-gray-950;
+    }
+  }
+
+  & .cardBody {
+    @apply flex overflow-hidden p-4;
+  }
+
+  & .cardLoading {
+    @apply flex h-[250px] flex-1 items-center justify-center p-4;
+  }
+}

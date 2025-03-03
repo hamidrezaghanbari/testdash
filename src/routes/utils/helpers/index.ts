@@ -96,7 +96,7 @@ function filterMissMatchers(items: TRoutes[] = []): SidebarRoutes[] {
     });
 }
 
-function createHref(routes: TRoutes[], parent: string | null = null) {
+function createHref(routes: TRoutes[], parent: string | null = null, ps: string[] | null = null) {
   return routes.map((route) => {
     if (!route.path) throw new Error(`[createHref] path is required.`);
 
@@ -106,8 +106,12 @@ function createHref(routes: TRoutes[], parent: string | null = null) {
 
     const result = { ...route, href };
 
+    if (ps && Array.isArray(ps)) {
+      result['permissions'] = [...ps, ...(route.permissions || [])];
+    }
+
     if (route.children) {
-      result.children = createHref(route.children, href);
+      result.children = createHref(route.children, href, route.permissions);
     }
 
     return result;

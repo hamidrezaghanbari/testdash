@@ -8,43 +8,36 @@ const settingsChildren: TRoutes[] = [
     title: 'channel',
     icon: 'server-06',
     index: true,
-    permissions: [],
   },
   {
     path: 'sdk',
     title: 'sdk',
     icon: 'layers-three-01',
-    permissions: [],
   },
   {
     path: 'webhook',
     title: 'webhook',
     icon: 'Webhook',
-    permissions: [],
   },
   {
     path: 'auditLog',
     title: 'audit log',
     icon: 'file-search-02',
-    permissions: [],
   },
   {
     path: 'restApi',
     title: 'rest api',
     icon: 'file-lock-02',
-    permissions: [],
   },
   {
     path: 'team',
     title: 'team',
     icon: 'users-01',
-    permissions: [],
   },
   {
     path: 'billing',
     title: 'billing',
     icon: 'receipt',
-    permissions: [],
   },
   {
     path: '*',

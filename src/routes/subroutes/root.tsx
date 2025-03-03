@@ -9,6 +9,11 @@ import { appPersonalizationChildren, webPersonalizationChildren } from './person
 import { segmentChildren } from './segment';
 import { settingsChildren } from './settings';
 
+/**
+ * Empty permissions means the route has no any permissions,
+ * while undefined permissions means the route has all possible permissions.
+ */
+
 const routes: TRoutes[] = [
   {
     path: '/',
@@ -16,14 +21,12 @@ const routes: TRoutes[] = [
     icon: 'dashboard',
     group: Group.DATA_AND_INSIGHT,
     index: true,
-    permissions: [],
   },
   {
     path: 'user',
     title: 'user',
     icon: 'user-01',
     group: Group.DATA_AND_INSIGHT,
-    permissions: [],
   },
   {
     path: 'analytics',
@@ -51,7 +54,6 @@ const routes: TRoutes[] = [
     title: 'overview',
     icon: 'eye',
     group: Group.CAMPAIGN_MANAGER,
-    permissions: [],
   },
   {
     path: 'channels',
@@ -65,14 +67,12 @@ const routes: TRoutes[] = [
     title: 'journey',
     icon: 'rocket-02',
     group: Group.CAMPAIGN_MANAGER,
-    permissions: [],
   },
   {
     path: 'relays',
     title: 'relays',
     icon: 'announcement-01',
     group: Group.CAMPAIGN_MANAGER,
-    permissions: [],
   },
   {
     path: 'personalization',
@@ -99,6 +99,7 @@ const routes: TRoutes[] = [
     group: Group.BACK_OFFICE,
     flatten: true,
     children: backofficeChildren,
+    permissions: ['back'],
   },
   {
     path: '*',

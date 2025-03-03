@@ -14,7 +14,7 @@ const Sidebar = () => {
   const [menuIds, setMenuIds] = useState<string[]>([]);
 
   // TODO: use it later
-  // const routes = useSidebarFilteredRoutes(sidebarRoutes);
+  //  const routes = useSidebarFilteredRoutes(sidebarRoutes);
 
   const toggle = (id: string) => {
     setMenuIds((ids) => {

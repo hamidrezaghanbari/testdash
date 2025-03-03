@@ -1,9 +1,12 @@
+import { Card } from '$/components';
 import Page from '$/layouts/container';
 
 function Dashboard() {
   return (
-    <Page className="bg-success-300">
-      <div>Dashboard</div>
+    <Page>
+      <Card layout="stretch" title="Dashboard">
+        some elements here
+      </Card>
     </Page>
   );
 }
