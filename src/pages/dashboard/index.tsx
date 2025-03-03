@@ -5,7 +5,7 @@ function Dashboard() {
   return (
     <Page>
       <Card layout="stretch" title="Dashboard">
-        some elements here
+        dashboard elements here
       </Card>
     </Page>
   );

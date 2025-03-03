@@ -30,6 +30,11 @@ const backofficeChildren: TRoutes[] = [
     icon: 'package-plus',
   },
   {
+    path: 'contracts',
+    title: 'contracts',
+    icon: 'file-check-02',
+  },
+  {
     path: 'fileStorage',
     title: 'file storage',
     icon: 'server-04',

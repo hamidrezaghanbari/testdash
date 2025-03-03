@@ -68,7 +68,7 @@ function Login() {
                 />
               )}
             />
-            <NavLink to="/account/resetPassword" tabIndex={-1}>
+            <NavLink to="/account/resetPassword" viewTransition tabIndex={-1}>
               <Button variant="link" mode="color" size="sm">
                 {t('login.resetPassword')}
               </Button>

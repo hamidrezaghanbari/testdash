@@ -1,9 +1,12 @@
+import { Card } from '$/components';
 import Page from '$/layouts/container';
 
 function User() {
   return (
-    <Page className="bg-success-300">
-      <div>user</div>
+    <Page>
+      <Card layout="stretch" title="User">
+        user elements here
+      </Card>
     </Page>
   );
 }

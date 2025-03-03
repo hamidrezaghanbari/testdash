@@ -2,7 +2,7 @@ import Page from '$/layouts/container';
 
 function Contracts() {
   return (
-    <Page className="bg-success-300">
+    <Page>
       <div>Contracts</div>
     </Page>
   );
