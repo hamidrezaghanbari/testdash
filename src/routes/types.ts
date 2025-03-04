@@ -1,7 +1,14 @@
 import { IconName } from '@smartech/ui';
 import { RouteObject } from 'react-router-dom';
 
-type TExtraRoute = { title: string; group: string; icon: IconName; flatten: boolean };
+type TExtraRoute = {
+  title: string;
+  group: string;
+  icon: IconName;
+  flatten: boolean;
+  mask: string;
+  keepAsRoute: boolean;
+};
 
 type TRequiredProps = { id: string; path: string; href: string };
 

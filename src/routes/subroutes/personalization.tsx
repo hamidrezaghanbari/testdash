@@ -7,7 +7,6 @@ const webPersonalizationChildren: TRoutes[] = [
     path: 'onSite',
     title: 'on site',
     icon: 'monitor-02',
-    index: true,
   },
   {
     path: 'survey',

@@ -1,12 +1,12 @@
 import { Card } from '$/components';
 import Page from '$/layouts/container';
 
-function OnSite() {
+function OnSiteCampaign() {
   return (
     <Page>
-      <Card layout="fill">onsite</Card>
+      <Card layout="fill">OnSiteCampaign</Card>
     </Page>
   );
 }
 
-export default OnSite;
+export default OnSiteCampaign;
