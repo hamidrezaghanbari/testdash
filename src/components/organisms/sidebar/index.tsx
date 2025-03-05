@@ -46,3 +46,5 @@ const Sidebar = () => {
 const MemoizedSidebar = memo(Sidebar);
 
 export { MemoizedSidebar as Sidebar };
+
+// []
