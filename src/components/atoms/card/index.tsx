@@ -40,12 +40,18 @@ const Card: React.FC<CardProps> = ({
   const element = <LoadingCard loading={loading}>{children}</LoadingCard>;
 
   return (
-    <div className={cn('card', className, prefix(layout, 'layout'), { titled: !!title })}>
-      <Render when={title} fallback={element}>
+    <div
+      className={cn('card', className, prefix(layout, 'layout'), {
+        titled: !!(title || headerElements),
+      })}
+    >
+      <Render when={title || headerElements} fallback={element}>
         <div className="cardHeader">
-          <Text variant="bold" className="cardTitle">
-            {title}
-          </Text>
+          <Render when={title}>
+            <Text variant="bold" className="cardTitle">
+              {title}
+            </Text>
+          </Render>
           <Render when={headerElements}>{headerElements}</Render>
         </div>
         <div className="cardBody">{element}</div>

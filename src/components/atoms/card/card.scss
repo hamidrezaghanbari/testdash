@@ -18,7 +18,7 @@
   }
 
   & .cardHeader {
-    @apply flex w-full items-center gap-4 overflow-hidden border-b border-gray-100 p-4;
+    @apply flex h-fit w-full items-center gap-4 overflow-hidden border-b border-gray-100 p-4;
 
     & .cardTitle {
       @apply overflow-ellipsis whitespace-nowrap text-gray-950;

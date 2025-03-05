@@ -2,7 +2,7 @@ import { LoaderFunction, Navigate, createBrowserRouter, useLoaderData } from 're
 
 import { Loading } from '$/components/atoms';
 
-import { accountChildren, routerFallbacks } from './routes';
+import { accountChildren, routerChildren, routerFallbacks } from './routes';
 import { Group } from './types';
 import { Account, ErrorBoundary, Root, accountLoader, rootLoader } from './utils';
 
@@ -331,7 +331,7 @@ const router = createBrowserRouter([
     ErrorBoundary,
     HydrateFallback: Loading,
     hasErrorBoundary: true,
-    children: routes,
+    children: routerChildren,
   },
   {
     path: '/account',

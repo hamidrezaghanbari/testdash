@@ -10,8 +10,6 @@ import {
 
 const routerChildren = createRouteObjects(routes, () => <Navigate to="/" />);
 
-console.log(routerChildren);
-
 const accountChildren = createRouteObjects(accounts, () => <Navigate to="/account" />);
 
 const routerFallbacks = createfallbacks(routes, (to) => <Navigate to={to} />);

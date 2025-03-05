@@ -1,3 +1,11 @@
 .layoutContainer {
-  @apply flex size-full flex-1 flex-col overflow-auto bg-gray-100 p-4;
+  @apply flex w-full flex-col;
+
+  .layoutPageHeader {
+    @apply z-[2] flex h-16 w-full items-center gap-4 border-t border-gray-100 bg-base-white px-4 shadow-md;
+  }
+
+  .layoutBody {
+    @apply flex size-full flex-1 flex-col overflow-auto bg-gray-100 p-4;
+  }
 }
