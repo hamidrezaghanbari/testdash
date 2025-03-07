@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
 import { useCurrentUser } from '$/hooks';
-import { SidebarRoutes } from '$/routes/types';
 
-type RouteMaps = [string, SidebarRoutes[]];
+type RouteMaps = [string, any[]];
 
 function filterRoutes(routes: RouteMaps[], permissions: string[]): RouteMaps[] {
   const cache = new Map<string, boolean>();

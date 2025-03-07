@@ -1,7 +1,13 @@
 import { create } from 'zustand/react';
 
-type ApplicationStore = {};
+type Product = { id: string };
 
-const useApplicationStore = create<ApplicationStore>(() => ({}));
+type ApplicationStore = {
+  product: Product | null;
+};
+
+const useApplicationStore = create<ApplicationStore>(() => ({
+  product: null,
+}));
 
 export { useApplicationStore };

@@ -3,14 +3,13 @@ import { Fragment, memo, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { cn, prefix } from '$/common';
-import { SidebarRoutes } from '$/routes/types';
 import { Render } from '$/utils';
 
 import { MenuItemContent } from './content';
 import { sidebarVariants } from './variants';
 
 interface MenuProps {
-  items: SidebarRoutes[];
+  items: any[];
   layer?: number;
   menuIds: string[];
   toggle: (id: string) => void;

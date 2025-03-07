@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { sidebarRoutes } from '$/routes/routes';
-import { type SidebarRoutes } from '$/routes/types';
+// import { sidebarRoutes } from '$/router/routes';
+// import { type SidebarRoutes } from '$/router/types';
 
-type RouteMap = [string, SidebarRoutes[]];
+type RouteMap = [string, any[]];
 
-function grepRoute(routes: RouteMap[], pathname: string): SidebarRoutes | undefined {
+function grepRoute(routes: RouteMap[], pathname: string): any | undefined {
   for (const [, items] of routes) {
     const found = findRoute(items, pathname);
     if (found) return found;
@@ -14,7 +14,7 @@ function grepRoute(routes: RouteMap[], pathname: string): SidebarRoutes | undefi
   return undefined;
 }
 
-function findRoute(items: SidebarRoutes[], pathname: string): SidebarRoutes | undefined {
+function findRoute(items: any[], pathname: string): any | undefined {
   for (const item of items) {
     if (item.href === pathname) {
       return item;
@@ -30,8 +30,11 @@ function findRoute(items: SidebarRoutes[], pathname: string): SidebarRoutes | un
 function useDocumentTitle() {
   const { pathname } = useLocation();
 
+  /**
+   * TODO provide sidebar routes
+   */
   useEffect(() => {
-    const route = grepRoute(sidebarRoutes, pathname);
+    const route = grepRoute([], pathname);
 
     let title = 'Intrack';
 
