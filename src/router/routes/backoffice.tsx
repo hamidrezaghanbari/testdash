@@ -1,39 +1,38 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 
 import { lazyLoad } from '../helpers';
-import { missmatch } from '../loaders';
 
 const backOfficeChildren: RouteObject[] = [
   { index: true, element: <Navigate to="financial" replace /> },
   {
     path: 'financial',
-    lazy: lazyLoad('settings/financial'),
+    lazy: lazyLoad('backOffice/financial'),
   },
-  { path: 'role', lazy: lazyLoad('settings/role') },
-  { path: 'users', lazy: lazyLoad('settings/users') },
+  { path: 'role', lazy: lazyLoad('backOffice/role') },
+  { path: 'users', lazy: lazyLoad('backOffice/users') },
   {
     path: 'manageProducts',
-    lazy: lazyLoad('settings/manageProducts'),
+    lazy: lazyLoad('backOffice/manageProducts'),
   },
   {
     path: 'create products',
-    lazy: lazyLoad('settings/createProduct'),
+    lazy: lazyLoad('backOffice/createProduct'),
   },
   {
     path: 'contracts',
-    lazy: lazyLoad('settings/contracts'),
+    lazy: lazyLoad('backOffice/contracts'),
   },
   {
     path: 'fileStorage',
-    lazy: lazyLoad('settings/fileStorage'),
+    lazy: lazyLoad('backOffice/fileStorage'),
   },
   {
     path: 'configuration',
-    lazy: lazyLoad('settings/configuration'),
+    lazy: lazyLoad('backOffice/configuration'),
   },
   {
     path: '*',
-    loader: missmatch('backOffice/financial'),
+    element: <Navigate to="financial" />,
   },
 ];
 
