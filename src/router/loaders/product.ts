@@ -1,4 +1,4 @@
-import { LoaderFunction, useRouteLoaderData } from 'react-router-dom';
+import { LoaderFunction } from 'react-router-dom';
 import { z } from 'zod';
 
 import { useApplicationStore } from '@/store';
@@ -41,8 +41,4 @@ const productLoader: LoaderFunction = async ({ params }) => {
   return await getProduct();
 };
 
-const useProductData = () => {
-  return useRouteLoaderData<ProductData>('product');
-};
-
-export { productLoader, useProductData };
+export { productLoader };

@@ -1,17 +1,5 @@
-import { LoaderFunction, useRouteLoaderData } from 'react-router-dom';
+import { LoaderFunction } from 'react-router-dom';
 import { z } from 'zod';
-
-type Channel =
-  | 'ONSITE'
-  | 'INAPP'
-  | 'SURVEY'
-  | 'PUSH'
-  | 'WEBPUSH'
-  | 'EMAIL'
-  | 'CUSTOM'
-  | 'SMS'
-  | 'TELEGRAM'
-  | 'WHATSAPP';
 
 const channelSchema = z.object({
   productId: z.string().nonempty(),
@@ -29,10 +17,6 @@ const channelLoader: LoaderFunction = async ({ params }) => {
   throw new Error(error.message);
 };
 
-const useChannelData = (channel: Channel) => {
-  return useRouteLoaderData<ChannelData>(channel);
-};
+export type { ChannelData };
 
-export type { Channel };
-
-export { channelLoader, useChannelData };
+export { channelLoader };
