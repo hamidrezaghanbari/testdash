@@ -3,12 +3,12 @@ import { NavLink } from 'react-router-dom';
 
 import Page from '@/layouts/container';
 
-import './unauthorized.scss';
+import classes from './unauthorized.module.scss';
 
 const Unauthorized = () => {
   return (
     <Page>
-      <div className="unauthorizedContainer">
+      <div className={classes.unauthorizedContainer}>
         <Empty
           title="An unexpected error has been occured"
           description="You have no permissions to see this page"
@@ -23,4 +23,4 @@ const Unauthorized = () => {
   );
 };
 
-export default Unauthorized;
+export { Unauthorized };

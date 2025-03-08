@@ -8,9 +8,9 @@ const personalizationChildren: RouteObject[] = [
     index: true,
     element: <Navigate to="onSite" replace />,
   },
-  createChannelRoutes('ONSITE', 'onSite', 'personalization'),
-  createChannelRoutes('INAPP', 'inApp', 'personalization'),
-  createChannelRoutes('SURVEY', 'survey', 'personalization'),
+  createChannelRoutes('ONSITE', 'onSite'),
+  createChannelRoutes('INAPP', 'inApp'),
+  createChannelRoutes('SURVEY', 'survey'),
   {
     path: '*',
     loader: missmatch('personalization/onSite'),

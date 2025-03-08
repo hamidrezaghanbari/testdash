@@ -63,7 +63,7 @@ function Role() {
           </div>
         }
       >
-        <Table data={ROLES} columns={columns} rowKey={(row) => row.id} />
+        <Table data={ROLES} layout="auto" columns={columns} rowKey={(row) => row.id} />
       </Card>
     </Page>
   );

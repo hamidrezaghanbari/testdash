@@ -2,7 +2,6 @@ import { RouteObject } from 'react-router-dom';
 
 import { ProductRedirection } from '@/router/handlers';
 import { lazyLoad } from '@/router/helpers';
-import { productLoader } from '@/router/loaders';
 
 import { analyticsChildren } from './analytics';
 import { channelsChildren } from './channels';
@@ -13,7 +12,7 @@ import { segmentChildren } from './segment';
 import { settingsChildren } from './settings';
 
 const productChildren: RouteObject[] = [
-  { id: 'product', index: true, loader: productLoader, Component: ProductRedirection },
+  { index: true, Component: ProductRedirection },
   {
     path: ':productId',
     children: [

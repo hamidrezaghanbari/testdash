@@ -3,12 +3,13 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import Page from '@/layouts/container';
 
-import './notFound.scss';
+import classes from './notFound.module.scss';
 
-type Reason = 'NO_PRODUCT';
+type Reason = 'NO_PRODUCT' | 'NO_MODULE';
 
 const messageMap: Record<Reason, string> = {
-  NO_PRODUCT: 'No product can be found',
+  NO_MODULE: 'No module is found',
+  NO_PRODUCT: 'No product is found',
 };
 
 const NotFound = () => {
@@ -16,7 +17,7 @@ const NotFound = () => {
 
   return (
     <Page>
-      <div className="notFoundContainer">
+      <div className={classes.notFoundContainer}>
         <Empty
           title="An unexpected error has been occured"
           description={messageMap[state as Reason]}
@@ -31,4 +32,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export { NotFound };
