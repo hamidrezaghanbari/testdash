@@ -5,7 +5,7 @@ import { NotFound, Unauthorized } from '@/pages/fallbacks';
 
 import { ErrorBoundary } from './error';
 import { Account, Root, RootRedirection } from './handlers';
-import { accountLoader, rootLoader } from './loaders';
+import { accountLoader, productLoader, rootLoader } from './loaders';
 import { accountChildren, backOfficeChildren, productChildren } from './routes';
 
 const router = createBrowserRouter([
@@ -23,7 +23,9 @@ const router = createBrowserRouter([
         Component: RootRedirection,
       },
       {
+        id: 'product',
         path: 'product',
+        loader: productLoader,
         children: productChildren,
       },
       {
