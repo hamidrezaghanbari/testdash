@@ -12,13 +12,17 @@ function lazyLoad(name: string): LazyRouteFunction<RouteObject> {
   const path = `/src/pages/${name}/index.tsx`;
 
   return async () => {
-    if (pages[path]) {
-      const { default: Component } = await pages[path]();
+    try {
+      if (pages[path]) {
+        const { default: Component } = await pages[path]();
 
-      return { Component, ErrorBoundary, hasErrorBoundary: true };
+        return { Component, ErrorBoundary, hasErrorBoundary: true };
+      }
+
+      return { Component: LazyFallback };
+    } catch (error) {
+      return { Component: LazyFallback };
     }
-
-    return { Component: LazyFallback };
   };
 }
 

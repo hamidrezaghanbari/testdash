@@ -1,10 +1,10 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import { Loading } from '@/components/atoms';
+import { NotFound, Unauthorized } from '@/pages/fallbacks';
 
 import { ErrorBoundary } from './error';
 import { Account, Root, RootRedirection } from './handlers';
-import { lazyLoad } from './helpers';
 import { accountLoader, rootLoader } from './loaders';
 import { accountChildren, backOfficeChildren, productChildren } from './routes';
 
@@ -32,12 +32,12 @@ const router = createBrowserRouter([
       },
       {
         path: 'notFound',
-        lazy: lazyLoad('fallbacks/notFound'),
+        Component: NotFound,
         hasErrorBoundary: false,
       },
       {
         path: 'unauthorized',
-        lazy: lazyLoad('fallbacks/unauthorized'),
+        Component: Unauthorized,
         hasErrorBoundary: false,
       },
     ],
