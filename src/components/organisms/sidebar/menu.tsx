@@ -20,7 +20,6 @@ interface MenuProps {
 }
 const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
   const product = useCurrentProduct();
-  console.log('productId', product);
 
   return (
     <div className={classes.sidebarItems}>
