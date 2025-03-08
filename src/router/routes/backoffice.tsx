@@ -15,7 +15,7 @@ const backOfficeChildren: RouteObject[] = [
     lazy: lazyLoad('backOffice/manageProducts'),
   },
   {
-    path: 'create products',
+    path: 'createProduct',
     lazy: lazyLoad('backOffice/createProduct'),
   },
   {

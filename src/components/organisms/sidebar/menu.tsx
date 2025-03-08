@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { Fragment, memo, useMemo } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, generatePath } from 'react-router-dom';
 
 import { cn, prefix } from '@/common';
+import { useCurrentProduct } from '@/hooks';
 import { Render } from '@/utils';
 
 import classes from './sidebar.module.scss';
@@ -16,7 +17,6 @@ interface MenuProps {
   menuIds: string[];
   toggle: (id: string) => void;
 }
-
 const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
   const data = useMemo(() => {
     const index = items.findIndex((item) => item.flatten);
@@ -27,10 +27,14 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
 
     return items;
   }, [items]);
+  const id = useCurrentProduct();
+  console.log('productId', id);
 
   return (
     <div className={classes.sidebarItems}>
       {data.map(({ id, children = [], title, icon, href }) => {
+        const menuHref = href.includes(':productId') ? generatePath(href, { productId: id }) : href;
+
         const content = (
           <MenuItemContent
             title={title}
@@ -47,7 +51,7 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
               when={children.length > 0}
               fallback={
                 <NavLink
-                  to={href}
+                  to={menuHref}
                   className={cn(classes.sidebarItem, prefix(layer, 'layer'))}
                   viewTransition
                   end

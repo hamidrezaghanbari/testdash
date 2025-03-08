@@ -7,6 +7,7 @@ import { Render } from '@/utils';
 
 import classes from './sidebar.module.scss';
 
+import { data } from './data';
 import MenuItems from './menu';
 
 const Sidebar = () => {
@@ -21,10 +22,10 @@ const Sidebar = () => {
 
   return (
     <aside className={classes.sidebar}>
-      {/* {sidebarRoutes.map(([group, items], index) => (
+      {data.map(([group, items], index) => (
         <div
           key={group}
-          className={cn(classes.sidebarGroupItem, { lastGroup: sidebarRoutes.length - 1 === index })}
+          className={cn(classes.sidebarGroupItem, { lastGroup: data.length - 1 === index })}
         >
           <Render when={group}>
             <Text className={classes.sidebarGroupTitle} size="md" variant="medium">
@@ -33,7 +34,7 @@ const Sidebar = () => {
           </Render>
           <MenuItems items={items} menuIds={menuIds} toggle={toggle} />
         </div>
-      ))} */}
+      ))}
       <Version className={classes.sidebarVersion} />
     </aside>
   );
