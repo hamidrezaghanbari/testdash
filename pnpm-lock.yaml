@@ -15,8 +15,8 @@ importers:
         specifier: 4.1.1
         version: 4.1.1(react-hook-form@7.54.2(react@18.3.1))
       '@smartech/ui':
-        specifier: 0.0.15
-        version: 0.0.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 0.0.17
+        version: 0.0.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-query':
         specifier: ^5.66.0
         version: 5.66.3(react@18.3.1)
@@ -743,8 +743,8 @@ packages:
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
     engines: {node: '>=18'}
 
-  '@smartech/ui@0.0.15':
-    resolution: {integrity: sha1-PIiNXOeEUqcvgYnNU0WVJpMFfpc=, tarball: https://g.smartech.ir/api/v4/projects/306/packages/npm/@smartech/ui/-/@smartech/ui-0.0.15.tgz}
+  '@smartech/ui@0.0.17':
+    resolution: {integrity: sha1-73wVCX4SXTOUBwS9X5oR/OazU6w=, tarball: https://g.smartech.ir/api/v4/projects/306/packages/npm/@smartech/ui/-/@smartech/ui-0.0.17.tgz}
     peerDependencies:
       react: '>=18.3.1'
       react-dom: '>=18.3.1'
@@ -3205,7 +3205,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@2.3.0': {}
 
-  '@smartech/ui@0.0.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@smartech/ui@0.0.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       eventemitter3: 5.0.1
       react: 18.3.1

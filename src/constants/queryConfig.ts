@@ -6,6 +6,8 @@ const DEFAULT_QUERY_CONFIG: QueryClientConfig = {
       retry: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      staleTime: 60 * 1000,
+      gcTime: 5 * 60 * 1000,
     },
     mutations: { retry: false },
   },
