@@ -21,7 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@hookform/resolvers": "4.1.1",
-    "@smartech/ui": "0.0.14",
+    "@smartech/ui": "0.0.15",
     "@tanstack/react-query": "^5.66.0",
     "axios": "^1.7.9",
     "i18next": "^24.2.2",
