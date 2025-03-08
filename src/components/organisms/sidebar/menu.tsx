@@ -9,31 +9,23 @@ import { Render } from '@/utils';
 import classes from './sidebar.module.scss';
 
 import { MenuItemContent } from './content';
+import { SidebarData } from './data';
 import { sidebarVariants } from './variants';
 
 interface MenuProps {
-  items: any[];
+  items: SidebarData[];
   layer?: number;
   menuIds: string[];
   toggle: (id: string) => void;
 }
 const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
-  const data = useMemo(() => {
-    const index = items.findIndex((item) => item.flatten);
-
-    if (index === -1) return items;
-
-    items.splice(index, 1, ...(items[index].children ?? []));
-
-    return items;
-  }, [items]);
-  const id = useCurrentProduct();
-  console.log('productId', id);
+  const product = useCurrentProduct();
+  console.log('productId', product);
 
   return (
     <div className={classes.sidebarItems}>
-      {data.map(({ id, children = [], title, icon, href }) => {
-        const menuHref = href.includes(':productId') ? generatePath(href, { productId: id }) : href;
+      {items.map(({ id, children = [], title, icon, href }) => {
+        const menuHref = generatePath(href, { productId: product?.id });
 
         const content = (
           <MenuItemContent

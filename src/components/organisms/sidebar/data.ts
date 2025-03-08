@@ -1,26 +1,30 @@
 import { IconName } from '@smartech/ui';
 import { v4 as uuidv4 } from 'uuid';
 
-type SidebarData = {
+type SidebarItem = {
   id?: string;
   title: string;
   icon: IconName;
-  children: SidebarData[];
+  children: SidebarItem[];
   href: string;
   group?: string;
   permissions?: string[];
 };
+export type SidebarData = Omit<SidebarItem, 'id' | 'children'> & {
+  id: string;
+  children: SidebarData[];
+};
 
-type SidebarEntries = [string, SidebarData[]][];
+export type SidebarEntries = [string, SidebarData[]][];
 
-const addUniqueIds = (items: SidebarData[]): SidebarData[] => {
+const addUniqueIds = (items: SidebarItem[]): SidebarData[] => {
   return items.map((item) => ({
     ...item,
     id: uuidv4(),
     children: addUniqueIds(item.children || []),
   }));
 };
-export const data: SidebarEntries = [
+export const data = [
   [
     'data and insight',
     addUniqueIds([
