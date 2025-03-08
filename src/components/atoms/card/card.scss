@@ -1,5 +1,5 @@
 .card {
-  @apply flex rounded-lg bg-base-white p-4 shadow-md;
+  @apply flex flex-1 rounded-lg bg-base-white p-4 shadow-md;
 
   &.titled {
     @apply flex-col p-0;
@@ -10,7 +10,7 @@
   }
 
   &.layout-fill {
-    @apply size-full;
+    @apply w-full flex-1;
   }
 
   &.layout-stretch {

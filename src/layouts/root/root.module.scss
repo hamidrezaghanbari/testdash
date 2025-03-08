@@ -9,3 +9,7 @@
 .pageContainer {
   @apply flex flex-1 overflow-hidden;
 }
+
+.footerContainer {
+  @apply z-[1] flex h-auto w-full;
+}

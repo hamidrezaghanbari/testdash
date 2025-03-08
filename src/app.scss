@@ -7,13 +7,15 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply box-border h-dvh overflow-hidden bg-gray-100;
-  direction: ltr;
-}
+@layer base {
+  body {
+    @apply box-border h-dvh overflow-hidden bg-gray-100;
+    direction: ltr;
+  }
 
-::selection {
-  @apply bg-primary-500 text-base-white;
+  ::selection {
+    @apply bg-primary-500 text-base-white;
+  }
 }
 
 #__intrack_root {

@@ -9,7 +9,13 @@ const channelSchema = z.object({
 
 type ChannelData = z.infer<typeof channelSchema>;
 
-type ChannelResult = ChannelData & { stepIndex: number };
+type ChannelExtraData = {
+  stepIndex: number;
+  back(): void;
+  next(): void;
+};
+
+type ChannelResult = ChannelData & ChannelExtraData;
 
 type Channel =
   | 'ONSITE'

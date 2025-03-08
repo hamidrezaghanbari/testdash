@@ -1,4 +1,4 @@
-import { useRouteLoaderData } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useRouteLoaderData } from 'react-router-dom';
 
 import type { Channel, ChannelData, ChannelResult } from '@/router/loaders';
 
@@ -23,11 +23,37 @@ const STEPS = new Map([
 const useChannel = (channel: Channel): ChannelResult => {
   const data = useRouteLoaderData<ChannelData>(channel);
 
+  const { step = 'audience' } = useParams();
+
+  const { pathname } = useLocation();
+
+  const navigate = useNavigate();
+
   if (!data) throw new Error('[useChannel] must be used in channel pages');
 
-  const stepIndex = STEPS.get(data.step) ?? StepIndex.AUDIENCE;
+  const stepIndex = STEPS.get(step) ?? StepIndex.AUDIENCE;
 
-  return Object.assign(data, { stepIndex });
+  function next() {
+    const nextStep = Array.from(STEPS.keys())[stepIndex + 1];
+
+    if (nextStep) {
+      const path = pathname.replace(new RegExp(`${step}$`), nextStep);
+
+      navigate(path, { viewTransition: true });
+    }
+  }
+
+  function back() {
+    const prevStep = Array.from(STEPS.keys())[stepIndex - 1];
+
+    if (prevStep) {
+      const path = pathname.replace(new RegExp(`${step}$`), prevStep);
+
+      navigate(path, { viewTransition: true });
+    }
+  }
+
+  return { ...data, stepIndex, back, next };
 };
 
 export { useChannel };

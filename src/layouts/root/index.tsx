@@ -2,6 +2,7 @@ import { Suspense, memo } from 'react';
 
 import { Header, Sidebar } from '@/components';
 import { Loading } from '@/components/atoms';
+import { CONSTANTS } from '@/constants';
 
 import classes from './root.module.scss';
 
@@ -18,6 +19,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
         <main className={classes.pageContainer}>
           <Suspense fallback={<Loading />}>{children}</Suspense>
         </main>
+        <footer id={CONSTANTS.CHANNELS_FOOTER_ID} className={classes.footerContainer}></footer>
       </section>
     </div>
   );

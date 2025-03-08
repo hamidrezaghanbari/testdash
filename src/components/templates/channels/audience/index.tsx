@@ -1,5 +1,5 @@
 const Audience = () => {
-  return <div className="flex size-full items-center justify-center bg-gray-100">Audience</div>;
+  return <h1>Audience</h1>;
 };
 
 export default Audience;
