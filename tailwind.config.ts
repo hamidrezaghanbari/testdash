@@ -3,7 +3,8 @@ import { injectThemeConfig } from '@smartech/ui/theme';
 import { type Config } from 'tailwindcss';
 
 const config = {
-  content: ['./src/**/*.{ts,tsx,html}'],
+  important: '#app',
+  content: ['./src/**/*.{ts,tsx,html}', './index.html'],
   plugins: [],
 } satisfies Config;
 
