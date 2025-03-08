@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { CONSTANTS } from '$/constants';
+import { CONSTANTS } from '@/constants';
 
 import { useCounter } from './useCounter';
 

@@ -1,9 +1,9 @@
 import { Suspense, memo } from 'react';
 
-import { Header, Sidebar } from '$/components';
-import { Loading } from '$/components/atoms';
+import { Header, Sidebar } from '@/components';
+import { Loading } from '@/components/atoms';
 
-import './root.scss';
+import classes from './root.module.scss';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -11,11 +11,11 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-    <div className="__main">
+    <div className={classes.intk}>
       <Sidebar />
-      <section className="__mainSection">
+      <section className={classes.mainSection}>
         <Header />
-        <main className="pageContainer">
+        <main className={classes.pageContainer}>
           <Suspense fallback={<Loading />}>{children}</Suspense>
         </main>
       </section>

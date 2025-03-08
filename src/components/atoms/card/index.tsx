@@ -1,8 +1,8 @@
 import { Spinner, Text } from '@smartech/ui';
 import { memo } from 'react';
 
-import { cn, prefix } from '$/common';
-import { Render } from '$/utils';
+import { cn, prefix } from '@/common';
+import { Render } from '@/utils';
 
 import './card.scss';
 

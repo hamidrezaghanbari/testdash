@@ -3,9 +3,9 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import Page from '$/layouts/container';
+import Page from '@/layouts/container';
 
-import './resetPassword.scss';
+import classes from './reset.module.scss';
 
 import { type ResetPasswordForm, useResetPasswordForm } from './form';
 
@@ -24,12 +24,12 @@ function ResetPassword() {
   };
 
   return (
-    <Page className="resetPasswordFormContainer">
-      <form className="resetPasswordForm" onSubmit={handleSubmit(onSubmit)}>
+    <Page className={classes.resetFormContainer}>
+      <form className={classes.resetForm} onSubmit={handleSubmit(onSubmit)}>
         <Text size="2xl" variant="bold">
           {t('resetPassword.reset')}
         </Text>
-        <div className="resetPasswordFormInputs">
+        <div className={classes.resetFormInputs}>
           <Controller
             control={control}
             name="email"

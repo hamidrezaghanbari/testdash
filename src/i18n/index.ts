@@ -2,7 +2,7 @@ import i18n, { InitOptions, TFunction } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
-import { CONSTANTS } from '$/constants';
+import { CONSTANTS } from '@/constants';
 
 import en from './translations/en.json';
 

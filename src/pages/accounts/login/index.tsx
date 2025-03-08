@@ -3,9 +3,9 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
-import Page from '$/layouts/container';
+import Page from '@/layouts/container';
 
-import './login.scss';
+import classes from './login.module.scss';
 
 import { type LoginForm, useLoginForm } from './form';
 
@@ -20,12 +20,12 @@ function Login() {
   };
 
   return (
-    <Page className="loginFormContainer">
-      <form className="loginForm" onSubmit={handleSubmit(onSubmit)}>
+    <Page className={classes.loginFormContainer}>
+      <form className={classes.loginForm} onSubmit={handleSubmit(onSubmit)}>
         <Text size="2xl" variant="bold">
           {t('login.signin')}
         </Text>
-        <div className="loginFormInputs">
+        <div className={classes.loginFormInputs}>
           <Controller
             control={control}
             name="email"
@@ -55,7 +55,7 @@ function Login() {
               />
             )}
           />
-          <div className="loginFormActions">
+          <div className={classes.loginFormActions}>
             <Controller
               control={control}
               name="remember"

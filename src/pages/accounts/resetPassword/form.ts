@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { createFormHandler } from '$/common';
-import i18n from '$/i18n';
+import { createFormHandler } from '@/common';
+import i18n from '@/i18n';
 
 const schema = z.object({
   email: z

@@ -1,6 +1,6 @@
 import { Text } from '@smartech/ui';
 
-import { cn } from '$/common';
+import { cn } from '@/common';
 
 interface VersionProps {
   className?: string;

@@ -1,7 +1,7 @@
 import { LoaderFunction, useRouteLoaderData } from 'react-router-dom';
 import { z } from 'zod';
 
-import { useApplicationStore } from '$/store';
+import { useApplicationStore } from '@/store';
 
 const productSchema = z.object({
   productId: z.string().nonempty(),

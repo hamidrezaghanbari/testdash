@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-// import { sidebarRoutes } from '$/router/routes';
-// import { type SidebarRoutes } from '$/router/types';
+// import { sidebarRoutes } from '@/router/routes';
+// import { type SidebarRoutes } from '@/router/types';
 
 type RouteMap = [string, any[]];
 

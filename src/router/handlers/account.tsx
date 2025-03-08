@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import { useRouteProgress } from '$/hooks';
+import { useRouteProgress } from '@/hooks';
 
 const Account = () => {
   useRouteProgress();

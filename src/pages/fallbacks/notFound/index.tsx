@@ -1,7 +1,7 @@
 import { Button, Empty } from '@smartech/ui';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import Page from '$/layouts/container';
+import Page from '@/layouts/container';
 
 import './notFound.scss';
 

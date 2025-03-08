@@ -10,7 +10,7 @@
     "preinstall": "npx only-allow pnpm",
     "format-check": "prettier --check .",
     "lint": "eslint .",
-    "format": "prettier .",
+    "format": "prettier --write .",
     "build": "vite build",
     "serve": "vite preview",
     "start": "vite --port 4002 --open",

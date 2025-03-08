@@ -1,6 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
-import { Loading } from '$/components/atoms';
+import { Loading } from '@/components/atoms';
 
 import { ErrorBoundary } from './error';
 import { Account, Root, RootRedirection } from './handlers';

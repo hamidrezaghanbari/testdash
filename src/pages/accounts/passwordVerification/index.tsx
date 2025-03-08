@@ -2,11 +2,11 @@ import { Button, Input, InputPassword, Text } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { CONSTANTS } from '$/constants';
-import { useTimer } from '$/hooks';
-import Page from '$/layouts/container';
+import { CONSTANTS } from '@/constants';
+import { useTimer } from '@/hooks';
+import Page from '@/layouts/container';
 
-import './passwordVerification.scss';
+import classes from './verification.module.scss';
 
 import { type PasswordVerificationForm, usePasswordVerificationForm } from './form';
 
@@ -48,8 +48,8 @@ function PasswordVerification() {
   };
 
   return (
-    <Page className="passwordVerificationFormContainer">
-      <form className="passwordVerificationForm" onSubmit={handleSubmit(onSubmit)}>
+    <Page className={classes.verificationFormContainer}>
+      <form className={classes.verificationForm} onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-2">
           <Text size="2xl" variant="bold">
             {t('passwordVerification.resetPasswordVerification')}
@@ -58,7 +58,7 @@ function PasswordVerification() {
             {t('passwordVerification.codeSentTo', { email: 'alireza.h@smartech.ir' })}
           </Text>
         </div>
-        <div className="passwordVerificationFormInputs">
+        <div className={classes.verificationFormInputs}>
           <Controller
             control={control}
             name="code"

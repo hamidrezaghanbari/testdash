@@ -1,13 +1,13 @@
 import { memo } from 'react';
 
-import { useDocumentTitle } from '$/hooks';
+import { useDocumentTitle } from '@/hooks';
 
-import './header.scss';
+import classes from './header.module.scss';
 
 const Header = () => {
   useDocumentTitle();
 
-  return <header className="mainHeader">header</header>;
+  return <header className={classes.mainHeader}>header</header>;
 };
 
 const MemoizedHeader = memo(Header);

@@ -1,7 +1,7 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 
-import { lazyLoad } from '$/router/helpers';
-import { Channel, channelLoader } from '$/router/loaders';
+import { lazyLoad } from '@/router/helpers';
+import { Channel, channelLoader } from '@/router/loaders';
 
 const createChannelRoutes = (
   id: Channel,

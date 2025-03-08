@@ -1,7 +1,7 @@
 import { Button, Empty } from '@smartech/ui';
 import { NavLink } from 'react-router-dom';
 
-import Page from '$/layouts/container';
+import Page from '@/layouts/container';
 
 import './unauthorized.scss';
 

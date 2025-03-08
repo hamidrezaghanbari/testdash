@@ -2,9 +2,9 @@ import { Button, Input, InputPassword, Text } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import Page from '$/layouts/container';
+import Page from '@/layouts/container';
 
-import './register.scss';
+import classes from './register.module.scss';
 
 import { type RegisterForm, useRegisterForm } from './form';
 
@@ -19,12 +19,12 @@ function Register() {
   };
 
   return (
-    <Page className="registerFormContainer">
-      <form className="registerForm" onSubmit={handleSubmit(onSubmit)}>
+    <Page className={classes.registerFormContainer}>
+      <form className={classes.registerForm} onSubmit={handleSubmit(onSubmit)}>
         <Text size="2xl" variant="bold">
           {t('register.signup')}
         </Text>
-        <div className="registerFormInputs">
+        <div className={classes.registerFormInputs}>
           <Controller
             control={control}
             name="firstName"

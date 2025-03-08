@@ -1,8 +1,8 @@
 import { RouteObject } from 'react-router-dom';
 
-import { ProductRedirection } from '$/router/handlers';
-import { lazyLoad } from '$/router/helpers';
-import { productLoader } from '$/router/loaders';
+import { ProductRedirection } from '@/router/handlers';
+import { lazyLoad } from '@/router/helpers';
+import { productLoader } from '@/router/loaders';
 
 import { analyticsChildren } from './analytics';
 import { channelsChildren } from './channels';

@@ -1,39 +1,36 @@
 import { LoaderFunction, useRouteLoaderData } from 'react-router-dom';
 import { z } from 'zod';
 
-const channelSchema = z.union([
-  z.literal('ONSITE'),
-  z.literal('INAPP'),
-  z.literal('SURVEY'),
-  z.literal('PUSH'),
-  z.literal('WEBPUSH'),
-  z.literal('EMAIL'),
-  z.literal('CUSTOM'),
-  z.literal('SMS'),
-  z.literal('TELEGRAM'),
-  z.literal('WHATSAPP'),
-]);
+type Channel =
+  | 'ONSITE'
+  | 'INAPP'
+  | 'SURVEY'
+  | 'PUSH'
+  | 'WEBPUSH'
+  | 'EMAIL'
+  | 'CUSTOM'
+  | 'SMS'
+  | 'TELEGRAM'
+  | 'WHATSAPP';
 
-const channelDataSchema = z.object({
+const channelSchema = z.object({
   productId: z.string().nonempty(),
   campaignId: z.string().nonempty(),
   step: z.string().optional().default('audience'),
 });
 
-type Channel = z.infer<typeof channelSchema>;
-
-type ChannelData = z.infer<typeof channelDataSchema>;
+type ChannelData = z.infer<typeof channelSchema>;
 
 const channelLoader: LoaderFunction = async ({ params }) => {
-  const { success, data, error } = await channelDataSchema.safeParseAsync(params);
+  const { success, data, error } = await channelSchema.safeParseAsync(params);
 
   if (success) return data;
 
   throw new Error(error.message);
 };
 
-const useChannelData = (channel: Uppercase<Channel>) => {
-  return useRouteLoaderData<ChannelData>(channelSchema.parse(channel));
+const useChannelData = (channel: Channel) => {
+  return useRouteLoaderData<ChannelData>(channel);
 };
 
 export type { Channel };

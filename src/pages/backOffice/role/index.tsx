@@ -1,8 +1,8 @@
 import { Button, Icon, Input, Menu, Table, TableColumnProps } from '@smartech/ui';
 import { useMemo } from 'react';
 
-import { Card } from '$/components';
-import Page from '$/layouts/container';
+import { Card } from '@/components';
+import Page from '@/layouts/container';
 
 type RoleResponse = {
   id: string;

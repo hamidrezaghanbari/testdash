@@ -2,8 +2,10 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Fragment, memo, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { cn, prefix } from '$/common';
-import { Render } from '$/utils';
+import { cn, prefix } from '@/common';
+import { Render } from '@/utils';
+
+import classes from './sidebar.module.scss';
 
 import { MenuItemContent } from './content';
 import { sidebarVariants } from './variants';
@@ -27,7 +29,7 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
   }, [items]);
 
   return (
-    <div className="sidebarItems">
+    <div className={classes.sidebarItems}>
       {data.map(({ id, children = [], title, icon, href }) => {
         const content = (
           <MenuItemContent
@@ -46,7 +48,7 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
               fallback={
                 <NavLink
                   to={href}
-                  className={cn('sidebarItem', prefix(layer, 'layer'))}
+                  className={cn(classes.sidebarItem, prefix(layer, 'layer'))}
                   viewTransition
                   end
                 >
@@ -54,7 +56,10 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
                 </NavLink>
               }
             >
-              <div className={cn('sidebarItem', prefix(layer, 'layer'))} onClick={() => toggle(id)}>
+              <div
+                className={cn(classes.sidebarItem, prefix(layer, 'layer'))}
+                onClick={() => toggle(id)}
+              >
                 {content}
               </div>
             </Render>
@@ -63,7 +68,7 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
                 {menuIds.includes(id) && (
                   <motion.div
                     key={id}
-                    className="sidebar-sub-items"
+                    className={classes.sidebarSubItems}
                     variants={sidebarVariants}
                     initial="initial"
                     animate="animate"

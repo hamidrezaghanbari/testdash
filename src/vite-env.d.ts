@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
 
 declare namespace globalThis {
-    export const VERSION: string;
-  }
+  export const VERSION: string;
+}

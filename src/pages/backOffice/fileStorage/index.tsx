@@ -1,4 +1,4 @@
-import Page from '$/layouts/container';
+import Page from '@/layouts/container';
 
 function FileStorage() {
   return (

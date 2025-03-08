@@ -1,5 +1,5 @@
-import { Card } from '$/components';
-import Page from '$/layouts/container';
+import { Card } from '@/components';
+import Page from '@/layouts/container';
 
 function Dashboard() {
   return (

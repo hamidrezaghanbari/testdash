@@ -1,7 +1,7 @@
 import { Empty } from '@smartech/ui';
 import { useRouteError } from 'react-router-dom';
 
-import { Render } from '$/utils';
+import { Render } from '@/utils';
 
 import './errorBoundary.scss';
 

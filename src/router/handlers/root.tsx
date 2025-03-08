@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useRouteProgress } from '$/hooks';
-import RootLayout from '$/layouts/root';
+import { useRouteProgress } from '@/hooks';
+import RootLayout from '@/layouts/root';
 
 const Root = () => {
   useRouteProgress();
