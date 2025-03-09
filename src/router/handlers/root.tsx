@@ -19,7 +19,7 @@ const RootRedirection = () => {
   if (product) {
     const { id } = product;
 
-    return <Navigate to={generatePath('product/:productId', { productId: id })} replace />;
+    return <Navigate to={generatePath('product/:id', { id })} replace />;
   }
 
   return <Navigate to="product" replace />;
