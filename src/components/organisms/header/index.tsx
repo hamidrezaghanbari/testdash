@@ -7,7 +7,7 @@ import classes from './header.module.scss';
 const Header = () => {
   useDocumentTitle();
 
-  return <header className={classes.mainHeader}>header</header>;
+  return <header className={classes.mainHeader}>header </header>;
 };
 
 const MemoizedHeader = memo(Header);

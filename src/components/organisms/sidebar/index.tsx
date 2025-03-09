@@ -3,13 +3,12 @@ import { memo, useState } from 'react';
 
 import { cn } from '@/common';
 import { Version } from '@/components/atoms';
-import { useCurrentProduct } from '@/hooks';
 import { Render } from '@/utils';
 
 import classes from './sidebar.module.scss';
 
 import { data } from './data';
-import MenuItems from './menu';
+import MenuItems from './sidebarMenu';
 
 const Sidebar = () => {
   const [menuIds, setMenuIds] = useState<string[]>([]);

@@ -12,13 +12,13 @@ import { MenuItemContent } from './content';
 import { SidebarData } from './data';
 import { sidebarVariants } from './variants';
 
-interface MenuProps {
+interface SidebarMenuProps {
   items: SidebarData[];
   layer?: number;
   menuIds: string[];
   toggle: (id: string) => void;
 }
-const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
+const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) => {
   const product = useCurrentProduct();
 
   return (
@@ -69,7 +69,12 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
                     animate="animate"
                     exit="exit"
                   >
-                    <Menu items={children} layer={layer + 1} menuIds={menuIds} toggle={toggle} />
+                    <SidebarMenu
+                      items={children}
+                      layer={layer + 1}
+                      menuIds={menuIds}
+                      toggle={toggle}
+                    />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -81,4 +86,4 @@ const Menu = ({ items, menuIds, toggle, layer = 0 }: MenuProps) => {
   );
 };
 
-export default memo(Menu);
+export default memo(SidebarMenu);
