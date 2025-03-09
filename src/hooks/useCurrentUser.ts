@@ -1,15 +1,19 @@
-import { useRouteLoaderData } from 'react-router-dom';
+import { redirect, useRouteLoaderData } from 'react-router-dom';
 
-interface User {
-  login: boolean;
-  permissions: string[];
-}
+type RootLoaderInfo = {
+  product: { id: string };
+  user: { login: boolean; permissions: string[] };
+};
 
 /**
  * only works in react router children
  */
 const useCurrentUser = () => {
-  return useRouteLoaderData<User>('root');
+  const data = useRouteLoaderData<RootLoaderInfo>('root');
+
+  if (!data) return redirect('/account/login');
+
+  return data.user;
 };
 
 export { useCurrentUser };

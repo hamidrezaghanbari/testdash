@@ -1,6 +1,6 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, generatePath } from 'react-router-dom';
 
-import { useRouteProgress } from '@/hooks';
+import { useCurrentProduct, useRouteProgress } from '@/hooks';
 import RootLayout from '@/layouts/root';
 
 const Root = () => {
@@ -14,6 +14,14 @@ const Root = () => {
 };
 
 const RootRedirection = () => {
+  const product = useCurrentProduct();
+
+  if (product) {
+    const { id } = product;
+
+    return <Navigate to={generatePath('product/:productId', { productId: id })} replace />;
+  }
+
   return <Navigate to="product" replace />;
 };
 

@@ -1,14 +1,9 @@
-import { Navigate, useRouteLoaderData } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-/**
- * TODO ProductResponse: replace later
- */
-type ProductResponse = {
-  id: string;
-};
+import { useCurrentProduct } from '@/hooks';
 
 const ProductRedirection = () => {
-  const product = useRouteLoaderData<ProductResponse>('product');
+  const product = useCurrentProduct();
 
   if (!product) return <Navigate to="/notFound" state="NO_PRODUCT" replace />;
 
