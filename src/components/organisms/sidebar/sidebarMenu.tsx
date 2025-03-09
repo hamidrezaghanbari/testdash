@@ -6,7 +6,7 @@ import { cn, prefix } from '@/common';
 import { useCurrentProduct } from '@/hooks';
 import { Render } from '@/utils';
 
-import classes from './sidebar.module.scss';
+import './sidebar.scss';
 
 import { MenuItemContent } from './content';
 import { SidebarData } from './data';
@@ -22,7 +22,7 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
   const product = useCurrentProduct();
 
   return (
-    <div className={classes.sidebarItems}>
+    <div className={'sidebarItems'}>
       {items.map(({ id, children = [], title, icon, href }) => {
         const menuHref = generatePath(href, { productId: product?.id });
 
@@ -43,7 +43,7 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
               fallback={
                 <NavLink
                   to={menuHref}
-                  className={cn(classes.sidebarItem, prefix(layer, 'layer'))}
+                  className={cn('sidebarItem', prefix(layer, 'layer'))}
                   viewTransition
                   end
                 >
@@ -51,10 +51,7 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
                 </NavLink>
               }
             >
-              <div
-                className={cn(classes.sidebarItem, prefix(layer, 'layer'))}
-                onClick={() => toggle(id)}
-              >
+              <div className={cn('sidebarItem', prefix(layer, 'layer'))} onClick={() => toggle(id)}>
                 {content}
               </div>
             </Render>
@@ -63,7 +60,7 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
                 {menuIds.includes(id) && (
                   <motion.div
                     key={id}
-                    className={classes.sidebarSubItems}
+                    className={'sidebarSubItems'}
                     variants={sidebarVariants}
                     initial="initial"
                     animate="animate"

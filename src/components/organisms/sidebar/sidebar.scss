@@ -36,6 +36,9 @@
 
 .sidebarItem {
   @apply flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 transition-colors hover:bg-primary-600;
+  &.active {
+    @apply bg-primary-600;
+  }
 
   &.layer-1 {
     @apply ps-[36px];

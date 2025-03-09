@@ -140,7 +140,7 @@ export const data = [
         icon: 'server-06',
         group: 'campaign maanger',
         children: [],
-        href: '/product/:productId/channels',
+        href: '/product/:productId/insights/channels',
       },
       {
         title: 'journey',

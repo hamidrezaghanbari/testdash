@@ -5,7 +5,7 @@ import { cn } from '@/common';
 import { Version } from '@/components/atoms';
 import { Render } from '@/utils';
 
-import classes from './sidebar.module.scss';
+import './sidebar.scss';
 
 import { data } from './data';
 import MenuItems from './sidebarMenu';
@@ -21,21 +21,21 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className={classes.sidebar}>
+    <aside className={'sidebar'}>
       {data.map(([group, items], index) => (
         <div
           key={group}
-          className={cn(classes.sidebarGroupItem, { lastGroup: data.length - 1 === index })}
+          className={cn('sidebarGroupItem', { lastGroup: data.length - 1 === index })}
         >
           <Render when={group}>
-            <Text className={classes.sidebarGroupTitle} size="md" variant="medium">
+            <Text className={'sidebarGroupTitle'} size="md" variant="medium">
               {group}
             </Text>
           </Render>
           <MenuItems items={items} menuIds={menuIds} toggle={toggle} />
         </div>
       ))}
-      <Version className={classes.sidebarVersion} />
+      <Version className={'sidebarVersion'} />
     </aside>
   );
 };
