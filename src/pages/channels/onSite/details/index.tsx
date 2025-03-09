@@ -3,7 +3,6 @@ import { Fragment, lazy } from 'react';
 
 import { Card, Loading } from '@/components';
 import { ChannelFooter } from '@/components/templates/channels';
-import { CONSTANTS } from '@/constants';
 import { useChannel } from '@/hooks';
 import Page from '@/layouts/container';
 import { Portal } from '@/utils';
@@ -44,7 +43,7 @@ function Details() {
           </Steps>
         </Card>
       </Page>
-      <Portal selector={`#${CONSTANTS.CHANNELS_FOOTER_ID}`}>
+      <Portal selector="#footer">
         <ChannelFooter index={stepIndex} back={back} next={next} />
       </Portal>
     </Fragment>

@@ -1,38 +1,17 @@
 import { LoaderFunction, replace } from 'react-router-dom';
 
-import { useApplicationStore } from '@/store';
-
-import { getProduct, productSchema } from './product';
+import { tryGetProduct } from './product';
+import { tryGetUser } from './user';
 
 const rootLoader: LoaderFunction = async ({ params }) => {
   try {
-    const user = await Promise.resolve({ login: true });
+    const user = await tryGetUser();
 
-    if (!user || !user.login) return replace('/account/login');
+    if (!user) return replace('/account/login');
 
-    const { success, data } = await productSchema.safeParseAsync(params);
-
-    if (success) {
-      const { productId } = data;
-
-      const { product: p } = useApplicationStore.getState();
-
-      if (p && p.id === productId) return p;
-
-      const product = await getProduct(productId);
-
-      return { user, product };
-    }
-
-    /**
-     * TODO later should return prepared product
-     * @returns products[0]
-     */
-    const product = await getProduct();
+    const product = await tryGetProduct(params);
 
     return { user, product };
-
-    // return user;
   } catch (error) {
     throw replace('/account/login');
   }
