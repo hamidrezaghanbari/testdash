@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { Fragment, memo } from 'react';
-import { NavLink, generatePath } from 'react-router-dom';
+import { NavLink, generatePath, useLocation } from 'react-router-dom';
 
 import { cn, prefix } from '@/common';
 import { useCurrentProduct } from '@/hooks';
@@ -20,6 +20,7 @@ interface SidebarMenuProps {
 }
 const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) => {
   const product = useCurrentProduct();
+  const location = useLocation();
 
   return (
     <div className={'sidebarItems'}>
@@ -41,14 +42,18 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
             <Render
               when={children.length > 0}
               fallback={
-                <NavLink
-                  to={menuHref}
-                  className={cn('sidebarItem', prefix(layer, 'layer'))}
-                  viewTransition
-                  end
-                >
-                  {content}
-                </NavLink>
+                location.pathname !== menuHref ? (
+                  <NavLink
+                    to={menuHref}
+                    className={cn('sidebarItem', prefix(layer, 'layer'))}
+                    viewTransition
+                    end
+                  >
+                    {content}
+                  </NavLink>
+                ) : (
+                  <div className={cn('sidebarItem', prefix(layer, 'layer'))}>{content}</div>
+                )
               }
             >
               <div className={cn('sidebarItem', prefix(layer, 'layer'))} onClick={() => toggle(id)}>
