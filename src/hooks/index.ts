@@ -5,3 +5,4 @@ export * from './useCurrentUser';
 export * from './useDocumentTitle';
 export * from './useChannel';
 export * from './useCurrentProduct';
+export * from './useCampaignTab';

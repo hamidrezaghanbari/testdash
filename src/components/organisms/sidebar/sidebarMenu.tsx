@@ -44,6 +44,7 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
               fallback={
                 location.pathname !== menuHref ? (
                   <NavLink
+                    tabIndex={-1}
                     to={menuHref}
                     className={cn('sidebarItem', prefix(layer, 'layer'))}
                     viewTransition

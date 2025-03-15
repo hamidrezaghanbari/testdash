@@ -17,18 +17,6 @@ type ChannelExtraData = {
 
 type ChannelResult = ChannelData & ChannelExtraData;
 
-type Channel =
-  | 'ONSITE'
-  | 'INAPP'
-  | 'SURVEY'
-  | 'PUSH'
-  | 'WEBPUSH'
-  | 'EMAIL'
-  | 'CUSTOM'
-  | 'SMS'
-  | 'TELEGRAM'
-  | 'WHATSAPP';
-
 const channelLoader: LoaderFunction = async ({ params }) => {
   const { success, data, error } = await channelSchema.safeParseAsync(params);
 
@@ -37,6 +25,6 @@ const channelLoader: LoaderFunction = async ({ params }) => {
   throw new Error(error.message);
 };
 
-export type { ChannelData, Channel, ChannelResult };
+export type { ChannelData, ChannelResult };
 
 export { channelLoader };

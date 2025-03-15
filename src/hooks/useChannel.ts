@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, useParams, useRouteLoaderData } from 'react-router-dom';
 
-import type { Channel, ChannelData, ChannelResult } from '@/router/loaders';
+import type { ChannelData, ChannelResult } from '@/router/loaders';
+import { Channel } from '@/router/loaders/_staticTypes';
 
 enum StepIndex {
   AUDIENCE,

@@ -1,7 +1,7 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 
 import { lazyLoad } from '@/router/helpers';
-import { channelLoader } from '@/router/loaders';
+import { campaignLoader, channelLoader } from '@/router/loaders';
 
 const createChannelRoutes = (id: string, path: string): RouteObject => ({
   path,
@@ -16,7 +16,12 @@ const createChannelRoutes = (id: string, path: string): RouteObject => ({
         { path: ':step', lazy: lazyLoad(`channels/${path}/details`) },
       ],
     },
-    { path: 'campaigns', lazy: lazyLoad(`channels/${path}/campaigns`) },
+    {
+      path: 'campaigns',
+      id: [id, 'CAMPAIGN'].join(':'),
+      loader: campaignLoader,
+      lazy: lazyLoad(`channels/${path}/campaigns`),
+    },
   ],
 });
 
