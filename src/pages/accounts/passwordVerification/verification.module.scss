@@ -9,3 +9,11 @@
 .verificationFormInputs {
   @apply flex flex-col gap-5;
 }
+
+.verificationEmailHint {
+  @apply flex flex-wrap items-center gap-1;
+
+  i {
+    @apply text-md;
+  }
+}

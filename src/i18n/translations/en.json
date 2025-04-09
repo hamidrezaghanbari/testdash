@@ -42,6 +42,6 @@
     "passwordLabel": "New password",
     "confirmedPasswordLabel": "Confirm password",
     "resend": "Resend",
-    "codeSentTo": "The code was sent to ((email))"
+    "codeSentTo": "The code was sent to"
   }
 }

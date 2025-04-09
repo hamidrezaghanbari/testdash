@@ -20,7 +20,7 @@ function ResetPassword() {
     // api call
     console.info(data);
 
-    navigate('/account/passwordVerification', { viewTransition: true });
+    navigate('/account/passwordVerification', { state: data.email, viewTransition: true });
   };
 
   return (

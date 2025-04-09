@@ -1,10 +1,12 @@
 import { Button, Input, InputPassword, Text } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Link, useLocation } from 'react-router-dom';
 
-import { CONSTANTS } from '@/constants';
+import { CONSTANTS, EMAIL_TEMPLATE } from '@/constants';
 import { useTimer } from '@/hooks';
 import Page from '@/layouts/container';
+import { Render } from '@/utils';
 
 import classes from './verification.module.scss';
 
@@ -40,6 +42,8 @@ function PasswordVerification() {
 
   const { handleSubmit, formState, control } = usePasswordVerificationForm();
 
+  const { state: email } = useLocation();
+
   const onSubmit = (data: PasswordVerificationForm) => {
     // api call
     console.log(data);
@@ -54,9 +58,28 @@ function PasswordVerification() {
           <Text size="2xl" variant="bold">
             {t('passwordVerification.resetPasswordVerification')}
           </Text>
-          <Text size="sm" variant="regular">
-            {t('passwordVerification.codeSentTo', { email: 'alireza.h@smartech.ir' })}
-          </Text>
+          <Render when={email}>
+            <div className={classes.verificationEmailHint}>
+              <Text size="sm" variant="regular" className="leading-md">
+                {t('passwordVerification.codeSentTo')}
+              </Text>
+              <Link
+                to={EMAIL_TEMPLATE.replace('%', email)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  variant="link"
+                  mode="color"
+                  leading="icon"
+                  type="button"
+                  icons={{ end: 'link-external-02' }}
+                >
+                  {email}
+                </Button>
+              </Link>
+            </div>
+          </Render>
         </div>
         <div className={classes.verificationFormInputs}>
           <Controller

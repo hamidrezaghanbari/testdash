@@ -3,7 +3,7 @@ import { z } from 'zod';
 const userSchema = z.object({ login: z.boolean() }).refine(({ login }) => login);
 
 async function tryGetUser() {
-  const user = await Promise.resolve({ login: true });
+  const user = await Promise.resolve({ login: false });
 
   const { success, data } = await userSchema.safeParseAsync(user);
 

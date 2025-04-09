@@ -11,7 +11,7 @@ type RootLoaderInfo = {
 const useCurrentUser = () => {
   const data = useRouteLoaderData<RootLoaderInfo>('root');
 
-  if (!data) return redirect('/account/login');
+  if (!data) throw redirect('/account/login');
 
   return data.user;
 };
