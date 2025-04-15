@@ -12,7 +12,7 @@ const logout = async (): Promise<void> => {
 logout.use = function (options?: RequestOptions<void, IntrackError>) {
   return useMutation({
     mutationKey: ['/auth/authentication/logout'],
-    mutationFn: this,
+    mutationFn: logout,
     ...options,
   });
 };

@@ -16,7 +16,7 @@ const currentUser = async (): Promise<UserResponseResult> => {
 currentUser.use = function (options?: RequestOptions<UserResponseResult, IntrackError>) {
   return useMutation<UserResponseResult, IntrackError>({
     mutationKey: ['/auth/authentication/currentUser'],
-    mutationFn: this,
+    mutationFn: currentUser,
     ...options,
   });
 };

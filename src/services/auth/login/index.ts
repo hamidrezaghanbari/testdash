@@ -29,7 +29,7 @@ login.use = function (
 ) {
   return useMutation<LoginResponseResult, IntrackError, LoginRequestPayload>({
     mutationKey: ['/auth/authentication/login'],
-    mutationFn: this,
+    mutationFn: login,
     ...options,
   });
 };
