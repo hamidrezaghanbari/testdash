@@ -18,5 +18,11 @@ export default defineConfig({
   envPrefix: 'INTRACK_',
   define: {
     VERSION: JSON.stringify(packageJson.version),
+    BASE_URL: JSON.stringify('/api/web'),
+  },
+  server: {
+    proxy: {
+      '/api/web': { changeOrigin: true, target: 'https://stage.intrack.ir' },
+    },
   },
 });

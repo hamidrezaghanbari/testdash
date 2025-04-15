@@ -1,22 +1,42 @@
-import { Button, Checkbox, Input, InputPassword, Text } from '@smartech/ui';
+import { Button, Checkbox, Input, InputPassword, Text, useNotify } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import Page from '@/layouts/container';
+import { login } from '@/services/auth';
+import { LoginRequestPayload } from '@/services/auth/login/login.schema';
 
 import classes from './login.module.scss';
 
-import { type LoginForm, useLoginForm } from './form';
+import { useLoginForm } from './form';
 
 function Login() {
   const { t } = useTranslation();
 
   const { handleSubmit, formState, control } = useLoginForm();
 
-  const onSubmit = (data: LoginForm) => {
-    // api call
-    console.log(data);
+  const navigate = useNavigate();
+
+  const notify = useNotify();
+
+  const { mutate, isPending } = login.use({
+    async onSuccess() {
+      login.onSuccess(() => {
+        navigate('/', { viewTransition: true });
+      });
+    },
+    onError(error) {
+      notify.open({
+        type: 'error',
+        title: 'An unexpected error was occured',
+        description: error.errors.map((err) => err.message).join('\n'),
+      });
+    },
+  });
+
+  const onSubmit = (data: LoginRequestPayload) => {
+    mutate(data);
   };
 
   return (
@@ -28,7 +48,7 @@ function Login() {
         <div className={classes.loginFormInputs}>
           <Controller
             control={control}
-            name="email"
+            name="username"
             render={({ field, fieldState: { invalid, error } }) => (
               <Input
                 required
@@ -58,7 +78,7 @@ function Login() {
           <div className={classes.loginFormActions}>
             <Controller
               control={control}
-              name="remember"
+              name="rememberMe"
               render={({ field }) => (
                 <Checkbox
                   label={t('login.remember')}
@@ -69,14 +89,19 @@ function Login() {
               )}
             />
             <NavLink to="/account/resetPassword" viewTransition tabIndex={-1}>
-              <Button variant="link" mode="color" size="sm">
+              <Button variant="link" mode="color" size="sm" type="button">
                 {t('login.resetPassword')}
               </Button>
             </NavLink>
           </div>
         </div>
 
-        <Button variant="primary" size="xl" className="w-full" spinning={formState.isSubmitting}>
+        <Button
+          variant="primary"
+          size="xl"
+          className="w-full"
+          spinning={formState.isSubmitting || isPending}
+        >
           {t('login.signin')}
         </Button>
       </form>

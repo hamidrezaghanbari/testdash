@@ -1,45 +1,32 @@
-import { Params } from 'react-router-dom';
-import { z } from 'zod';
+import { Params, redirect } from 'react-router-dom';
 
+import { Product, UserResponseResult } from '@/services/auth/user/user.schema';
 import { useApplicationStore } from '@/store';
 
-type ProductData = {
-  id: string;
-};
-
-const productSchema = z.object({
-  productId: z.string().nonempty(),
-});
-
-async function getAndSaveProduct(productId?: string) {
-  const products = await Promise.resolve<ProductData[]>([{ id: '1' }, { id: '2' }]);
-
-  const product = products.find(({ id }) => id === productId) ?? products[0];
+async function storeProduct(products: Product[] = [], productId?: number) {
+  const product = products.find((p) => p.id === productId) ?? products[0];
 
   useApplicationStore.setState((state) => ({ ...state, product }));
 
   return product;
 }
 
-async function tryGetProduct(params: Params<string>) {
-  const { success, data } = await productSchema.safeParseAsync(params);
+async function getCurrentProduct(params: Params<string>, _user: UserResponseResult) {
+  const { product, user = _user } = useApplicationStore.getState();
 
-  const { product } = useApplicationStore.getState();
+  if (!user) throw redirect('/account/login');
 
-  if (success) {
-    const { productId } = data;
+  if (params.productId) {
+    const productId = parseInt(params.productId);
 
     if (product && product.id === productId) return product;
 
-    return await getAndSaveProduct(productId);
+    return await storeProduct(user.products, productId);
   }
 
   if (product) return product;
 
-  /**
-   * TODO later should return prepared product
-   */
-  return await getAndSaveProduct();
+  return await storeProduct(user.products, user.lastProduct);
 }
 
-export { productSchema, tryGetProduct };
+export { getCurrentProduct };

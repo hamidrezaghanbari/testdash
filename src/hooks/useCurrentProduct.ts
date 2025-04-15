@@ -1,14 +1,9 @@
 import { useRouteLoaderData } from 'react-router-dom';
 
-import { useApplicationStore } from '@/store';
-
-type RootLoaderInfo = {
-  product: { id: string };
-  user: { login: boolean; permissions: string[] };
-};
+import { RootApplicationStore, useApplicationStore } from '@/store';
 
 const useCurrentProduct = () => {
-  const data = useRouteLoaderData<RootLoaderInfo>('root');
+  const data = useRouteLoaderData<RootApplicationStore>('root');
 
   const product = useApplicationStore((state) => state.product);
 

@@ -1,19 +1,30 @@
 import { redirect, useRouteLoaderData } from 'react-router-dom';
 
-type RootLoaderInfo = {
-  product: { id: string };
-  user: { login: boolean; permissions: string[] };
-};
+import { CONSTANTS } from '@/constants';
+import { UserResponseResult } from '@/services/auth/user/user.schema';
+import { RootApplicationStore } from '@/store';
 
 /**
  * only works in react router children
  */
 const useCurrentUser = () => {
-  const data = useRouteLoaderData<RootLoaderInfo>('root');
+  let user: UserResponseResult | null = null;
 
-  if (!data) throw redirect('/account/login');
+  const data = useRouteLoaderData<RootApplicationStore>('root');
 
-  return data.user;
+  if (data) user = data.user;
+
+  if (!user) {
+    const userAsString = sessionStorage.getItem(CONSTANTS.USER);
+
+    if (!userAsString) throw redirect('/account/login');
+
+    user = JSON.parse(userAsString) as UserResponseResult;
+  }
+
+  if (!user) throw redirect('/account/login');
+
+  return user;
 };
 
 export { useCurrentUser };

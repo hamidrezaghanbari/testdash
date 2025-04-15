@@ -1,13 +1,35 @@
+import { Button } from '@smartech/ui';
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useDocumentTitle } from '@/hooks';
+import { logout } from '@/services/auth/logout';
+import { useApplicationStore } from '@/store';
 
 import classes from './header.module.scss';
 
 const Header = () => {
   useDocumentTitle();
 
-  return <header className={classes.mainHeader}>header </header>;
+  const navigate = useNavigate();
+
+  const clear = useApplicationStore((state) => state.clear);
+
+  const { mutate } = logout.use({
+    onSuccess() {
+      clear();
+
+      navigate('/account/login', { viewTransition: true });
+    },
+  });
+
+  return (
+    <header className={classes.mainHeader}>
+      <Button variant="primary" onClick={() => mutate()}>
+        Logout
+      </Button>
+    </header>
+  );
 };
 
 const MemoizedHeader = memo(Header);

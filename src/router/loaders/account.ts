@@ -1,9 +1,13 @@
 import { replace } from 'react-router-dom';
 
-const accountLoader = async () => {
-  const user = await Promise.resolve({ login: false });
+import { currentUser } from '@/services/auth';
 
-  if (user && user.login) return replace('/');
+const accountLoader = async () => {
+  const result = await currentUser();
+
+  if (result && result.login) {
+    throw replace('/');
+  }
 };
 
 export { accountLoader };
