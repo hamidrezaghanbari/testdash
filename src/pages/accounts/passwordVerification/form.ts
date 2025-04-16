@@ -2,31 +2,22 @@ import { z } from 'zod';
 
 import { createFormHandler } from '@/common';
 import i18n from '@/i18n';
+import { changePasswordRequestSchema } from '@/services/auth/changePassword/changePassword.schema';
 
-const schema = z
-  .object({
-    code: z
-      .string()
-      .nonempty({ message: i18n.t('passwordVerification.requiredCode') })
-      .length(6, { message: i18n.t('passwordVerification.invalidCode') })
-      .refine((code) => /\d{6}/.test(code), {
-        message: i18n.t('passwordVerification.invalidCode'),
-      }),
-    password: z.string().nonempty({ message: i18n.t('passwordVerification.password') }),
-    confirmPassword: z.string(),
-  })
-  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+const passwordVerificationSchema = changePasswordRequestSchema
+  .pick({ otpCode: true, newPassword: true })
+  .merge(z.object({ confirmPassword: z.string() }))
+  .refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
     message: i18n.t('passwordVerification.passwordsMatched'),
     path: ['confirmPassword'],
   });
 
-type PasswordVerificationForm = z.infer<typeof schema>;
+type PasswordVerificationPayload = z.infer<typeof passwordVerificationSchema>;
 
-const usePasswordVerificationForm = createFormHandler<PasswordVerificationForm>(
-  { code: '', password: '', confirmPassword: '' },
-  schema,
+const usePasswordVerificationForm = createFormHandler<PasswordVerificationPayload>(
+  { otpCode: '', newPassword: '', confirmPassword: '' },
+  passwordVerificationSchema,
 );
 
-export type { PasswordVerificationForm };
-
 export { usePasswordVerificationForm };
+export type { PasswordVerificationPayload };

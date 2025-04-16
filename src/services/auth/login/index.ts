@@ -1,11 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { fetcher } from '@/api/fetcher';
-import { CONSTANTS } from '@/constants';
 import { IntrackError, RequestOptions } from '@/services/helpers';
 import { useApplicationStore } from '@/store';
 
-import { currentUser } from '../user';
+import { getCurrentUser } from '../user';
 import {
   LoginRequestPayload,
   LoginResponse,
@@ -35,10 +34,11 @@ login.use = function (
 };
 
 login.onSuccess = async function (navigateCallback: () => void) {
-  const user = await currentUser();
+  const user = await getCurrentUser();
   if (user && user.login) {
-    sessionStorage.setItem(CONSTANTS.USER, JSON.stringify(user));
-    useApplicationStore.setState((state) => ({ ...state, user }));
+    const { updateUser } = useApplicationStore.getState();
+
+    updateUser(user);
     navigateCallback();
   }
 };

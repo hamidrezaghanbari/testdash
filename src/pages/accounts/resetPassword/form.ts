@@ -1,19 +1,12 @@
-import { z } from 'zod';
-
 import { createFormHandler } from '@/common';
-import i18n from '@/i18n';
+import {
+  ResetPasswordRequestPayload,
+  resetPasswordRequestSchema,
+} from '@/services/auth/resetPassword/resetPassword.schema';
 
-const schema = z.object({
-  email: z
-    .string()
-    .nonempty({ message: i18n.t('resetPassword.requiredEmail') })
-    .email({ message: i18n.t('resetPassword.validEmail') }),
-});
-
-type ResetPasswordForm = z.infer<typeof schema>;
-
-const useResetPasswordForm = createFormHandler<ResetPasswordForm>({ email: '' }, schema);
-
-export type { ResetPasswordForm };
+const useResetPasswordForm = createFormHandler<ResetPasswordRequestPayload>(
+  { userEmail: '', captchaCode: null, captchaToken: null },
+  resetPasswordRequestSchema,
+);
 
 export { useResetPasswordForm };

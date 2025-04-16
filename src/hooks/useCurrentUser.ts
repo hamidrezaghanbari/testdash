@@ -2,7 +2,7 @@ import { redirect, useRouteLoaderData } from 'react-router-dom';
 
 import { CONSTANTS } from '@/constants';
 import { UserResponseResult } from '@/services/auth/user/user.schema';
-import { RootApplicationStore } from '@/store';
+import { ApplicationState } from '@/store';
 
 /**
  * only works in react router children
@@ -10,7 +10,7 @@ import { RootApplicationStore } from '@/store';
 const useCurrentUser = () => {
   let user: UserResponseResult | null = null;
 
-  const data = useRouteLoaderData<RootApplicationStore>('root');
+  const data = useRouteLoaderData<ApplicationState>('root');
 
   if (data) user = data.user;
 

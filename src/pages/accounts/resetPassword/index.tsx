@@ -1,13 +1,15 @@
-import { Button, Input, Text } from '@smartech/ui';
+import { Button, Input, Text, useNotify } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import Page from '@/layouts/container';
+import { resetPassword } from '@/services/auth';
+import { ResetPasswordRequestPayload } from '@/services/auth/resetPassword/resetPassword.schema';
 
 import classes from './reset.module.scss';
 
-import { type ResetPasswordForm, useResetPasswordForm } from './form';
+import { useResetPasswordForm } from './form';
 
 function ResetPassword() {
   const { t } = useTranslation();
@@ -16,11 +18,27 @@ function ResetPassword() {
 
   const { handleSubmit, formState, control } = useResetPasswordForm();
 
-  const onSubmit = (data: ResetPasswordForm) => {
-    // api call
-    console.info(data);
+  const notify = useNotify();
 
-    navigate('/account/passwordVerification', { state: data.email, viewTransition: true });
+  const { mutate, isPending } = resetPassword.use({
+    onSuccess(otpId, { userEmail }) {
+      if (otpId) {
+        notify.open({
+          title: 'Reset password',
+          description: `A code was sent to ${userEmail}`,
+          type: 'success',
+        });
+
+        navigate('/account/passwordVerification', {
+          state: { otpId, userEmail },
+          viewTransition: true,
+        });
+      }
+    },
+  });
+
+  const onSubmit = (data: ResetPasswordRequestPayload) => {
+    mutate(data);
   };
 
   return (
@@ -32,7 +50,7 @@ function ResetPassword() {
         <div className={classes.resetFormInputs}>
           <Controller
             control={control}
-            name="email"
+            name="userEmail"
             render={({ field, fieldState: { invalid, error } }) => (
               <Input
                 required
@@ -46,7 +64,12 @@ function ResetPassword() {
             )}
           />
         </div>
-        <Button variant="primary" size="xl" className="w-full" spinning={formState.isSubmitting}>
+        <Button
+          variant="primary"
+          size="xl"
+          className="w-full"
+          spinning={formState.isSubmitting || isPending}
+        >
           {t('resetPassword.sendVerificationCode')}
         </Button>
       </form>

@@ -1,35 +1,36 @@
 import { LoaderFunction, replace } from 'react-router-dom';
 
 import { CONSTANTS } from '@/constants';
-import { currentUser } from '@/services/auth';
+import { getCurrentUser } from '@/services/auth';
 import { UserResponseResult } from '@/services/auth/user/user.schema';
 import { useApplicationStore } from '@/store';
 
 import { getCurrentProduct } from './product';
 
 const rootLoader: LoaderFunction = async ({ params }) => {
+  const { user, updateUser, clear } = useApplicationStore.getState();
   try {
-    let user = useApplicationStore.getState().user;
+    let currentUser: UserResponseResult | null = user;
 
-    if (!user) {
+    if (!currentUser) {
       const userAsString = sessionStorage.getItem(CONSTANTS.USER);
 
-      if (!userAsString) user = await currentUser();
-      else user = JSON.parse(userAsString) as UserResponseResult;
+      if (!userAsString) currentUser = await getCurrentUser();
+      else currentUser = JSON.parse(userAsString) as UserResponseResult;
 
-      useApplicationStore.setState((state) => ({ ...state, user }));
+      updateUser(currentUser);
     }
 
-    if (!user?.login) {
-      useApplicationStore.getState().clear();
+    if (!currentUser?.login) {
+      clear();
       throw replace('/account/login');
     }
 
-    const product = await getCurrentProduct(params, user);
+    const product = await getCurrentProduct(params, currentUser);
 
-    return { user, product };
+    return { user: currentUser, product };
   } catch (error) {
-    useApplicationStore.getState().clear();
+    clear();
     throw replace('/account/login');
   }
 };

@@ -1,11 +1,12 @@
 import { useRouteLoaderData } from 'react-router-dom';
+import { useShallow } from 'zustand/shallow';
 
-import { RootApplicationStore, useApplicationStore } from '@/store';
+import { ApplicationState, useApplicationStore } from '@/store';
 
 const useCurrentProduct = () => {
-  const data = useRouteLoaderData<RootApplicationStore>('root');
+  const data = useRouteLoaderData<ApplicationState>('root');
 
-  const product = useApplicationStore((state) => state.product);
+  const product = useApplicationStore(useShallow((state) => state.product));
 
   if (data) return data.product;
 

@@ -6,7 +6,9 @@ import { useApplicationStore } from '@/store';
 async function storeProduct(products: Product[] = [], productId?: number) {
   const product = products.find((p) => p.id === productId) ?? products[0];
 
-  useApplicationStore.setState((state) => ({ ...state, product }));
+  const { updateProduct } = useApplicationStore.getState();
+
+  updateProduct(product);
 
   return product;
 }

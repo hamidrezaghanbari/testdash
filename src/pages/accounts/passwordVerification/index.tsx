@@ -1,54 +1,59 @@
-import { Button, Input, InputPassword, Text } from '@smartech/ui';
+import { Button, Input, InputPassword, Text, useNotify } from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { CONSTANTS, EMAIL_TEMPLATE } from '@/constants';
-import { useTimer } from '@/hooks';
+import { CONSTANTS } from '@/constants';
 import Page from '@/layouts/container';
+import { changePassword } from '@/services/auth';
 import { Render } from '@/utils';
 
 import classes from './verification.module.scss';
 
-import { type PasswordVerificationForm, usePasswordVerificationForm } from './form';
+import { type PasswordVerificationPayload, usePasswordVerificationForm } from './form';
+import { VerificationCodeTimer } from './timer';
 
-const VerificationCodeTimer = () => {
-  const { t } = useTranslation();
-
-  const { timer, isCounting, reset } = useTimer({
-    immediate: true,
-    onReset() {
-      // verification code api call
-    },
-  });
-
-  if (isCounting) {
-    return (
-      <Text variant="regular" size="sm" className="text-gray-400">
-        {timer}
-      </Text>
-    );
-  }
-
-  return (
-    <Button variant="link" mode="color" size="sm" onClick={() => reset(true)}>
-      {t('passwordVerification.resend')}
-    </Button>
-  );
-};
+interface PasswordLocationState {
+  state: {
+    otpId: string;
+    userEmail: string;
+  };
+}
 
 function PasswordVerification() {
   const { t } = useTranslation();
 
   const { handleSubmit, formState, control } = usePasswordVerificationForm();
 
-  const { state: email } = useLocation();
+  const { state } = useLocation() as PasswordLocationState;
 
-  const onSubmit = (data: PasswordVerificationForm) => {
-    // api call
-    console.log(data);
+  const navigate = useNavigate();
 
-    sessionStorage.removeItem(CONSTANTS.OTP_TIME);
+  const notify = useNotify();
+
+  const { mutate, isPending } = changePassword.use({
+    onSuccess() {
+      sessionStorage.removeItem(CONSTANTS.OTP_TIME);
+
+      notify.open({
+        title: 'Change password',
+        description: 'Password has been changed successfully',
+        type: 'success',
+      });
+
+      navigate('/account/login', { viewTransition: true });
+    },
+    onError(error) {
+      notify.open({
+        title: 'Change password failed',
+        description: error.errors.map((err) => err.message).join('\n'),
+        type: 'error',
+      });
+    },
+  });
+
+  const onSubmit = ({ newPassword, otpCode }: PasswordVerificationPayload) => {
+    mutate({ newPassword, otpCode, ...state });
   };
 
   return (
@@ -58,33 +63,21 @@ function PasswordVerification() {
           <Text size="2xl" variant="bold">
             {t('passwordVerification.resetPasswordVerification')}
           </Text>
-          <Render when={email}>
+          <Render when={state.userEmail}>
             <div className={classes.verificationEmailHint}>
-              <Text size="sm" variant="regular" className="leading-md">
+              <Text size="sm" variant="regular">
                 {t('passwordVerification.codeSentTo')}
               </Text>
-              <Link
-                to={EMAIL_TEMPLATE.replace('%', email)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button
-                  variant="link"
-                  mode="color"
-                  leading="icon"
-                  type="button"
-                  icons={{ end: 'link-external-02' }}
-                >
-                  {email}
-                </Button>
-              </Link>
+              <Text size="sm" variant="medium">
+                {state.userEmail}
+              </Text>
             </div>
           </Render>
         </div>
         <div className={classes.verificationFormInputs}>
           <Controller
             control={control}
-            name="code"
+            name="otpCode"
             render={({ field, fieldState: { invalid, error } }) => (
               <Input
                 required
@@ -92,14 +85,14 @@ function PasswordVerification() {
                 autoComplete="one-time-code"
                 error={invalid}
                 hint={error?.message}
-                trailing={<VerificationCodeTimer />}
+                trailing={<VerificationCodeTimer otpId={state.otpId} />}
                 {...field}
               />
             )}
           />
           <Controller
             control={control}
-            name="password"
+            name="newPassword"
             render={({ field, fieldState: { invalid, error } }) => (
               <InputPassword
                 required
@@ -127,7 +120,12 @@ function PasswordVerification() {
           />
         </div>
 
-        <Button variant="primary" size="xl" className="w-full" spinning={formState.isSubmitting}>
+        <Button
+          variant="primary"
+          size="xl"
+          className="w-full"
+          spinning={formState.isSubmitting || isPending}
+        >
           {t('passwordVerification.changePassword')}
         </Button>
       </form>

@@ -13,10 +13,10 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  const clear = useApplicationStore((state) => state.clear);
-
   const { mutate } = logout.use({
     onSuccess() {
+      const { clear } = useApplicationStore.getState();
+
       clear();
 
       navigate('/account/login', { viewTransition: true });
