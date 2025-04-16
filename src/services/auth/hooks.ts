@@ -3,10 +3,10 @@ import { useMutation } from '@tanstack/react-query';
 import { IntrackError, RequestOptions } from '../helpers';
 import * as handlers from './handlers';
 import {
-  ChangePasswordRequestPayload,
-  LoginRequestPayload,
-  RegisterRequestPayload,
-  ResetPasswordRequestPayload,
+  ChangePasswordRequestInput,
+  LoginRequestInput,
+  RegisterRequestInput,
+  ResetPasswordRequestInput,
 } from './schema';
 import {
   LoginResponseResult,
@@ -16,9 +16,9 @@ import {
 } from './types';
 
 export function useChangePassword(
-  options?: RequestOptions<void, IntrackError, ChangePasswordRequestPayload>,
+  options?: RequestOptions<void, IntrackError, ChangePasswordRequestInput>,
 ) {
-  return useMutation<void, IntrackError, ChangePasswordRequestPayload>({
+  return useMutation<void, IntrackError, ChangePasswordRequestInput>({
     mutationKey: ['/auth/profile/reset-password-submit'],
     mutationFn: handlers.changePassword,
     ...options,
@@ -26,9 +26,9 @@ export function useChangePassword(
 }
 
 export function useLogin(
-  options?: RequestOptions<LoginResponseResult, IntrackError, LoginRequestPayload>,
+  options?: RequestOptions<LoginResponseResult, IntrackError, LoginRequestInput>,
 ) {
-  return useMutation<LoginResponseResult, IntrackError, LoginRequestPayload>({
+  return useMutation<LoginResponseResult, IntrackError, LoginRequestInput>({
     mutationKey: ['/auth/authentication/login'],
     mutationFn: handlers.login,
     ...options,
@@ -45,9 +45,9 @@ export function useLogout(options?: RequestOptions<void, IntrackError>) {
 
 export function useRegister(
   token: string | null,
-  options?: RequestOptions<RegisterResponseResult, IntrackError, RegisterRequestPayload>,
+  options?: RequestOptions<RegisterResponseResult, IntrackError, RegisterRequestInput>,
 ) {
-  return useMutation<RegisterResponseResult, IntrackError, RegisterRequestPayload>({
+  return useMutation<RegisterResponseResult, IntrackError, RegisterRequestInput>({
     mutationKey: ['/auth/authentication/register', token],
     mutationFn: (args) => handlers.register(token, args),
     ...options,
@@ -65,9 +65,9 @@ export function useResendPassword(
 }
 
 export function useResetPassword(
-  options?: RequestOptions<string, IntrackError, ResetPasswordRequestPayload>,
+  options?: RequestOptions<string, IntrackError, ResetPasswordRequestInput>,
 ) {
-  return useMutation<string, IntrackError, ResetPasswordRequestPayload>({
+  return useMutation<string, IntrackError, ResetPasswordRequestInput>({
     mutationKey: ['/auth/profile/reset-password'],
     mutationFn: handlers.resetPassword,
     ...options,

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Page from '@/layouts/container';
 import { useResetPassword } from '@/services/auth/hooks';
-import { ResetPasswordRequestPayload } from '@/services/auth/schema';
+import { ResetPasswordRequestInput } from '@/services/auth/schema';
 
 import classes from './reset.module.scss';
 
@@ -37,7 +37,7 @@ function ResetPassword() {
     },
   });
 
-  const onSubmit = (data: ResetPasswordRequestPayload) => {
+  const onSubmit = (data: ResetPasswordRequestInput) => {
     mutate(data);
   };
 

@@ -4,11 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { prettyError } from '@/common';
+import { useCheckCaptcha } from '@/hooks';
 import Page from '@/layouts/container';
 import { getCurrentUser } from '@/services/auth/handlers';
 import { useLogin } from '@/services/auth/hooks';
-import { LoginRequestPayload } from '@/services/auth/schema';
+import { LoginRequestInput } from '@/services/auth/schema';
 import { useApplicationStore } from '@/store';
+import { Render } from '@/utils';
 
 import classes from './login.module.scss';
 
@@ -22,6 +24,8 @@ function Login() {
   const navigate = useNavigate();
 
   const notify = useNotify();
+
+  const { captchaToken, captchaEnabled, captchaImage } = useCheckCaptcha();
 
   const { mutate, isPending } = useLogin({
     async onSuccess() {
@@ -42,10 +46,11 @@ function Login() {
     },
   });
 
-  const onSubmit = (data: LoginRequestPayload) => {
+  const onSubmit = (data: LoginRequestInput) => {
     mutate(data);
   };
 
+  console.log({ captchaToken, captchaEnabled, captchaImage });
   return (
     <Page className={classes.loginFormContainer}>
       <form className={classes.loginForm} onSubmit={handleSubmit(onSubmit)}>
@@ -82,6 +87,22 @@ function Login() {
               />
             )}
           />
+          <Render when={captchaEnabled}>
+            <div className={classes.loginCaptchaContainer}>
+              <div className={classes.loginCaptchaImage}>
+                <img
+                  src={captchaImage ?? ''}
+                  alt=""
+                  width="100%"
+                  height="100%"
+                  className="bg-cover bg-center"
+                />
+              </div>
+              <div className="flex h-full flex-1">
+                <Input />
+              </div>
+            </div>
+          </Render>
           <div className={classes.loginFormActions}>
             <Controller
               control={control}

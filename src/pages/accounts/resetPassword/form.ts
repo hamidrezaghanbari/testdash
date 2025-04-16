@@ -1,7 +1,7 @@
 import { createFormHandler } from '@/common';
-import { ResetPasswordRequestPayload, resetPasswordRequestSchema } from '@/services/auth/schema';
+import { ResetPasswordRequestInput, resetPasswordRequestSchema } from '@/services/auth/schema';
 
-const useResetPasswordForm = createFormHandler<ResetPasswordRequestPayload>(
+const useResetPasswordForm = createFormHandler<ResetPasswordRequestInput>(
   { userEmail: '', captchaCode: null, captchaToken: null },
   resetPasswordRequestSchema,
 );

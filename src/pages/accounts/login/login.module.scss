@@ -17,3 +17,11 @@
 .loginFormActions {
   @apply flex items-center justify-between;
 }
+
+.loginCaptchaContainer {
+  @apply flex h-10 w-full items-center gap-2 overflow-hidden;
+}
+
+.loginCaptchaImage {
+  @apply flex h-full overflow-hidden rounded-md bg-primary-300;
+}

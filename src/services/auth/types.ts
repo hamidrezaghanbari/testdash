@@ -90,10 +90,17 @@ interface UserResponse {
 
 type ResendPasswordParams = FetcherPath<'/otp/resend/:otpId'>;
 
+type CaptchaResponse = {
+  captchaToken: string | null;
+  captchaImage: string | null;
+  captchaEnabled: boolean;
+};
+
 export type {
   Product,
   LoginResponse,
   RegisterResponse,
+  CaptchaResponse,
   RegisterResponseResult,
   ResetPasswordResponse,
   LoginResponseResult,

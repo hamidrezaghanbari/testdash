@@ -47,10 +47,10 @@ const resetPasswordRequestSchema = z.object({
   captchaToken: z.string().nullable(),
 });
 
-type ResetPasswordRequestPayload = z.infer<typeof resetPasswordRequestSchema>;
-type RegisterRequestPayload = z.infer<typeof registerRequestSchema>;
-type ChangePasswordRequestPayload = z.infer<typeof changePasswordRequestSchema>;
-type LoginRequestPayload = z.infer<typeof loginRequestSchema>;
+type ResetPasswordRequestInput = z.infer<typeof resetPasswordRequestSchema>;
+type RegisterRequestInput = z.infer<typeof registerRequestSchema>;
+type ChangePasswordRequestInput = z.infer<typeof changePasswordRequestSchema>;
+type LoginRequestInput = z.infer<typeof loginRequestSchema>;
 
 export {
   changePasswordRequestSchema,
@@ -59,8 +59,8 @@ export {
   resetPasswordRequestSchema,
 };
 export type {
-  ChangePasswordRequestPayload,
-  RegisterRequestPayload,
-  ResetPasswordRequestPayload,
-  LoginRequestPayload,
+  ChangePasswordRequestInput,
+  RegisterRequestInput,
+  ResetPasswordRequestInput,
+  LoginRequestInput,
 };

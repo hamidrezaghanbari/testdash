@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import { prettyError } from '@/common';
 import Page from '@/layouts/container';
 import { useRegister } from '@/services/auth/hooks';
-import { RegisterRequestPayload } from '@/services/auth/schema';
+import { RegisterRequestInput } from '@/services/auth/schema';
 import { Render } from '@/utils';
 
 import classes from './register.module.scss';
@@ -38,7 +38,7 @@ function Register() {
     },
   });
 
-  const onSubmit = (data: RegisterRequestPayload) => {
+  const onSubmit = (data: RegisterRequestInput) => {
     mutate(data);
   };
 

@@ -3,4 +3,5 @@ export * from './root';
 export * from './missmatch';
 export * from './product';
 export * from './channel';
-export * from './campaignLoader';
+export * from './campaign';
+export * from './captcha';

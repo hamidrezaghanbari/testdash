@@ -1,7 +1,7 @@
 import { createFormHandler } from '@/common';
-import { LoginRequestPayload, loginRequestSchema } from '@/services/auth/schema';
+import { LoginRequestInput, loginRequestSchema } from '@/services/auth/schema';
 
-const useLoginForm = createFormHandler<LoginRequestPayload>(
+const useLoginForm = createFormHandler<LoginRequestInput>(
   { username: '', password: '', rememberMe: false, captchaCode: null, captchaToken: null },
   loginRequestSchema,
 );

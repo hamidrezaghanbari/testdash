@@ -1,7 +1,7 @@
 import { createFormHandler } from '@/common';
-import { RegisterRequestPayload, registerRequestSchema } from '@/services/auth/schema';
+import { RegisterRequestInput, registerRequestSchema } from '@/services/auth/schema';
 
-const useRegisterForm = createFormHandler<RegisterRequestPayload>(
+const useRegisterForm = createFormHandler<RegisterRequestInput>(
   { firstName: '', lastName: '', phone: '', inputPassword: '' },
   registerRequestSchema,
 );
