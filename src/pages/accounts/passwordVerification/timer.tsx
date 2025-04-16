@@ -1,8 +1,9 @@
 import { Button, Text, useNotify } from '@smartech/ui';
 import { useTranslation } from 'react-i18next';
 
+import { prettyError } from '@/common';
 import { useTimer } from '@/hooks';
-import { resendPassword } from '@/services/auth/resend';
+import { useResendPassword } from '@/services/auth/hooks';
 
 interface VerificationCodeTimerProps {
   otpId: string;
@@ -17,14 +18,14 @@ const VerificationCodeTimer = ({ otpId }: VerificationCodeTimerProps) => {
     immediate: true,
   });
 
-  const { mutate, isPending } = resendPassword.use({
+  const { mutate, isPending } = useResendPassword({
     onSuccess() {
       reset(true);
     },
     onError(error) {
       notify.open({
         title: 'Resend code failed',
-        description: error.errors.map((err) => err.message).join('\n'),
+        description: prettyError(error),
         type: 'error',
       });
     },

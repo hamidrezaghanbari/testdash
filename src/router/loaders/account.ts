@@ -1,6 +1,6 @@
 import { replace } from 'react-router-dom';
 
-import { getCurrentUser } from '@/services/auth';
+import { getCurrentUser } from '@/services/auth/handlers';
 
 const accountLoader = async () => {
   const user = await getCurrentUser();

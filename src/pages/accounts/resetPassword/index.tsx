@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import Page from '@/layouts/container';
-import { resetPassword } from '@/services/auth';
-import { ResetPasswordRequestPayload } from '@/services/auth/resetPassword/resetPassword.schema';
+import { useResetPassword } from '@/services/auth/hooks';
+import { ResetPasswordRequestPayload } from '@/services/auth/schema';
 
 import classes from './reset.module.scss';
 
@@ -20,11 +20,11 @@ function ResetPassword() {
 
   const notify = useNotify();
 
-  const { mutate, isPending } = resetPassword.use({
+  const { mutate, isPending } = useResetPassword({
     onSuccess(otpId, { userEmail }) {
       if (otpId) {
         notify.open({
-          title: 'Reset password',
+          title: 'Reset password Succeed',
           description: `A code was sent to ${userEmail}`,
           type: 'success',
         });

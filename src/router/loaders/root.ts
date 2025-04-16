@@ -1,8 +1,8 @@
 import { LoaderFunction, replace } from 'react-router-dom';
 
 import { CONSTANTS } from '@/constants';
-import { getCurrentUser } from '@/services/auth';
-import { UserResponseResult } from '@/services/auth/user/user.schema';
+import { getCurrentUser } from '@/services/auth/handlers';
+import { UserResponseResult } from '@/services/auth/types';
 import { useApplicationStore } from '@/store';
 
 import { getCurrentProduct } from './product';

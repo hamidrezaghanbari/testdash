@@ -1,6 +1,6 @@
 import { Params, redirect } from 'react-router-dom';
 
-import { Product, UserResponseResult } from '@/services/auth/user/user.schema';
+import { Product, UserResponseResult } from '@/services/auth/types';
 import { useApplicationStore } from '@/store';
 
 async function storeProduct(products: Product[] = [], productId?: number) {

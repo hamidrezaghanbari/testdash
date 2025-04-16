@@ -1,3 +1,37 @@
+import { FetcherPath } from '@/api/getPath';
+
+interface LoginResponseResult {
+  login: boolean;
+  userId: number;
+  presentation: string;
+  email: string;
+  emailVerified: boolean;
+  roles: Role[];
+  products: Product[];
+  lastProduct: number;
+  enableTwoFactorAuthentication: boolean;
+}
+
+interface LoginResponse {
+  result: LoginResponseResult;
+  status: string;
+}
+
+interface RegisterResponseResult {
+  email: string;
+  emailVerified: boolean;
+}
+
+interface RegisterResponse {
+  result: RegisterResponseResult;
+  status: string;
+}
+
+interface ResetPasswordResponse {
+  result: string;
+  status: string;
+}
+
 interface UserResponseResult {
   email: string;
   emailVerified: boolean;
@@ -23,7 +57,7 @@ interface Product {
   adsEnabled: boolean;
   apiCallEndpoints: string;
   dedicatedDomainUrl: string;
-  defaultPushIcon: string;
+  defaultPushIcon?: string;
   features: string[];
   id: number;
   isDemo: boolean;
@@ -33,12 +67,12 @@ interface Product {
   restAuthType: string;
   restrictionConstraint: string;
   thirdPartyOption: string;
-  throttlingEnabled: boolean;
+  throttlingEnabled?: boolean;
   webPushConfigs: WebPushConfigs;
 }
 
 interface WebPushConfigs {
-  managedByCustomer: boolean;
+  managedByCustomer?: boolean;
   setupCompleted: boolean;
   webPushKeyType: string;
 }
@@ -54,4 +88,16 @@ interface UserResponse {
   status: string;
 }
 
-export type { UserResponse, UserResponseResult, Product };
+type ResendPasswordParams = FetcherPath<'/otp/resend/:otpId'>;
+
+export type {
+  Product,
+  LoginResponse,
+  RegisterResponse,
+  RegisterResponseResult,
+  ResetPasswordResponse,
+  LoginResponseResult,
+  UserResponse,
+  UserResponseResult,
+  ResendPasswordParams,
+};

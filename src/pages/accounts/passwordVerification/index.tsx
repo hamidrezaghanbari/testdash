@@ -3,9 +3,10 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { prettyError } from '@/common';
 import { CONSTANTS } from '@/constants';
 import Page from '@/layouts/container';
-import { changePassword } from '@/services/auth';
+import { useChangePassword } from '@/services/auth/hooks';
 import { Render } from '@/utils';
 
 import classes from './verification.module.scss';
@@ -31,12 +32,12 @@ function PasswordVerification() {
 
   const notify = useNotify();
 
-  const { mutate, isPending } = changePassword.use({
+  const { mutate, isPending } = useChangePassword({
     onSuccess() {
       sessionStorage.removeItem(CONSTANTS.OTP_TIME);
 
       notify.open({
-        title: 'Change password',
+        title: 'Change password Succeed',
         description: 'Password has been changed successfully',
         type: 'success',
       });
@@ -46,7 +47,7 @@ function PasswordVerification() {
     onError(error) {
       notify.open({
         title: 'Change password failed',
-        description: error.errors.map((err) => err.message).join('\n'),
+        description: prettyError(error),
         type: 'error',
       });
     },

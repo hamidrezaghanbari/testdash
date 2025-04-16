@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useDocumentTitle } from '@/hooks';
-import { logout } from '@/services/auth/logout';
+import { useLogout } from '@/services/auth/hooks';
 import { useApplicationStore } from '@/store';
 
 import classes from './header.module.scss';
@@ -13,7 +13,7 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  const { mutate } = logout.use({
+  const { mutate } = useLogout({
     onSuccess() {
       const { clear } = useApplicationStore.getState();
 

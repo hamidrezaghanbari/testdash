@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { createFormHandler } from '@/common';
 import i18n from '@/i18n';
-import { changePasswordRequestSchema } from '@/services/auth/changePassword/changePassword.schema';
+import { changePasswordRequestSchema } from '@/services/auth/schema';
 
 const passwordVerificationSchema = changePasswordRequestSchema
   .pick({ otpCode: true, newPassword: true })

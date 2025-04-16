@@ -3,9 +3,12 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 
+import { prettyError } from '@/common';
 import Page from '@/layouts/container';
-import { login } from '@/services/auth';
-import { LoginRequestPayload } from '@/services/auth/login/login.schema';
+import { getCurrentUser } from '@/services/auth/handlers';
+import { useLogin } from '@/services/auth/hooks';
+import { LoginRequestPayload } from '@/services/auth/schema';
+import { useApplicationStore } from '@/store';
 
 import classes from './login.module.scss';
 
@@ -20,17 +23,21 @@ function Login() {
 
   const notify = useNotify();
 
-  const { mutate, isPending } = login.use({
+  const { mutate, isPending } = useLogin({
     async onSuccess() {
-      login.onSuccess(() => {
+      const user = await getCurrentUser();
+      if (user && user.login) {
+        const { updateUser } = useApplicationStore.getState();
+
+        updateUser(user);
         navigate('/', { viewTransition: true });
-      });
+      }
     },
     onError(error) {
       notify.open({
-        type: 'error',
         title: 'An unexpected error was occured',
-        description: error.errors.map((err) => err.message).join('\n'),
+        description: prettyError(error),
+        type: 'error',
       });
     },
   });

@@ -1,7 +1,7 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 import { Loading } from '@/components/atoms';
-import { NotFound, Unauthorized } from '@/pages/fallbacks';
+import { NotFound, Unauthorized } from '@/utils';
 
 import { ErrorBoundary } from './error';
 import { Account, Root, RootRedirection } from './handlers';

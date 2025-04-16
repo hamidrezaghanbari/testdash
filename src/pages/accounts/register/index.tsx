@@ -1,29 +1,61 @@
-import { Button, Input, InputPassword, Text } from '@smartech/ui';
+import { Button, Icon, Input, InputPassword, Text, useNotify } from '@smartech/ui';
+import { useMemo } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 
+import { prettyError } from '@/common';
 import Page from '@/layouts/container';
+import { useRegister } from '@/services/auth/hooks';
+import { RegisterRequestPayload } from '@/services/auth/schema';
+import { Render } from '@/utils';
 
 import classes from './register.module.scss';
 
-import { type RegisterForm, useRegisterForm } from './form';
+import { useRegisterForm } from './form';
 
 function Register() {
   const { t } = useTranslation();
 
   const { handleSubmit, formState, control } = useRegisterForm();
 
-  const onSubmit = (data: RegisterForm) => {
-    // api call
-    console.log(data);
+  const [searchParams] = useSearchParams();
+
+  const notify = useNotify();
+
+  const token = useMemo(() => searchParams.get('token'), [searchParams]);
+
+  const { mutate, isPending } = useRegister(token, {
+    onSuccess() {
+      notify.open({
+        title: 'Register succeed',
+        description: `User registered successfully`,
+        type: 'success',
+      });
+    },
+    onError(error) {
+      notify.open({ title: 'Register failed', description: prettyError(error), type: 'error' });
+    },
+  });
+
+  const onSubmit = (data: RegisterRequestPayload) => {
+    mutate(data);
   };
 
   return (
     <Page className={classes.registerFormContainer}>
       <form className={classes.registerForm} onSubmit={handleSubmit(onSubmit)}>
-        <Text size="2xl" variant="bold">
-          {t('register.signup')}
-        </Text>
+        <div className="flex flex-col gap-2">
+          <Text size="2xl" variant="bold">
+            {t('register.signup')}
+          </Text>
+          <Render when={!token}>
+            <div className="flex items-center gap-2 rounded-md border border-error-300 bg-error-100 p-2">
+              <Icon name="alert-triangle" className="text-error-600" />
+              <Text className="text-sm text-error-600">Member invitee token is not found.</Text>
+            </div>
+          </Render>
+        </div>
         <div className={classes.registerFormInputs}>
           <Controller
             control={control}
@@ -31,6 +63,7 @@ function Register() {
             render={({ field, fieldState: { invalid, error } }) => (
               <Input
                 required
+                disabled={!token}
                 label={t('register.firstName')}
                 error={invalid}
                 hint={error?.message}
@@ -44,6 +77,7 @@ function Register() {
             render={({ field, fieldState: { invalid, error } }) => (
               <Input
                 required
+                disabled={!token}
                 label={t('register.lastName')}
                 error={invalid}
                 hint={error?.message}
@@ -53,10 +87,11 @@ function Register() {
           />
           <Controller
             control={control}
-            name="phoneNumber"
+            name="phone"
             render={({ field, fieldState: { invalid, error } }) => (
               <Input
                 required
+                disabled={!token}
                 label={t('register.phoneNumber')}
                 autoComplete="mobile tel"
                 placeholder="989121000000"
@@ -68,10 +103,11 @@ function Register() {
           />
           <Controller
             control={control}
-            name="password"
+            name="inputPassword"
             render={({ field, fieldState: { invalid, error } }) => (
               <InputPassword
                 required
+                disabled={!token}
                 autoComplete="new-password"
                 label={t('register.password')}
                 error={invalid}
@@ -82,7 +118,13 @@ function Register() {
           />
         </div>
 
-        <Button variant="primary" size="xl" className="w-full" spinning={formState.isSubmitting}>
+        <Button
+          variant="primary"
+          size="xl"
+          className="w-full"
+          disabled={!token}
+          spinning={formState.isSubmitting || isPending}
+        >
           {t('register.signup')}
         </Button>
       </form>
