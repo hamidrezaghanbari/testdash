@@ -37,8 +37,8 @@ function PasswordVerification() {
       sessionStorage.removeItem(CONSTANTS.OTP_TIME);
 
       notify.open({
-        title: 'Change password Succeed',
-        description: 'Password has been changed successfully',
+        title: t('messages.passwordVerification.title'),
+        description: t('messages.passwordVerification.description'),
         type: 'success',
       });
 
@@ -46,7 +46,7 @@ function PasswordVerification() {
     },
     onError(error) {
       notify.open({
-        title: 'Change password failed',
+        title: t('messages.passwordVerification.failure'),
         description: prettyError(error),
         type: 'error',
       });

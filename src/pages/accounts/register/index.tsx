@@ -28,13 +28,17 @@ function Register() {
   const { mutate, isPending } = useRegister(token, {
     onSuccess() {
       notify.open({
-        title: 'Register succeed',
-        description: `User registered successfully`,
+        title: t('messages.register.title'),
+        description: t('messages.register.description'),
         type: 'success',
       });
     },
     onError(error) {
-      notify.open({ title: 'Register failed', description: prettyError(error), type: 'error' });
+      notify.open({
+        title: t('messages.register.failure'),
+        description: prettyError(error),
+        type: 'error',
+      });
     },
   });
 
@@ -52,7 +56,7 @@ function Register() {
           <Render when={!token}>
             <div className="flex items-center gap-2 rounded-md border border-error-300 bg-error-100 p-2">
               <Icon name="alert-triangle" className="text-error-600" />
-              <Text className="text-sm text-error-600">Member invitee token is not found.</Text>
+              <Text className="text-sm text-error-600">{t('register.notFoundToken')}</Text>
             </div>
           </Render>
         </div>

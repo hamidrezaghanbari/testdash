@@ -3,10 +3,10 @@ import { z } from 'zod';
 import { CONSTANTS } from '@/constants';
 import i18n from '@/i18n';
 
-function captchaCodeRefine(arg: string | null) {
+function captchaCodeRefine(arg: string | undefined) {
   const captchaEnabled = sessionStorage.getItem(CONSTANTS.CAPTCHA_ENABLED);
 
-  return arg && captchaEnabled === 'true';
+  return captchaEnabled === 'true' ? Boolean(arg) : true;
 }
 
 const changePasswordRequestSchema = z.object({
@@ -32,8 +32,8 @@ const loginRequestSchema = z.object({
   captchaToken: z.string().nullish(),
   captchaCode: z
     .string()
-    .nullable()
-    .refine(captchaCodeRefine, { message: 'Captcha field is required.' }),
+    .optional()
+    .refine(captchaCodeRefine, { message: i18n.t('login.requiredCaptcha') }),
 });
 
 const registerRequestSchema = z.object({
@@ -53,8 +53,8 @@ const resetPasswordRequestSchema = z.object({
     .string()
     .nonempty({ message: i18n.t('resetPassword.requiredEmail') })
     .email({ message: i18n.t('resetPassword.validEmail') }),
-  captchaCode: z.string().optional(),
-  captchaToken: z.string().optional(),
+  captchaCode: z.string().nullish(),
+  captchaToken: z.string().nullish(),
 });
 
 type ResetPasswordRequestInput = z.infer<typeof resetPasswordRequestSchema>;

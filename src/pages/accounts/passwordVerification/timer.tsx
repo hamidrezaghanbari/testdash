@@ -24,7 +24,7 @@ const VerificationCodeTimer = ({ otpId }: VerificationCodeTimerProps) => {
     },
     onError(error) {
       notify.open({
-        title: 'Resend code failed',
+        title: t('messages.resendCodeFailure'),
         description: prettyError(error),
         type: 'error',
       });

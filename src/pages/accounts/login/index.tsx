@@ -39,7 +39,7 @@ function Login() {
     },
     onError(error) {
       notify.open({
-        title: 'An unexpected error was occured',
+        title: t('messages.unexpected'),
         description: prettyError(error),
         type: 'error',
       });
@@ -47,6 +47,14 @@ function Login() {
   });
 
   const onSubmit = (data: Omit<LoginRequestInput, 'captchaToken'>) => {
+    if (captchaEnabled && !captchaToken) {
+      return notify.open({
+        type: 'error',
+        title: t('messages.captcha.title'),
+        description: t('messages.captcha.description'),
+      });
+    }
+
     mutate(trimObject({ ...data, captchaToken }));
   };
 
@@ -107,8 +115,7 @@ function Login() {
                       required={captchaEnabled}
                       autoComplete="off"
                       error={invalid}
-                      value={field.value ?? ''}
-                      onChange={field.onChange}
+                      {...field}
                     />
                   )}
                 />

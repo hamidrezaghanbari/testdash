@@ -8,6 +8,7 @@
     "remember": "Remember me",
     "hintAccount": "Don't have an account?",
     "requiredEmail": "Email field is required.",
+    "requiredCaptcha": "Captcha field is required",
     "validEmail": "Please enter a valid email address.",
     "requiredPassword": "Password field is required.",
     "passwordMinLength": "Password must be at least 8 characters long."
@@ -26,6 +27,7 @@
     "requiredPhoneNumber": "Phone number field is required.",
     "requiredPassword": "Password field is required.",
     "invalidPhoneNumber": "Please enter a valid phone number.",
+    "notFoundToken": "Member invitee token is not found.",
     "firstName": "First name",
     "lastName": "Last name",
     "phoneNumber": "Phone number",
@@ -43,5 +45,27 @@
     "confirmedPasswordLabel": "Confirm password",
     "resend": "Resend",
     "codeSentTo": "The code was sent to"
+  },
+  "messages": {
+    "unexpected": "An unexpected error was occured",
+    "resendCodeFailure": "Resend Code Failed",
+    "captcha": {
+      "title": "Captcha Token Missing",
+      "description": "No captcha token was provided."
+    },
+    "passwordVerification": {
+      "title": "Password Change Successful",
+      "description": "Your password has been changed successfully.",
+      "failure": "Password Change Failed"
+    },
+    "register": {
+      "title": "Registration Successful",
+      "description": "You have registered successfully.",
+      "failure": "Registration Failed"
+    },
+    "resetPassword": {
+      "title": "Password Reset Successful",
+      "description": "A code was sent to ((userEmail))"
+    }
   }
 }

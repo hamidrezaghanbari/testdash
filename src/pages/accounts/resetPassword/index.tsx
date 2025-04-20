@@ -24,8 +24,8 @@ function ResetPassword() {
     onSuccess(otpId, { userEmail }) {
       if (otpId) {
         notify.open({
-          title: 'Reset password Succeed',
-          description: `A code was sent to ${userEmail}`,
+          title: t('messages.resetPassword.title'),
+          description: t('messages.resetPassword.description', { userEmail }),
           type: 'success',
         });
 
