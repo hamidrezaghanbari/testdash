@@ -1,6 +1,7 @@
 import { fetcher, getFile } from '@/api/fetcher';
 import { getPath } from '@/api/getPath';
 import { setSearchParams } from '@/api/setSearchParams';
+import { CONSTANTS } from '@/constants';
 
 import {
   ChangePasswordRequestInput,
@@ -97,7 +98,9 @@ export const getCaptcha = async (): Promise<CaptchaResponse> => {
   const { data, headers } = await getFile('/auth/authentication/captcha', { method: 'POST' });
 
   const captchaEnabled = headers.get('captcha-enabled') === 'true';
-  const captchaToken = headers.get('captcha-token') || null;
+  const captchaToken = headers.get('captcha-token');
+
+  sessionStorage.setItem(CONSTANTS.CAPTCHA_ENABLED, JSON.stringify(captchaEnabled));
 
   return { captchaEnabled, captchaToken, captchaImage: data };
 };

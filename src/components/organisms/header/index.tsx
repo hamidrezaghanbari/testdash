@@ -1,31 +1,25 @@
 import { Button } from '@smartech/ui';
 import { memo } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { useDocumentTitle } from '@/hooks';
+import { useDocumentTitle, useTriggerAfterLogout } from '@/hooks';
 import { useLogout } from '@/services/auth/hooks';
-import { useApplicationStore } from '@/store';
 
 import classes from './header.module.scss';
 
 const Header = () => {
   useDocumentTitle();
 
-  const navigate = useNavigate();
+  const afterLogout = useTriggerAfterLogout();
 
-  const { mutate } = useLogout({
+  const { mutate, isPending } = useLogout({
     onSuccess() {
-      const { clear } = useApplicationStore.getState();
-
-      clear();
-
-      navigate('/account/login', { viewTransition: true });
+      afterLogout();
     },
   });
 
   return (
     <header className={classes.mainHeader}>
-      <Button variant="primary" onClick={() => mutate()}>
+      <Button variant="primary" onClick={() => mutate()} spinning={isPending}>
         Logout
       </Button>
     </header>

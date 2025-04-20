@@ -25,3 +25,7 @@
 .loginCaptchaImage {
   @apply flex h-full overflow-hidden rounded-md bg-primary-300;
 }
+
+.loginCaptchaCode {
+  @apply pointer-events-none bg-cover bg-center;
+}

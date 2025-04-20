@@ -7,3 +7,4 @@ export * from './useChannel';
 export * from './useCurrentProduct';
 export * from './useCampaignTab';
 export * from './useCheckCaptcha';
+export * from './useAfterLogout';

@@ -13,6 +13,7 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      '@public': path.resolve(__dirname, 'public'),
     },
   },
   envPrefix: 'INTRACK_',

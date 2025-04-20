@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import { prettyError } from '@/common';
+import { prettyError, trimObject } from '@/common';
 import { useCheckCaptcha } from '@/hooks';
 import Page from '@/layouts/container';
 import { getCurrentUser } from '@/services/auth/handlers';
@@ -46,11 +46,10 @@ function Login() {
     },
   });
 
-  const onSubmit = (data: LoginRequestInput) => {
-    mutate(data);
+  const onSubmit = (data: Omit<LoginRequestInput, 'captchaToken'>) => {
+    mutate(trimObject({ ...data, captchaToken }));
   };
 
-  console.log({ captchaToken, captchaEnabled, captchaImage });
   return (
     <Page className={classes.loginFormContainer}>
       <form className={classes.loginForm} onSubmit={handleSubmit(onSubmit)}>
@@ -87,19 +86,32 @@ function Login() {
               />
             )}
           />
-          <Render when={captchaEnabled}>
+          <Render when={captchaEnabled && captchaImage}>
             <div className={classes.loginCaptchaContainer}>
               <div className={classes.loginCaptchaImage}>
                 <img
                   src={captchaImage ?? ''}
-                  alt=""
+                  alt="captcha code"
                   width="100%"
                   height="100%"
-                  className="bg-cover bg-center"
+                  className={classes.loginCaptchaCode}
                 />
               </div>
               <div className="flex h-full flex-1">
-                <Input />
+                <Controller
+                  control={control}
+                  name="captchaCode"
+                  render={({ field, fieldState: { invalid } }) => (
+                    <Input
+                      placeholder="Enter captcha code"
+                      required={captchaEnabled}
+                      autoComplete="off"
+                      error={invalid}
+                      value={field.value ?? ''}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
               </div>
             </div>
           </Render>
