@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import { create } from 'zustand/react';
 
 import { CONSTANTS } from '@/constants';
-import { Product, UserResponseResult } from '@/services/auth/user/user.schema';
+import { Product, UserResponseResult } from '@/services/auth/types';
 
 type ApplicationState = {
   user: UserResponseResult | null;

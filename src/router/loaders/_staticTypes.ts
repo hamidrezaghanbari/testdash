@@ -14,4 +14,8 @@ type CampaignTabData = {
   tab: 'list' | 'overview' | 'archive';
 };
 
-export type { Channel, CampaignTabData };
+type UsersTabData = {
+  tab: 'overview' | 'analyze' | 'search';
+};
+
+export type { Channel, UsersTabData, CampaignTabData };

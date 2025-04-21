@@ -1,7 +1,7 @@
 import { redirect, useRouteLoaderData } from 'react-router-dom';
 
 import { CONSTANTS } from '@/constants';
-import { UserResponseResult } from '@/services/auth/user/user.schema';
+import { UserResponseResult } from '@/services/auth/types';
 import { ApplicationState } from '@/store';
 
 /**

@@ -1,9 +1,8 @@
 import { Button, Tabs } from '@smartech/ui';
 import { lazy } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import { Card, Loading } from '@/components';
-import { useCampaignTab } from '@/hooks';
+import { useCampaignTab, useTabQuery } from '@/hooks';
 import Page from '@/layouts/container';
 
 const List = lazy(() => import('@/components/templates/campaign/list'));
@@ -13,15 +12,7 @@ const Overview = lazy(() => import('@/components/templates/campaign/overview'));
 function Campaigns() {
   const campaign = useCampaignTab('ONSITE');
 
-  const [, setSearchParams] = useSearchParams();
-
-  const onTabChange = (tab: string) => {
-    const params = new URLSearchParams();
-
-    params.set('tab', tab);
-
-    setSearchParams(params, { replace: true, viewTransition: true });
-  };
+  const { handler } = useTabQuery();
 
   return (
     <Page
@@ -33,7 +24,7 @@ function Campaigns() {
       }
     >
       <Card layout="fill">
-        <Tabs fallback={<Loading />} activeTabId={campaign.tab} onTabChange={onTabChange}>
+        <Tabs fallback={<Loading />} activeTabId={campaign.tab} onTabChange={handler}>
           <Tabs.Item id="list" title="List">
             <List />
           </Tabs.Item>

@@ -1,9 +1,11 @@
 import { Suspense, memo } from 'react';
 
-import { Header, Sidebar } from '@/components';
 import { Loading } from '@/components/atoms';
 
 import classes from './root.module.scss';
+
+import { Header } from '../header';
+import { Sidebar } from '../sidebar';
 
 interface RootLayoutProps {
   children: React.ReactNode;

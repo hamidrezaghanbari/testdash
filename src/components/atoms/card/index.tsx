@@ -13,6 +13,7 @@ interface CardProps {
   layout?: 'fit' | 'fill' | 'stretch';
   loading?: boolean;
   className?: string;
+  noStyle?: boolean;
 }
 
 type LoadingCardProps = Pick<CardProps, 'children' | 'loading'>;
@@ -36,6 +37,7 @@ const Card: React.FC<CardProps> = ({
   headerElements = null,
   layout = 'fit',
   className,
+  noStyle,
 }) => {
   const element = <LoadingCard loading={loading}>{children}</LoadingCard>;
 
@@ -43,6 +45,7 @@ const Card: React.FC<CardProps> = ({
     <div
       className={cn('card', className, prefix(layout, 'layout'), {
         titled: !!(title || headerElements),
+        noStyle,
       })}
     >
       <Render when={title || headerElements} fallback={element}>

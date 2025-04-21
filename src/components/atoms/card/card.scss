@@ -5,6 +5,11 @@
     @apply flex-col p-0;
   }
 
+  &.noStyle {
+    @apply bg-base-transparent p-0;
+    box-shadow: none;
+  }
+
   &.layout-fit {
     @apply size-fit;
   }

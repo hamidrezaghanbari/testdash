@@ -8,3 +8,5 @@ export * from './useCurrentProduct';
 export * from './useCampaignTab';
 export * from './useCheckCaptcha';
 export * from './useAfterLogout';
+export * from './useUsersTab';
+export * from './useTabQuery';

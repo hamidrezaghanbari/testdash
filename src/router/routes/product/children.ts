@@ -2,6 +2,7 @@ import { RouteObject } from 'react-router-dom';
 
 import { ProductRedirection } from '@/router/handlers';
 import { lazyLoad } from '@/router/helpers';
+import { usersLoader } from '@/router/loaders/users';
 
 import { analyticsChildren } from './analytics';
 import { channelsChildren } from './channels';
@@ -21,7 +22,9 @@ const productChildren: RouteObject[] = [
         lazy: lazyLoad('dashboard'),
       },
       {
+        id: 'users',
         path: 'users',
+        loader: usersLoader,
         lazy: lazyLoad('user'),
       },
       {
