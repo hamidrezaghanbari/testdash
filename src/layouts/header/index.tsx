@@ -1,33 +1,21 @@
-import { Button, Popover } from '@smartech/ui';
+import { Popover } from '@smartech/ui';
 import { memo, useState } from 'react';
 
-import {
-  useCurrentProduct,
-  useCurrentUser,
-  useDocumentTitle,
-  useTriggerAfterLogout,
-} from '@/hooks';
-import { useLogout } from '@/services/auth/hooks';
+import { useCurrentProduct, useCurrentUser, useDocumentTitle } from '@/hooks';
 import { Render } from '@/utils';
 
 import classes from './header.module.scss';
 
-// TODO: popover z-index in package
+import { HeaderProductContent, HeaderProductTitle } from './productOverlay';
+import { HeaderUserContent, HeaderUserTitle } from './userOverlay';
 
 const Header = () => {
   useDocumentTitle();
 
-  const [isOpenProduct, setIsOpenProduct] = useState(false);
+  const [isOpenProductPopover, setIsOpenProductPopover] = useState(false);
+  const [isOpenUserPopover, setIsOpenUserPopover] = useState(false);
 
-  const afterLogout = useTriggerAfterLogout();
-
-  const { mutate, isPending } = useLogout({
-    onSuccess() {
-      afterLogout();
-    },
-  });
-
-  const { presentation } = useCurrentUser();
+  const { presentation, products } = useCurrentUser();
 
   const product = useCurrentProduct();
 
@@ -36,26 +24,24 @@ const Header = () => {
       <Render when={product}>
         {({ name }) => (
           <Popover
-            open={isOpenProduct}
-            onOpenChange={setIsOpenProduct}
-            title={
-              <Button variant="link" leading="icon" icons={{ end: 'chevron-down' }}>
-                {name}
-              </Button>
-            }
+            open={isOpenProductPopover}
+            onOpenChange={setIsOpenProductPopover}
+            title={(open) => <HeaderProductTitle name={name} open={open} />}
           >
-            <div className="min-w-[200px] bg-base-white p-4">
-              <span>gholi</span>
-            </div>
+            <HeaderProductContent
+              products={products}
+              onClose={() => setIsOpenProductPopover(false)}
+            />
           </Popover>
         )}
       </Render>
-      <Button variant="link" leading="icon" icons={{ end: 'chevron-down' }}>
-        {presentation}
-      </Button>
-      <Button variant="primary" onClick={() => mutate()} spinning={isPending}>
-        Logout
-      </Button>
+      <Popover
+        open={isOpenUserPopover}
+        onOpenChange={setIsOpenUserPopover}
+        title={(open) => <HeaderUserTitle presentation={presentation} open={open} />}
+      >
+        <HeaderUserContent onClose={() => setIsOpenUserPopover(false)} />
+      </Popover>
     </header>
   );
 };

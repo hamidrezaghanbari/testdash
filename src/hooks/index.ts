@@ -10,3 +10,4 @@ export * from './useCheckCaptcha';
 export * from './useAfterLogout';
 export * from './useUsersTab';
 export * from './useTabQuery';
+export * from './useSetProductParams';
