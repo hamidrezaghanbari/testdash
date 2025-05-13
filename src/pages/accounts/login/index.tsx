@@ -1,12 +1,21 @@
-import { Button, Checkbox, Input, InputPassword, Text, useNotify } from '@smartech/ui';
+import {
+  Button,
+  Checkbox,
+  Icon,
+  IconButton,
+  Input,
+  InputPassword,
+  Text,
+  useNotify,
+} from '@smartech/ui';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useRevalidator } from 'react-router-dom';
 
 import { prettyError, trimObject } from '@/common';
 import { useCheckCaptcha } from '@/hooks';
 import Page from '@/layouts/container';
-import { getCurrentUser } from '@/services/auth/handlers';
+import { getCaptcha, getCurrentUser } from '@/services/auth/handlers';
 import { useLogin } from '@/services/auth/hooks';
 import { LoginRequestInput } from '@/services/auth/schema';
 import { useApplicationStore } from '@/store';
@@ -58,6 +67,8 @@ function Login() {
     mutate(trimObject({ ...data, captchaToken }));
   };
 
+  const recalidator = useRevalidator();
+
   return (
     <Page className={classes.loginFormContainer}>
       <form className={classes.loginForm} onSubmit={handleSubmit(onSubmit)}>
@@ -103,6 +114,15 @@ function Login() {
                   width="100%"
                   height="100%"
                   className={classes.loginCaptchaCode}
+                />
+                <IconButton
+                  size="md"
+                  variant="tertiary"
+                  onClick={async () => {
+                    recalidator.revalidate();
+                  }}
+                  icon="refresh-cw-01"
+                  className="bg-base-white"
                 />
               </div>
               <div className="flex h-full flex-1">

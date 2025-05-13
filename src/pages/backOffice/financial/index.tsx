@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import { Card, Loading } from '@/components';
 import Page from '@/layouts/container';
 
+import ProjectContracts from './projectContracts';
+
 function Financial() {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -24,7 +26,7 @@ function Financial() {
           onTabChange={onTabChange}
         >
           <Tabs.Item id="contracts" title="Project Contracts">
-            <h1>Project Contracts</h1>
+            <ProjectContracts />
           </Tabs.Item>
           <Tabs.Item id="invoices" title="Proforma Invoices">
             <h1>Proforma Invoices</h1>

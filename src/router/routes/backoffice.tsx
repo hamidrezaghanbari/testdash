@@ -6,7 +6,22 @@ const backOfficeChildren: RouteObject[] = [
   { index: true, element: <Navigate to="financial" replace /> },
   {
     path: 'financial',
-    lazy: lazyLoad('backOffice/financial'),
+    children: [
+      {
+        index: true,
+        lazy: lazyLoad('backOffice/financial'),
+      },
+      {
+        
+        index: true,
+        path: 'invoice-list/:id',
+        lazy: lazyLoad('backOffice/financial/invoice-list'),
+      },
+      {
+        path: 'invoice-list/:id/invoice-preview/:recordId',
+        lazy: lazyLoad('backOffice/financial/invoice-list-preview'),
+      },
+    ],
   },
   { path: 'role', lazy: lazyLoad('backOffice/role') },
   { path: 'users', lazy: lazyLoad('backOffice/users') },

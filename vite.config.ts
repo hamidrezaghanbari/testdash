@@ -23,7 +23,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api/web': { changeOrigin: true, target: 'https://stage.intrack.ir' },
+      '/api/web': { changeOrigin: true, target: 'https://dash.intrack.ir' },
     },
   },
 });

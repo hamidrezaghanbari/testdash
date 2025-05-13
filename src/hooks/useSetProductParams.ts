@@ -2,6 +2,8 @@ import { startTransition } from 'react';
 import { generatePath, useMatch, useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
 
+import { fetcher } from '@/api/fetcher';
+import { getPath } from '@/api/getPath';
 import { useApplicationStore } from '@/store';
 
 import { useCurrentUser } from './useCurrentUser';
@@ -21,21 +23,43 @@ const useSetProductParams = () => {
 
   const { products } = useCurrentUser();
 
-  const setProduct = (productId: number) => {
-    if (!match || typeof productId === 'undefined') return;
-
-    const { success, data } = restSchema.safeParse(match.params);
-
-    if (!success) return;
-
-    const pattern = match.pattern.path.replace('*', data['*']);
+  const setProduct = async (productId: number) => {
+    if (typeof productId === 'undefined') return;
 
     const currentProduct = products.find((product) => product.id === productId);
 
-    if (currentProduct) updateProduct(currentProduct);
+    if (currentProduct) {
+      updateProduct(currentProduct);
+
+      try {
+        await fetcher(getPath('/auth/profile/updateLastProductSubmit', { id: String(productId) }), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'product-id': String(productId),
+          },
+          body: JSON.stringify({ lastProduct: productId }),
+        });
+
+        await fetcher('/auth/authentication/currentUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      } catch (error) {
+        console.error('Failed to update last product:', error);
+      }
+    }
 
     startTransition(() => {
-      navigate(generatePath(pattern, { productId }));
+      if (match) {
+        const { success, data } = restSchema.safeParse(match.params);
+
+        if (!success) return;
+        const pattern = match.pattern.path.replace('*', data['*']);
+        navigate(generatePath(pattern, { productId }));
+      }
     });
   };
 

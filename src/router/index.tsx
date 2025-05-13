@@ -1,10 +1,12 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 
 import { Loading } from '@/components/atoms';
+import { FullScreenLayout } from '@/layouts/FullScreenLayout';
 import { NotFound, Unauthorized } from '@/utils';
 
 import { ErrorBoundary } from './error';
 import { Account, Root, RootRedirection } from './handlers';
+import { lazyLoad } from './helpers';
 import { accountLoader, rootLoader } from './loaders';
 import { accountChildren, backOfficeChildren, productChildren } from './routes';
 
@@ -51,6 +53,21 @@ const router = createBrowserRouter([
     HydrateFallback: Loading,
     hasErrorBoundary: true,
     children: accountChildren,
+  },
+  {
+    path: '/fullscreen',
+    element: (
+      <FullScreenLayout>
+        <Outlet />
+      </FullScreenLayout>
+    ),
+    children: [
+      {
+        path: 'invoice-preview/:id',
+        lazy: lazyLoad('backOffice/financial/invoice-list-preview'),
+      },
+      // Add more full-screen routes here
+    ],
   },
   {
     path: '*',

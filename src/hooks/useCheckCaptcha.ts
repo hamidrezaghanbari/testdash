@@ -4,8 +4,8 @@ import { CaptchaResponse } from '@/services/auth/types';
 
 const defaultCaptcha = {
   captchaEnabled: false,
-  captchaToken: undefined,
-  captchaImage: undefined,
+  captchaToken: null,
+  captchaImage: null,
 } satisfies CaptchaResponse;
 
 const useCheckCaptcha = () => {

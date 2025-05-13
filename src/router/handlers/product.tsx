@@ -7,7 +7,7 @@ const ProductRedirection = () => {
 
   if (!product) return <Navigate to="/notFound" state="NO_PRODUCT" replace />;
 
-  return <Navigate to={product.id} replace />;
+  return <Navigate to={product.id.toString()} replace />;
 };
 
 export { ProductRedirection };

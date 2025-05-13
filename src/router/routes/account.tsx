@@ -5,7 +5,12 @@ import { captchaLoader } from '../loaders';
 
 const accountChildren: RouteObject[] = [
   { index: true, element: <Navigate to="login" replace /> },
-  { id: 'login', path: 'login', lazy: lazyLoad('accounts/login'), loader: captchaLoader },
+  {
+    id: 'login',
+    path: 'login',
+    lazy: lazyLoad('accounts/login'),
+    loader: captchaLoader,
+  },
   {
     path: 'register',
     lazy: lazyLoad('accounts/register'),

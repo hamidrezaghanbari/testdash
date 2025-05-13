@@ -23,7 +23,7 @@
 }
 
 .loginCaptchaImage {
-  @apply flex h-full overflow-hidden rounded-md bg-primary-300;
+  @apply flex h-full overflow-hidden rounded-md border border-gray-200;
 }
 
 .loginCaptchaCode {
