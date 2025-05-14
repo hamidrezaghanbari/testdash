@@ -1,6 +1,6 @@
 {
-  "name": "intrack",
-  "version": "0.26.2",
+  "name": "web-analytics",
+  "version": "0.0.1",
   "type": "module",
   "engines": {
     "node": ">=20",
