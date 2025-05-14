@@ -17,7 +17,7 @@
     "typecheck": "tsc -b"
   },
   "keywords": [],
-  "author": "Intrack",
+  "author": "Web Analytics",
   "license": "ISC",
   "dependencies": {
     "@hookform/resolvers": "4.1.1",

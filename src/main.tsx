@@ -5,4 +5,4 @@ import 'nprogress/nprogress.css';
 
 import App from './App.tsx';
 
-createRoot(document.getElementById('__intrack_root')!).render(<App />);
+createRoot(document.getElementById('__webanalytics_root')!).render(<App />);
