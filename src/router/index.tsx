@@ -5,10 +5,10 @@ import { FullScreenLayout } from '@/layouts/FullScreenLayout';
 import { NotFound, Unauthorized } from '@/utils';
 
 import { ErrorBoundary } from './error';
-import { Account, Root, RootRedirection } from './handlers';
+import { Account, Events, Root, RootRedirection } from './handlers';
 import { lazyLoad } from './helpers';
 import { accountLoader, rootLoader } from './loaders';
-import { accountChildren, backOfficeChildren, productChildren } from './routes';
+import { accountChildren, backOfficeChildren, eventsChildren, productChildren } from './routes';
 
 const router = createBrowserRouter([
   {
@@ -53,6 +53,16 @@ const router = createBrowserRouter([
     HydrateFallback: Loading,
     hasErrorBoundary: true,
     children: accountChildren,
+  },
+  {
+    path: '/events',
+    id: 'events',
+    Component: Events,
+    loader: accountLoader,
+    ErrorBoundary,
+    HydrateFallback: Loading,
+    hasErrorBoundary: true,
+    children: eventsChildren,
   },
   {
     path: '/fullscreen',
