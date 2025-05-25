@@ -42,7 +42,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-  BASE: 'http://87.247.186.146:8001',
+  BASE: 'https://loadtest.adtrace.ir',
   CREDENTIALS: 'include',
   ENCODE_PATH: undefined,
   HEADERS: undefined,
