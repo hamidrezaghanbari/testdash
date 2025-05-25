@@ -7,7 +7,7 @@ import { NotFound, Unauthorized } from '@/utils';
 import { ErrorBoundary } from './error';
 import { Account, Campaigns, Events, Products, Root, RootRedirection, Segment } from './handlers';
 import { lazyLoad } from './helpers';
-import { accountLoader, rootLoader } from './loaders';
+import { accountLoader, domainGuardLoader, protectedRouteLoader, rootLoader } from './loaders';
 import {
   accountChildren,
   backOfficeChildren,
@@ -34,10 +34,12 @@ const router = createBrowserRouter([
       },
       {
         path: 'product',
+        loader: domainGuardLoader,
         children: productChildren,
       },
       {
         path: 'backOffice',
+        loader: domainGuardLoader,
         children: backOfficeChildren,
       },
       {
@@ -56,7 +58,7 @@ const router = createBrowserRouter([
     path: '/account',
     id: 'account',
     Component: Account,
-    loader: accountLoader,
+    loader: protectedRouteLoader,
     ErrorBoundary,
     HydrateFallback: Loading,
     hasErrorBoundary: true,
@@ -66,7 +68,7 @@ const router = createBrowserRouter([
     path: '/events',
     id: 'events',
     Component: Events,
-    loader: accountLoader,
+    loader: protectedRouteLoader,
     ErrorBoundary,
     HydrateFallback: Loading,
     hasErrorBoundary: true,
@@ -76,7 +78,7 @@ const router = createBrowserRouter([
     path: '/campaigns',
     id: 'campaigns',
     Component: Campaigns,
-    loader: accountLoader,
+    loader: protectedRouteLoader,
     ErrorBoundary,
     HydrateFallback: Loading,
     hasErrorBoundary: true,
@@ -86,7 +88,7 @@ const router = createBrowserRouter([
     path: '/segment',
     id: 'segment',
     Component: Segment,
-    loader: accountLoader,
+    loader: protectedRouteLoader,
     ErrorBoundary,
     HydrateFallback: Loading,
     hasErrorBoundary: true,
