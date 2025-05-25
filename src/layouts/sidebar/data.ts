@@ -58,14 +58,13 @@ export const data = [
       {
         title: 'Campaign Tracking',
         icon: 'target-04',
-        group: 'data and insight',
-        href: '/analytics',
+        children: [],
+        href: '/campaigns',
         permissions: [
           'ROLE_PRODUCT_EVENTS_OVERVIEW',
           'ROLE_PRODUCT_FUNNEL_LIST',
           'ROLE_COHORT_LIST',
         ],
-        children: [],
       },
       {
         title: 'Segments',

@@ -1,9 +1,12 @@
 import { Button, GroupButton, Table } from '@smartech/ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Card } from '@/components';
 import Page from '@/layouts/container';
-import { useGoalsServiceGetApiV1GoalsSiteDomainByDomain } from '@/openapi/queries';
+import {
+  useAnalyticsServicePostApiV1AnalyticsSiteDomainReferrerStats,
+  useGoalsServiceGetApiV1GoalsSiteDomainByDomain,
+} from '@/openapi/queries';
 import { Goal } from '@/openapi/requests/types.gen';
 
 // Extended Goal interface with settings field
@@ -28,109 +31,121 @@ interface SourceData {
   event_per_user: number;
 }
 
-function Events() {
+function Campaigns() {
   const [domain, setDomain] = useState('paneltest3.adtrace.io');
 
   // Use the goals query
   const {
-    data: goals,
-    isLoading,
+    data: referrerStats,
+    mutate: mutateReferrerStats,
+    isPending,
     error,
-  } = useGoalsServiceGetApiV1GoalsSiteDomainByDomain({
-    domain,
-    limit: 50,
-  });
+  } = useAnalyticsServicePostApiV1AnalyticsSiteDomainReferrerStats({});
+
+  useEffect(() => {
+    mutateReferrerStats({
+      requestBody: {
+        domain,
+        start_date: '2025-05-19',
+        end_date: '2025-05-20',
+      },
+    });
+  }, []);
+
+  console.log(referrerStats, 'fuck');
 
   // Prepare mock data that matches the image in case API returns no data
-  const mockEvents: ExtendedGoal[] = [
-    {
-      name: 'Checkout Start',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'conversion',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 10697,
-      _total_user: 2487,
-      _event_per_user: 4.8,
-    },
-    {
-      name: 'Add to Cart',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'goal',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 7103,
-      _total_user: 1634,
-      _event_per_user: 6.4,
-    },
-    {
-      name: 'Remove From Cart',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'conversion',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 1337,
-      _total_user: 254,
-      _event_per_user: 5.3,
-    },
-    {
-      name: 'Purchase',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'goal',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 3258,
-      _total_user: 509,
-      _event_per_user: 6.1,
-    },
-    {
-      name: 'Book Demo',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'conversion',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 382,
-      _total_user: 297,
-      _event_per_user: 1.2,
-    },
-  ];
+  // const mockEvents: ExtendedGoal[] = [
+  //   {
+  //     name: 'Checkout Start',
+  //     count_method: 'event',
+  //     type: 'event',
+  //     goal_type: 'conversion',
+  //     site_uuid: domain,
+  //     created_at: new Date().toISOString(),
+  //     _count: 10697,
+  //     _total_user: 2487,
+  //     _event_per_user: 4.8,
+  //   },
+  //   {
+  //     name: 'Add to Cart',
+  //     count_method: 'event',
+  //     type: 'event',
+  //     goal_type: 'goal',
+  //     site_uuid: domain,
+  //     created_at: new Date().toISOString(),
+  //     _count: 7103,
+  //     _total_user: 1634,
+  //     _event_per_user: 6.4,
+  //   },
+  //   {
+  //     name: 'Remove From Cart',
+  //     count_method: 'event',
+  //     type: 'event',
+  //     goal_type: 'conversion',
+  //     site_uuid: domain,
+  //     created_at: new Date().toISOString(),
+  //     _count: 1337,
+  //     _total_user: 254,
+  //     _event_per_user: 5.3,
+  //   },
+  //   {
+  //     name: 'Purchase',
+  //     count_method: 'event',
+  //     type: 'event',
+  //     goal_type: 'goal',
+  //     site_uuid: domain,
+  //     created_at: new Date().toISOString(),
+  //     _count: 3258,
+  //     _total_user: 509,
+  //     _event_per_user: 6.1,
+  //   },
+  //   {
+  //     name: 'Book Demo',
+  //     count_method: 'event',
+  //     type: 'event',
+  //     goal_type: 'conversion',
+  //     site_uuid: domain,
+  //     created_at: new Date().toISOString(),
+  //     _count: 382,
+  //     _total_user: 297,
+  //     _event_per_user: 1.2,
+  //   },
+  // ];
 
   // Process API response data to add mock statistics
-  const processedData: ExtendedGoal[] =
-    goals?.map((goal) => ({
-      ...goal,
-      _count: Math.floor(Math.random() * 10000) + 100,
-      _total_user: Math.floor(Math.random() * 2000) + 50,
-      _event_per_user: parseFloat((Math.random() * 6 + 1).toFixed(1)),
-    })) || [];
+  // const processedData: ExtendedGoal[] =
+  //   referrerStats?.map((goal) => ({
+  //     ...goal,
+  //     _count: Math.floor(Math.random() * 10000) + 100,
+  //     _total_user: Math.floor(Math.random() * 2000) + 50,
+  //     _event_per_user: parseFloat((Math.random() * 6 + 1).toFixed(1)),
+  //   })) || [];
 
-  // Use processed API data if available, otherwise use mock data
-  const displayData = processedData;
+  // // Use processed API data if available, otherwise use mock data
+  // const displayData = processedData;
 
-  // Mock source data for the collapsible sections
-  const mockSourceData: SourceData[] = [
-    {
-      utm_source: 'Tapcell',
-      count: 6387,
-      total_user: 1383,
-      event_per_user: 5.9,
-    },
-    {
-      utm_source: 'Yektanet',
-      count: 4310,
-      total_user: 1104,
-      event_per_user: 4.3,
-    },
-  ];
+  // // Mock source data for the collapsible sections
+  // const mockSourceData: SourceData[] = [
+  //   {
+  //     utm_source: 'Tapcell',
+  //     count: 6387,
+  //     total_user: 1383,
+  //     event_per_user: 5.9,
+  //   },
+  //   {
+  //     utm_source: 'Yektanet',
+  //     count: 4310,
+  //     total_user: 1104,
+  //     event_per_user: 4.3,
+  //   },
+  // ];
 
   return (
     <Page>
-      <Card
+      {' '}
+      compaing hamidreza
+      {/* <Card
         layout="stretch"
         title="Events"
         headerElements={
@@ -148,7 +163,7 @@ function Events() {
           </GroupButton>
         </div>
 
-        {isLoading ? (
+        {isPending ? (
           <div>Loading events...</div>
         ) : error ? (
           <div>Error loading events: {(error as Error).message}</div>
@@ -232,9 +247,9 @@ function Events() {
             rowKey={(row) => row.name || ''}
           />
         )}
-      </Card>
+      </Card> */}
     </Page>
   );
 }
 
-export default Events;
+export default Campaigns;
