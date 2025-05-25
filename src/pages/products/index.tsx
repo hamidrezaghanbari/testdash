@@ -18,6 +18,7 @@ import {
 } from '@/openapi/queries';
 import { Goal, Segment } from '@/openapi/requests/types.gen';
 import { loginRequestSchema } from '@/services/auth/schema';
+import { useDomainStore } from '@/store';
 
 interface Product {
   _domain: string;
@@ -206,6 +207,7 @@ const AddProductModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
     }),
   );
   const notify = useNotify();
+  const { domain, setDomain } = useDomainStore();
 
   const { handleSubmit, formState, control, reset } = useCreateProductForm();
 
@@ -226,13 +228,16 @@ const AddProductModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   if (!isOpen) return null;
 
   const onSubmit = (data: any) => {
-    console.log(data, 'ssss');
     createProduct(
       {
         requestBody: { domain: data?.domain, user_id: Cookies.get('userUuid') || '' },
       },
       {
         onSuccess: () => {
+          if (!domain) {
+            setDomain(data?.domain);
+          }
+
           notify.open({
             title: 'Product added',
             description: 'Product added successfully',
