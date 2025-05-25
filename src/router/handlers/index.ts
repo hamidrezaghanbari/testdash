@@ -3,3 +3,4 @@ export * from './root';
 export * from './product';
 export * from './events';
 export * from './campaigns';
+export * from './segment';

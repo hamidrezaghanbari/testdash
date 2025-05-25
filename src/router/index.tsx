@@ -5,7 +5,7 @@ import { FullScreenLayout } from '@/layouts/FullScreenLayout';
 import { NotFound, Unauthorized } from '@/utils';
 
 import { ErrorBoundary } from './error';
-import { Account, Campaigns, Events, Root, RootRedirection } from './handlers';
+import { Account, Campaigns, Events, Root, RootRedirection, Segment } from './handlers';
 import { lazyLoad } from './helpers';
 import { accountLoader, rootLoader } from './loaders';
 import {
@@ -14,6 +14,7 @@ import {
   campaignsChildren,
   eventsChildren,
   productChildren,
+  segmentChildren,
 } from './routes';
 
 const router = createBrowserRouter([
@@ -79,6 +80,16 @@ const router = createBrowserRouter([
     HydrateFallback: Loading,
     hasErrorBoundary: true,
     children: campaignsChildren,
+  },
+  {
+    path: '/segment',
+    id: 'segment',
+    Component: Segment,
+    loader: accountLoader,
+    ErrorBoundary,
+    HydrateFallback: Loading,
+    hasErrorBoundary: true,
+    children: segmentChildren,
   },
   {
     path: '/fullscreen',
