@@ -58,14 +58,13 @@ export const data = [
       {
         title: 'Campaign Tracking',
         icon: 'target-04',
-        group: 'data and insight',
-        href: '/analytics',
+        children: [],
+        href: '/campaigns',
         permissions: [
           'ROLE_PRODUCT_EVENTS_OVERVIEW',
           'ROLE_PRODUCT_FUNNEL_LIST',
           'ROLE_COHORT_LIST',
         ],
-        children: [],
       },
       {
         title: 'Segments',
@@ -74,18 +73,18 @@ export const data = [
         href: '/segment',
         permissions: ['ROLE_PRODUCT_SEGMENT_LIST'],
       },
-      {
-        title: 'Pages and Screens',
-        icon: 'layout-alt-02',
-        children: [],
-        href: '/dataPlatform',
-      },
-      {
-        title: 'Settings',
-        icon: 'settings-02',
-        children: [],
-        href: '/dataPlatform',
-      },
+      // {
+      //   title: 'Pages and Screens',
+      //   icon: 'layout-alt-02',
+      //   children: [],
+      //   href: '/dataPlatform',
+      // },
+      // {
+      //   title: 'Settings',
+      //   icon: 'settings-02',
+      //   children: [],
+      //   href: '/dataPlatform',
+      // },
     ]),
   ],
 ] as const;

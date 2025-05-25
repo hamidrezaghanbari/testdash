@@ -36,7 +36,7 @@ function useDocumentTitle() {
   useEffect(() => {
     const route = grepRoute([], pathname);
 
-    let title = 'Intrack';
+    let title = 'Web Analytics';
 
     if (route?.title) title = route.title + ' | ' + title;
 

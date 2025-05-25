@@ -3,6 +3,7 @@ import { memo, useState } from 'react';
 
 import { cn } from '@/common';
 import { Version } from '@/components/atoms';
+import { useDomainStore } from '@/store';
 import { Render } from '@/utils';
 
 import './sidebar.scss';
@@ -20,8 +21,12 @@ const Sidebar = () => {
     });
   };
 
+  const { domain } = useDomainStore();
+
   return (
-    <aside className={'sidebar'}>
+    <aside
+      className={cn('sidebar', { 'pointer-events-none blur-sm hover:cursor-not-allowed': !domain })}
+    >
       {data.map(([group, items], index) => (
         <div
           key={group}

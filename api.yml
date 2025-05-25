@@ -202,12 +202,21 @@ paths:
         - sites
       summary: Create Site
       operationId: sites-create_site
+      parameters:
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID creating the site
+            title: User-Id
+          description: The user ID creating the site
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SiteCreate'
-        required: true
       responses:
         '201':
           description: Successful Response
@@ -220,110 +229,111 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: INVALID_ARGUMENT
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: INVALID_ARGUMENT
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Invalid argument provided
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: پارامتر ورودی نامعتبر است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 400
+                        description: HTTP status code
                       argument:
                         type: string
-                        description: Argument that was invalid
                         example: mobile_number
-                    additionalProperties: false
-                    type: object
+                        description: Argument that was invalid
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '409':
           description: Resource already exists
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: ALREADY_EXISTS
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: ALREADY_EXISTS
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Resource already exists
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: منبع از قبل موجود است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 409
+                        description: HTTP status code
                       resource_type:
                         type: string
-                        description: Type of resource that was not found
                         example: user
-                    additionalProperties: false
-                    type: object
+                        description: Type of resource that was not found
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: VALIDATION_ERROR
+                    description: Error code identifier
                   detail:
+                    type: array
                     items:
+                      type: object
                       properties:
                         field:
                           type: string
-                          description: Field name that failed validation
                           example: email
+                          description: Field name that failed validation
                         message:
                           type: string
-                          description: Validation error message
                           example: Invalid email format
+                          description: Validation error message
                         value:
                           type: string
-                          description: Invalid value that caused the error
                           example: invalid@email
-                      type: object
-                    type: array
+                          description: Invalid value that caused the error
                     example:
                       - field: email
                         message: Invalid email format
@@ -331,81 +341,80 @@ paths:
                       - field: password
                         message: Password must be at least 8 characters
                         value: '123'
-                type: object
         '500':
           description: An unknown error occurred
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: UNKNOWN_ERROR
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: UNKNOWN_ERROR
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: An unknown error occurred
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: خطای ناشناخته‌ای رخ داده است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 500
-                    additionalProperties: false
-                    type: object
+                        description: HTTP status code
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '503':
           description: Service is currently unavailable
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: UNAVAILABLE
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: UNAVAILABLE
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Service is currently unavailable
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: سرویس در حال حاضر در دسترس نیست.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 503
-                    additionalProperties: false
-                    type: object
+                        description: HTTP status code
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
   '/api/v1/sites/domain/{domain}':
     get:
       tags:
@@ -421,6 +430,14 @@ paths:
             description: The domain of the site to retrieve
             title: Domain
           description: The domain of the site to retrieve
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID requesting the site
+            title: User-Id
+          description: The user ID requesting the site
       responses:
         '200':
           description: Successful Response
@@ -633,6 +650,14 @@ paths:
             description: The domain of the site to update
             title: Domain
           description: The domain of the site to update
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID updating the site
+            title: User-Id
+          description: The user ID updating the site
       requestBody:
         required: true
         content:
@@ -892,6 +917,14 @@ paths:
             description: The domain of the site to delete
             title: Domain
           description: The domain of the site to delete
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID deleting the site
+            title: User-Id
+          description: The user ID deleting the site
       responses:
         '200':
           description: Successful Response
@@ -1133,6 +1166,14 @@ paths:
             description: 'Filter goals by type (e.g., ''pageview'', ''event'', ''revenue'')'
             title: Goal Type
           description: 'Filter goals by type (e.g., ''pageview'', ''event'', ''revenue'')'
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID requesting the goals
+            title: User-Id
+          description: The user ID requesting the goals
       responses:
         '200':
           description: Successful Response
@@ -1348,6 +1389,14 @@ paths:
             description: The domain of the site to create a goal for
             title: Domain
           description: The domain of the site to create a goal for
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID creating the goal
+            title: User-Id
+          description: The user ID creating the goal
       requestBody:
         required: true
         content:
@@ -1575,6 +1624,14 @@ paths:
             description: The name of the goal to retrieve
             title: Name
           description: The name of the goal to retrieve
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID requesting the goal
+            title: User-Id
+          description: The user ID requesting the goal
       responses:
         '200':
           description: Successful Response
@@ -1795,6 +1852,14 @@ paths:
             description: The name of the goal to update
             title: Name
           description: The name of the goal to update
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID updating the goal
+            title: User-Id
+          description: The user ID updating the goal
       requestBody:
         required: true
         content:
@@ -2021,6 +2086,14 @@ paths:
             description: The name of the goal to delete
             title: Name
           description: The name of the goal to delete
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID deleting the goal
+            title: User-Id
+          description: The user ID deleting the goal
       responses:
         '200':
           description: Successful Response
@@ -2262,6 +2335,14 @@ paths:
             description: 'Filter segments by data type (e.g., ''does'', ''does_not'', ''time'')'
             title: Data Type
           description: 'Filter segments by data type (e.g., ''does'', ''does_not'', ''time'')'
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID requesting the segments
+            title: User-Id
+          description: The user ID requesting the segments
       responses:
         '200':
           description: Successful Response
@@ -2465,6 +2546,15 @@ paths:
         - segments
       summary: Create Segment
       operationId: segments-create_segment
+      parameters:
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID creating the segment
+            title: User-Id
+          description: The user ID creating the segment
       requestBody:
         required: true
         content:
@@ -2692,6 +2782,14 @@ paths:
             description: The name of the segment to retrieve
             title: Name
           description: The name of the segment to retrieve
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID requesting the segment
+            title: User-Id
+          description: The user ID requesting the segment
       responses:
         '200':
           description: Successful Response
@@ -2912,6 +3010,14 @@ paths:
             description: The name of the segment to update
             title: Name
           description: The name of the segment to update
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID updating the segment
+            title: User-Id
+          description: The user ID updating the segment
       requestBody:
         required: true
         content:
@@ -3138,6 +3244,14 @@ paths:
             description: The name of the segment to delete
             title: Name
           description: The name of the segment to delete
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID deleting the segment
+            title: User-Id
+          description: The user ID deleting the segment
       responses:
         '200':
           description: Successful Response
@@ -3343,12 +3457,21 @@ paths:
         - analytics
       summary: Get Goal Statistics
       operationId: analytics-get_goal_statistics
+      parameters:
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID requesting the goal statistics
+            title: User-Id
+          description: The user ID requesting the goal statistics
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/GoalStatsRequest'
-        required: true
       responses:
         '200':
           description: Successful Response
@@ -3361,110 +3484,111 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: INVALID_ARGUMENT
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: INVALID_ARGUMENT
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Invalid argument provided
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: پارامتر ورودی نامعتبر است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 400
+                        description: HTTP status code
                       argument:
                         type: string
-                        description: Argument that was invalid
                         example: mobile_number
-                    additionalProperties: false
-                    type: object
+                        description: Argument that was invalid
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '404':
           description: Requested resource not found
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: NOT_FOUND
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: NOT_FOUND
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Requested resource not found
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: منبع درخواستی یافت نشد.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 404
+                        description: HTTP status code
                       resource_type:
                         type: string
-                        description: Type of resource that was not found
                         example: user
-                    additionalProperties: false
-                    type: object
+                        description: Type of resource that was not found
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: VALIDATION_ERROR
+                    description: Error code identifier
                   detail:
+                    type: array
                     items:
+                      type: object
                       properties:
                         field:
                           type: string
-                          description: Field name that failed validation
                           example: email
+                          description: Field name that failed validation
                         message:
                           type: string
-                          description: Validation error message
                           example: Invalid email format
+                          description: Validation error message
                         value:
                           type: string
-                          description: Invalid value that caused the error
                           example: invalid@email
-                      type: object
-                    type: array
+                          description: Invalid value that caused the error
                     example:
                       - field: email
                         message: Invalid email format
@@ -3472,81 +3596,80 @@ paths:
                       - field: password
                         message: Password must be at least 8 characters
                         value: '123'
-                type: object
         '500':
           description: An unknown error occurred
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: UNKNOWN_ERROR
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: UNKNOWN_ERROR
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: An unknown error occurred
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: خطای ناشناخته‌ای رخ داده است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 500
-                    additionalProperties: false
-                    type: object
+                        description: HTTP status code
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '503':
           description: Service is currently unavailable
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: UNAVAILABLE
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: UNAVAILABLE
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Service is currently unavailable
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: سرویس در حال حاضر در دسترس نیست.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 503
-                    additionalProperties: false
-                    type: object
+                        description: HTTP status code
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
   /api/v1/analytics/site/domain/referrer/stats:
     post:
       tags:
@@ -3554,12 +3677,21 @@ paths:
         - analytics
       summary: Get Referrer Statistics
       operationId: analytics-get_referrer_statistics
+      parameters:
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID requesting the referrer statistics
+            title: User-Id
+          description: The user ID requesting the referrer statistics
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ReferrerStatsRequest'
-        required: true
       responses:
         '200':
           description: Successful Response
@@ -3572,110 +3704,111 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: INVALID_ARGUMENT
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: INVALID_ARGUMENT
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Invalid argument provided
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: پارامتر ورودی نامعتبر است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 400
+                        description: HTTP status code
                       argument:
                         type: string
-                        description: Argument that was invalid
                         example: mobile_number
-                    additionalProperties: false
-                    type: object
+                        description: Argument that was invalid
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '404':
           description: Requested resource not found
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: NOT_FOUND
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: NOT_FOUND
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Requested resource not found
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: منبع درخواستی یافت نشد.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 404
+                        description: HTTP status code
                       resource_type:
                         type: string
-                        description: Type of resource that was not found
                         example: user
-                    additionalProperties: false
-                    type: object
+                        description: Type of resource that was not found
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: VALIDATION_ERROR
+                    description: Error code identifier
                   detail:
+                    type: array
                     items:
+                      type: object
                       properties:
                         field:
                           type: string
-                          description: Field name that failed validation
                           example: email
+                          description: Field name that failed validation
                         message:
                           type: string
-                          description: Validation error message
                           example: Invalid email format
+                          description: Validation error message
                         value:
                           type: string
-                          description: Invalid value that caused the error
                           example: invalid@email
-                      type: object
-                    type: array
+                          description: Invalid value that caused the error
                     example:
                       - field: email
                         message: Invalid email format
@@ -3683,81 +3816,80 @@ paths:
                       - field: password
                         message: Password must be at least 8 characters
                         value: '123'
-                type: object
         '500':
           description: An unknown error occurred
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: UNKNOWN_ERROR
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: UNKNOWN_ERROR
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: An unknown error occurred
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: خطای ناشناخته‌ای رخ داده است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 500
-                    additionalProperties: false
-                    type: object
+                        description: HTTP status code
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '503':
           description: Service is currently unavailable
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: UNAVAILABLE
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: UNAVAILABLE
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Service is currently unavailable
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: سرویس در حال حاضر در دسترس نیست.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 503
-                    additionalProperties: false
-                    type: object
+                        description: HTTP status code
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
   /api/v1/analytics/analytics:
     post:
       tags:
@@ -3765,12 +3897,21 @@ paths:
         - analytics
       summary: Get Segment Analytics
       operationId: analytics-get_segment_analytics
+      parameters:
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: The user ID requesting the segment analytics
+            title: User-Id
+          description: The user ID requesting the segment analytics
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SegmentAnalyticsRequest'
-        required: true
       responses:
         '200':
           description: Successful Response
@@ -3782,110 +3923,111 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: INVALID_ARGUMENT
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: INVALID_ARGUMENT
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Invalid argument provided
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: پارامتر ورودی نامعتبر است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 400
+                        description: HTTP status code
                       argument:
                         type: string
-                        description: Argument that was invalid
                         example: mobile_number
-                    additionalProperties: false
-                    type: object
+                        description: Argument that was invalid
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '404':
           description: Requested resource not found
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: NOT_FOUND
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: NOT_FOUND
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Requested resource not found
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: منبع درخواستی یافت نشد.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 404
+                        description: HTTP status code
                       resource_type:
                         type: string
-                        description: Type of resource that was not found
                         example: user
-                    additionalProperties: false
-                    type: object
+                        description: Type of resource that was not found
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: VALIDATION_ERROR
+                    description: Error code identifier
                   detail:
+                    type: array
                     items:
+                      type: object
                       properties:
                         field:
                           type: string
-                          description: Field name that failed validation
                           example: email
+                          description: Field name that failed validation
                         message:
                           type: string
-                          description: Validation error message
                           example: Invalid email format
+                          description: Validation error message
                         value:
                           type: string
-                          description: Invalid value that caused the error
                           example: invalid@email
-                      type: object
-                    type: array
+                          description: Invalid value that caused the error
                     example:
                       - field: email
                         message: Invalid email format
@@ -3893,81 +4035,80 @@ paths:
                       - field: password
                         message: Password must be at least 8 characters
                         value: '123'
-                type: object
         '500':
           description: An unknown error occurred
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: UNKNOWN_ERROR
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: UNKNOWN_ERROR
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: An unknown error occurred
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: خطای ناشناخته‌ای رخ داده است.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 500
-                    additionalProperties: false
-                    type: object
+                        description: HTTP status code
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
         '503':
           description: Service is currently unavailable
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   error:
                     type: string
-                    description: Error code identifier
                     example: UNAVAILABLE
+                    description: Error code identifier
                   detail:
+                    type: object
                     properties:
                       code:
                         type: string
-                        description: Error code identifier
                         example: UNAVAILABLE
+                        description: Error code identifier
                       message_en:
                         type: string
-                        description: Error message in English
                         example: Service is currently unavailable
+                        description: Error message in English
                       message_fa:
                         type: string
-                        description: Error message in Persian
                         example: سرویس در حال حاضر در دسترس نیست.
+                        description: Error message in Persian
                       http_status:
                         type: integer
-                        description: HTTP status code
                         example: 503
-                    additionalProperties: false
-                    type: object
+                        description: HTTP status code
                     required:
                       - code
                       - message_en
                       - message_fa
                       - http_status
+                    additionalProperties: false
                     description: Detailed error information
-                type: object
 components:
   schemas:
     DomainSegments:
@@ -4465,9 +4606,6 @@ components:
         domain:
           type: string
           title: Domain
-        user_id:
-          type: string
-          title: User Id
         timezone:
           anyOf:
             - type: string
@@ -4493,7 +4631,6 @@ components:
       type: object
       required:
         - domain
-        - user_id
         - created_at
       title: Site
     SiteCreate:
@@ -4501,9 +4638,6 @@ components:
         domain:
           type: string
           title: Domain
-        user_id:
-          type: string
-          title: User Id
         timezone:
           anyOf:
             - type: string
@@ -4519,7 +4653,6 @@ components:
       type: object
       required:
         - domain
-        - user_id
       title: SiteCreate
     SiteUpdate:
       properties:
@@ -4528,11 +4661,6 @@ components:
             - type: string
             - type: 'null'
           title: Domain
-        user_id:
-          anyOf:
-            - type: string
-            - type: 'null'
-          title: User Id
         timezone:
           anyOf:
             - type: string
@@ -4543,6 +4671,11 @@ components:
             - type: boolean
             - type: 'null'
           title: Public
+        user_id:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: User Id
         stats_start_date:
           anyOf:
             - type: string

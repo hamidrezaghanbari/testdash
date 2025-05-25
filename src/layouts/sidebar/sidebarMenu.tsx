@@ -25,7 +25,10 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
   return (
     <div className={'sidebarItems'}>
       {items.map(({ id, children = [], title, icon, href }) => {
-        const menuHref = generatePath(href, { productId: product?.id });
+        const menuHref = href;
+        // const menuHref = product?.id ? generatePath(href, { productId: product?.id }) : href;
+
+        console.log(menuHref, location.pathname, 'new');
 
         const content = (
           <MenuItemContent
