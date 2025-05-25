@@ -1,0 +1,1 @@
+export { DomainGuard } from './DomainGuard';
