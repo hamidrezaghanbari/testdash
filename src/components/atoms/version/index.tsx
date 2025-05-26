@@ -19,8 +19,6 @@ const Version = ({ className }: VersionProps) => {
     userId: Cookies.get('userUuid') || '',
   });
 
-  console.log(domainsList, 'fff');
-
   return (
     <div className={cn('flex justify-center pb-5', className)}>
       <Card className="flex max-w-full gap-2">
@@ -61,6 +59,7 @@ const Version = ({ className }: VersionProps) => {
                 </Text>
 
                 <div className="flex flex-col gap-1">
+                  {/* <Radio.Group onChange={(val) => setDomain(val)}> */}
                   {domainsList?.map((domainItem) => (
                     <div
                       key={domainItem?.domain}
@@ -79,13 +78,15 @@ const Version = ({ className }: VersionProps) => {
                       </div>
 
                       <div className="ml-auto">
-                        {/* @ts-ignore */}
-                        <Radio.Group value="45 Degrees" label="">
-                          <Radio label="" value="fd" />
+                        <Radio.Group value={domain} onChange={(val) => setDomain(val)}>
+                          <Radio label="" value={domainItem?.domain} />
+                          <Radio label="" value={domainItem?.domain + '__'} className="hidden" />
                         </Radio.Group>
                       </div>
                     </div>
                   ))}
+
+                  {/* </Radio.Group> */}
                 </div>
 
                 <Link to="/products" className="mx-2 my-2">

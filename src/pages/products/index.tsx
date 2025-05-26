@@ -25,8 +25,9 @@ interface Product {
 }
 
 function Products() {
-  const [domain, setDomain] = useState('paneltest3.adtrace.io');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { domain, setDomain } = useDomainStore();
 
   const [domainForDelete, setDomainForDelete] = useState('');
 
@@ -40,9 +41,6 @@ function Products() {
     userId: Cookies.get('userUuid') || '',
   });
 
-  const { mutate: deleteProduct, isPending: isDeleting } =
-    useSitesServiceDeleteApiV1SitesDomainByDomain({});
-
   useEffect(() => {
     if (!isModalOpen) refetch();
   }, [isModalOpen]);
@@ -53,59 +51,26 @@ function Products() {
       _domain: product?.domain,
     })) || [];
 
-  // Use processed API data if available, otherwise use mock data
-
-  const notify = useNotify();
-
-  console.log(processedData, 'processedData');
-
   return (
     <Page>
       <AddProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-      <Modal
-        open={!!domainForDelete}
-        icon="trash-01"
-        title={`Delete ${domainForDelete} Product?`}
-        description="Are you sure you want to delete this product?"
-        closable={true}
+      <DeleteProductModal
+        domain={domainForDelete}
+        isOpen={!!domainForDelete}
         onClose={() => setDomainForDelete('')}
-        onConfirm={() => {
-          console.log('delete');
-          deleteProduct(
-            {
-              domain: domainForDelete,
-            },
-            {
-              onSuccess: () => {
-                refetch();
-                notify.open({
-                  title: 'Product deleted',
-                  description: 'Product deleted successfully',
-                  type: 'success',
-                });
-                setDomainForDelete('');
-              },
-            },
-          );
-        }}
-      ></Modal>
+        refetch={() => {
+          if (domainForDelete === domain) {
+            if (userProducts?.length === 1) {
+              setDomain('');
+            } else {
+              setDomain(userProducts?.[0]?.domain || '');
+            }
+          }
 
-      {/* <Card
-        layout="stretch"
-        title="Products"
-        headerElements={
-          <Button
-            leading="icon"
-            icons={{ start: 'plus' }}
-            className="ml-auto"
-            variant="primary"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Add new
-          </Button>
-        }
-      > */}
+          refetch();
+        }}
+      />
 
       <div className="flex w-full items-center justify-between">
         <div className="flex flex-col gap-1 pt-8">
@@ -193,7 +158,6 @@ function Products() {
           />
         )}
       </div>
-      {/* </Card> */}
     </Page>
   );
 }
@@ -331,6 +295,75 @@ const AddProductModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
           </Button>
         </div>
       </form>
+    </div>
+  );
+};
+
+const DeleteProductModal = ({
+  domain,
+  isOpen,
+  onClose,
+  refetch,
+}: {
+  domain: string;
+  isOpen: boolean;
+  onClose: () => void;
+  refetch: () => void;
+}) => {
+  const { mutate: deleteProduct, isPending: isDeleting } =
+    useSitesServiceDeleteApiV1SitesDomainByDomain({});
+
+  const notify = useNotify();
+
+  const handleDelete = () => {
+    deleteProduct(
+      {
+        domain: domain,
+      },
+      {
+        onSuccess: () => {
+          refetch();
+          notify.open({
+            title: 'Product deleted',
+            description: 'Product deleted successfully',
+            type: 'success',
+          });
+          onClose();
+        },
+      },
+    );
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#0A0D12]/80">
+      <div className="relative z-50 m-4 w-full max-w-120 rounded-lg bg-base-white p-6 shadow-lg">
+        <div className="flex items-center justify-between">
+          <Text size="md" variant="semibold">
+            Delete Product
+          </Text>
+          <Button
+            variant="tertiary"
+            size="sm"
+            icons={{ start: 'x-close' }}
+            onClick={onClose}
+            leading="icon"
+          />
+        </div>
+
+        <Text size="sm" variant="regular" className="pb-5 text-gray-600">
+          Are you sure you want to delete this{' '}
+          <span className="px-1 font-semibold text-md text-gray-900">{domain}</span>
+          product?
+        </Text>
+
+        <div className="flex justify-end">
+          <Button variant="primary" onClick={handleDelete}>
+            Delete Product
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

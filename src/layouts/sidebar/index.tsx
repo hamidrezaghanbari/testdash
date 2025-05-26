@@ -25,8 +25,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      // className={cn('sidebar', { 'pointer-events-none blur-sm hover:cursor-not-allowed': !domain })}
-      className={cn('sidebar')}
+      className={cn('sidebar', { 'pointer-events-none blur-sm hover:cursor-not-allowed': !domain })}
     >
       {data.map(([group, items], index) => (
         <div
