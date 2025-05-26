@@ -1,7 +1,7 @@
 import { Button, GroupButton, Input, Modal, Table, Text, useNotify } from '@smartech/ui';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
-import { CopyBlock, atomOneLight } from 'react-code-blocks';
+import { CodeBlock, CopyBlock, atomOneLight } from 'react-code-blocks';
 import { Controller } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -30,6 +30,7 @@ function Products() {
   const { domain, setDomain } = useDomainStore();
 
   const [domainForDelete, setDomainForDelete] = useState('');
+  const [domainForCopy, setDomainForCopy] = useState('');
 
   // Use the goals query
   const {
@@ -70,6 +71,13 @@ function Products() {
 
           refetch();
         }}
+      />
+
+      <CopyScriptModal
+        domain={domainForCopy}
+        isOpen={!!domainForCopy}
+        onClose={() => setDomainForCopy('')}
+        scriptCode={'const a = Math.floor(33)'}
       />
 
       <div className="flex w-full items-center justify-between">
@@ -136,6 +144,7 @@ function Products() {
                         variant="tertiary"
                         size="sm"
                         leading="icon"
+                        onClick={() => setDomainForCopy(item?._domain || '')}
                       />
 
                       <Button
@@ -362,6 +371,55 @@ const DeleteProductModal = ({
           <Button variant="primary" onClick={handleDelete}>
             Delete Product
           </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CopyScriptModal = ({
+  scriptCode,
+  isOpen,
+  onClose,
+  domain,
+}: {
+  scriptCode: string;
+  isOpen: boolean;
+  onClose: () => void;
+  domain: string;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#0A0D12]/80">
+      <div className="relative z-50 m-4 w-full max-w-120 rounded-lg bg-base-white p-6 shadow-lg">
+        <div className="flex items-center justify-between">
+          <Text size="md" variant="semibold">
+            Copy Code
+          </Text>
+
+          <Button
+            variant="tertiary"
+            size="sm"
+            icons={{ start: 'x-close' }}
+            onClick={onClose}
+            leading="icon"
+          />
+        </div>
+
+        <Text size="sm" variant="regular" className="pt-2">
+          Snippet Code of <b className="px-1">{domain} </b> Product
+        </Text>
+
+        <div className="mt-4">
+          <CopyBlock
+            text={scriptCode}
+            language="javascript"
+            showLineNumbers={false}
+            wrapLongLines
+            theme={atomOneLight}
+            codeBlock
+          />
         </div>
       </div>
     </div>
