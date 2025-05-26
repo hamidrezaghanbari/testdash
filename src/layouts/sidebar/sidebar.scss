@@ -1,5 +1,5 @@
 .sidebar {
-  @apply relative flex w-[272px] flex-col gap-3 overflow-auto bg-base-white px-4 pt-6;
+  @apply relative flex w-[272px] flex-col gap-3 overflow-auto bg-base-white px-4 pt-6 border-r-2 border-gray-200;
 
   &::-webkit-scrollbar {
     @apply w-[8px];
