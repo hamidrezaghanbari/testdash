@@ -1,4 +1,5 @@
 import { produce } from 'immer';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { create } from 'zustand/react';
 
 type DomainState = {
@@ -12,23 +13,31 @@ type DomainActions = {
 
 type ApplicationStore = DomainState & DomainActions;
 
-const useDomainStore = create<ApplicationStore>((set) => ({
-  domain: '',
-  setDomain: (domain: string) => {
-    return set(
-      produce((state: DomainState) => {
-        state.domain = domain;
-      }),
-    );
-  },
-  removeDomain: () => {
-    return set(
-      produce((state: DomainState) => {
-        state.domain = '';
-      }),
-    );
-  },
-}));
+const useDomainStore = create<ApplicationStore>()(
+  persist(
+    (set) => ({
+      domain: '',
+      setDomain: (domain: string) => {
+        return set(
+          produce((state: DomainState) => {
+            state.domain = domain;
+          }),
+        );
+      },
+      removeDomain: () => {
+        return set(
+          produce((state: DomainState) => {
+            state.domain = '';
+          }),
+        );
+      },
+    }),
+    {
+      name: 'domain-storage',
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+);
 
 export { useDomainStore };
 export type { DomainState };

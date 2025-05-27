@@ -20,6 +20,10 @@ import { Goal, Segment } from '@/openapi/requests/types.gen';
 import { loginRequestSchema } from '@/services/auth/schema';
 import { useDomainStore } from '@/store';
 
+const getScriptCode = (domain: string) => {
+  return `<script defer data-domain="${domain}" src="https://loadtest.adtrace.ir/web_script_cdn.js"></script>`;
+};
+
 interface Product {
   _domain: string;
 }
@@ -187,12 +191,7 @@ const AddProductModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   const { mutate: createProduct, isPending } = useSitesServicePostApiV1Sites({});
 
   // TODO fill this
-  const scriptCode = `export const URL = {
-    current: "currentURL",
-    transparent: "transparent",
-    white: "rgb(var(--colors-white) / <alpha-value>)",
-    black: "rgb(var(--colors-black) / <alpha-value>)",
-  }`;
+  const scriptCode = getScriptCode(domain);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(scriptCode);
@@ -378,17 +377,17 @@ const DeleteProductModal = ({
 };
 
 const CopyScriptModal = ({
-  scriptCode,
   isOpen,
   onClose,
   domain,
 }: {
-  scriptCode: string;
   isOpen: boolean;
   onClose: () => void;
   domain: string;
 }) => {
   if (!isOpen) return null;
+
+  const scriptCode = getScriptCode(domain);
 
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#0A0D12]/80">

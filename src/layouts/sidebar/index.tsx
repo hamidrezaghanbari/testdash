@@ -1,6 +1,7 @@
 import { Text } from '@smartech/ui';
 import { memo, useState } from 'react';
 
+import LogoSvg from '@/assets/images/logo.svg';
 import { cn } from '@/common';
 import { Version } from '@/components/atoms';
 import { useDomainStore } from '@/store';
@@ -33,7 +34,16 @@ const Sidebar = () => {
           className={cn('sidebarGroupItem', { lastGroup: data.length - 1 === index })}
         >
           <Render when={group}>
-            <Text className={'sidebarGroupTitle'} size="md" variant="medium">
+            <Text
+              className={'sidebarGroupTitle inline-flex items-center pl-2'}
+              size="md"
+              variant="medium"
+            >
+              <img
+                src={LogoSvg}
+                alt="Logo"
+                style={{ width: '24px', height: '24px', marginRight: '8px' }}
+              />
               {group}
             </Text>
           </Render>

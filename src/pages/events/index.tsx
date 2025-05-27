@@ -1,4 +1,4 @@
-import { Button, GroupButton, Table } from '@smartech/ui';
+import { Button, GroupButton, Table, Text } from '@smartech/ui';
 import { useState } from 'react';
 
 import { Card } from '@/components';
@@ -130,109 +130,119 @@ function Events() {
 
   return (
     <Page>
-      <Card
-        layout="stretch"
-        title="Events"
-        headerElements={
-          <Button leading="icon" icons={{ start: 'plus' }} className="ml-auto" variant="primary">
-            Record
-          </Button>
-        }
-      >
-        <div className="mb-4">
-          <GroupButton>
-            <GroupButton.Item>12 months</GroupButton.Item>
-            <GroupButton.Item>30 days</GroupButton.Item>
-            <GroupButton.Item>7 days</GroupButton.Item>
-            <GroupButton.Item>24 hours</GroupButton.Item>
-          </GroupButton>
+      <div className="flex w-full items-center justify-between">
+        <div className="flex flex-col gap-1 pt-8">
+          <Text size="md" variant="semibold">
+            Event Tracking
+          </Text>
         </div>
 
-        {isLoading ? (
-          <div>Loading events...</div>
-        ) : error ? (
-          <div>Error loading events: {(error as Error).message}</div>
-        ) : (
-          <Table
-            data={displayData}
-            columns={
-              [
-                {
-                  dataIndex: 'name',
-                  title: 'Name',
-                  render: (value: string, record: ExtendedGoal) => (
-                    <span>
-                      {value}
-                      {record.goal_type && (
-                        <span className="bg-blue-100 text-blue-800 ml-2 rounded-full px-2 py-1 text-xs">
-                          {record.goal_type.charAt(0).toUpperCase() + record.goal_type.slice(1)}
-                        </span>
-                      )}
-                      {record.type === 'pageview' && (
-                        <span className="bg-green-100 text-green-800 ml-2 rounded-full px-2 py-1 text-xs">
-                          Pageview
-                        </span>
-                      )}
-                    </span>
-                  ),
-                },
-                {
-                  dataIndex: 'type',
-                  title: 'Type',
-                  render: (value: string) => value || '-',
-                },
-                {
-                  dataIndex: 'count_method',
-                  title: 'Count Method',
-                  render: (value: string) => value || '-',
-                },
-                {
-                  dataIndex: 'settings',
-                  title: 'URL',
-                  render: (_: any, record: ExtendedGoal) => record.settings?.page_url || '-',
-                },
-                {
-                  dataIndex: '_count',
-                  title: 'Count',
-                  render: (_: any, record: ExtendedGoal) => record._count || 0,
-                },
-                {
-                  dataIndex: '_total_user',
-                  title: 'Total User',
-                  render: (_: any, record: ExtendedGoal) => record._total_user || 0,
-                },
-                {
-                  dataIndex: '_event_per_user',
-                  title: 'Event Per User',
-                  render: (_: any, record: ExtendedGoal) => record._event_per_user || 0,
-                },
-                {
-                  dataIndex: 'actions',
-                  title: 'Action',
-                  render: () => (
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        icons={{ start: 'trash-01' }}
-                        variant="secondary"
-                        size="sm"
-                        leading="icon"
-                      />
-                      <Button
-                        icons={{ start: 'edit-03' }}
-                        variant="secondary"
-                        size="sm"
-                        leading="icon"
-                      />
-                    </div>
-                  ),
-                },
-              ] as any
-            }
-            layout="auto"
-            rowKey={(row) => row.name || ''}
-          />
-        )}
-      </Card>
+        <Button
+          leading="icon"
+          icons={{ start: 'plus' }}
+          className="ml-auto"
+          variant="primary"
+          // onClick={() => setIsModalOpen(true)}
+        >
+          Add new
+        </Button>
+      </div>
+
+      <div className="mb-4">
+        <GroupButton>
+          <GroupButton.Item>12 months</GroupButton.Item>
+          <GroupButton.Item>30 days</GroupButton.Item>
+          <GroupButton.Item>7 days</GroupButton.Item>
+          <GroupButton.Item>24 hours</GroupButton.Item>
+        </GroupButton>
+      </div>
+
+      {isLoading ? (
+        <div>Loading events...</div>
+      ) : error ? (
+        <div>Error loading events: {(error as Error).message}</div>
+      ) : (
+        <Table
+          data={displayData}
+          columns={
+            [
+              {
+                dataIndex: 'name',
+                title: 'Name',
+                render: (value: string, record: ExtendedGoal) => (
+                  <span>
+                    {value}
+                    {record.goal_type && (
+                      <span className="bg-blue-100 text-blue-800 ml-2 rounded-full px-2 py-1 text-xs">
+                        {record.goal_type.charAt(0).toUpperCase() + record.goal_type.slice(1)}
+                      </span>
+                    )}
+                    {record.type === 'pageview' && (
+                      <span className="bg-green-100 text-green-800 ml-2 rounded-full px-2 py-1 text-xs">
+                        Pageview
+                      </span>
+                    )}
+                  </span>
+                ),
+              },
+              {
+                dataIndex: 'type',
+                title: 'Type',
+                render: (value: string) => value || '-',
+              },
+              {
+                dataIndex: 'count_method',
+                title: 'Count Method',
+                render: (value: string) => value || '-',
+              },
+              {
+                dataIndex: 'settings',
+                title: 'URL',
+                render: (_: any, record: ExtendedGoal) => record.settings?.page_url || '-',
+              },
+              {
+                dataIndex: '_count',
+                title: 'Count',
+                render: (_: any, record: ExtendedGoal) => record._count || 0,
+              },
+              {
+                dataIndex: '_total_user',
+                title: 'Total User',
+                render: (_: any, record: ExtendedGoal) => record._total_user || 0,
+              },
+              {
+                dataIndex: '_event_per_user',
+                title: 'Event Per User',
+                render: (_: any, record: ExtendedGoal) => record._event_per_user || 0,
+              },
+              {
+                dataIndex: 'actions',
+                title: 'Action',
+                render: () => (
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      icons={{ start: 'trash-01' }}
+                      variant="secondary"
+                      size="sm"
+                      leading="icon"
+                    />
+                    <Button
+                      icons={{ start: 'edit-03' }}
+                      variant="secondary"
+                      size="sm"
+                      leading="icon"
+                    />
+                  </div>
+                ),
+              },
+            ] as any
+          }
+          layout="auto"
+          rowKey={(row) => row.name || ''}
+          emptyText="There is no event"
+          emptyDescription="Click ‘Add new” to begin"
+        />
+      )}
     </Page>
   );
 }
