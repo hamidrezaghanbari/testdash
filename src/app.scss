@@ -16,6 +16,11 @@
   ::selection {
     @apply bg-primary-500 text-base-white;
   }
+
+}
+
+.table-container {
+  @apply bg-base-white;
 }
 
 #__webanalytics_root {
