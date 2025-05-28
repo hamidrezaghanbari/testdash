@@ -8,7 +8,7 @@ const eventsChildren: RouteObject[] = [
     id: 'events-list',
     path: '',
     lazy: lazyLoad('events'),
-    loader: captchaLoader,
+    // loader: captchaLoader,
   },
 ];
 
