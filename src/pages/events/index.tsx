@@ -1,10 +1,18 @@
-import { Button, GroupButton, Table, Text } from '@smartech/ui';
+import { Button, GroupButton, Input, Table, Text, useNotify } from '@smartech/ui';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
+import { Controller } from 'react-hook-form';
+import { z } from 'zod';
 
+import { createFormHandler } from '@/common';
 import { Card } from '@/components';
 import Page from '@/layouts/container';
-import { useGoalsServiceGetApiV1GoalsSiteDomainByDomain } from '@/openapi/queries';
+import {
+  useGoalsServiceGetApiV1GoalsSiteDomainByDomain,
+  useGoalsServicePostApiV1GoalsSiteDomainByDomain,
+} from '@/openapi/queries';
 import { Goal } from '@/openapi/requests/types.gen';
+import { useDomainStore } from '@/store';
 
 // Extended Goal interface with settings field
 interface ExtendedGoal extends Goal {
@@ -29,15 +37,17 @@ interface SourceData {
 }
 
 function Events() {
-  const [domain, setDomain] = useState('paneltest3.adtrace.io');
+  const { domain } = useDomainStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Use the goals query
   const {
     data: goals,
     isLoading,
     error,
+    refetch,
   } = useGoalsServiceGetApiV1GoalsSiteDomainByDomain({
-    domain,
+    domain: domain || 'paneltest3.adtrace.io',
     limit: 50,
   });
 
@@ -130,6 +140,8 @@ function Events() {
 
   return (
     <Page>
+      <AddEventModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} refetch={refetch} />
+
       <div className="flex w-full items-center justify-between">
         <div className="flex flex-col gap-1 pt-8">
           <Text size="md" variant="semibold">
@@ -142,7 +154,7 @@ function Events() {
           icons={{ start: 'plus' }}
           className="ml-auto"
           variant="primary"
-          // onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsModalOpen(true)}
         >
           Add new
         </Button>
@@ -240,11 +252,181 @@ function Events() {
           layout="auto"
           rowKey={(row) => row.name || ''}
           emptyText="There is no event"
-          emptyDescription="Click ‘Add new” to begin"
+          emptyDescription="Click 'Add new' to begin"
         />
       )}
     </Page>
   );
 }
+
+const AddEventModal = ({
+  isOpen,
+  onClose,
+  refetch,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  refetch: () => void;
+}) => {
+  const { domain } = useDomainStore();
+  const [goalType, setGoalType] = useState<'goal' | 'general'>('goal');
+  const notify = useNotify();
+
+  const useCreateEventForm = createFormHandler<{
+    name: string;
+    pattern: string;
+  }>(
+    { name: '', pattern: '' },
+    z.object({
+      name: z.string().min(1, { message: 'Event name is required' }),
+      pattern: z.string().min(1, { message: 'Pattern is required' }),
+    }),
+  );
+
+  const { handleSubmit, formState, control, reset } = useCreateEventForm();
+
+  const { mutate: createGoal, isPending } = useGoalsServicePostApiV1GoalsSiteDomainByDomain({});
+
+  if (!isOpen) return null;
+
+  const onSubmit = (data: { name: string; pattern: string }) => {
+    createGoal(
+      {
+        domain: domain || 'paneltest3.adtrace.io',
+        requestBody: {
+          name: data.name,
+          // type: goalType === 'goal' ? 'pageview' : 'event',
+          type: 'pageview',
+          count_method: 'once_per_page',
+          // site_uuid: domain || 'paneltest3.adtrace.io',
+          // url_pattern: data.pattern,
+          url_pattern: 'equals',
+          page_url: data?.pattern,
+        },
+      },
+      {
+        onSuccess: () => {
+          notify.open({
+            title: 'Event added',
+            description: 'Event added successfully',
+            type: 'success',
+          });
+          onClose();
+          reset();
+          refetch();
+        },
+        onError: (error: any) => {
+          notify.open({
+            title: 'Error',
+            description: error?.message || 'Failed to create event',
+            type: 'error',
+          });
+        },
+      },
+    );
+  };
+
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#0A0D12]/80">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="relative z-50 m-4 w-full max-w-[480px] rounded-lg bg-base-white p-6 shadow-lg"
+      >
+        <div className="mb-4 flex items-center justify-between">
+          <Text size="md" variant="semibold">
+            Add Event
+          </Text>
+          <Button
+            variant="tertiary"
+            size="sm"
+            icons={{ start: 'x-close' }}
+            onClick={onClose}
+            leading="icon"
+          />
+        </div>
+
+        <Text size="sm" variant="regular" className="mb-6 text-gray-600">
+          Define events based on pageviews.
+        </Text>
+
+        {/* Goal Type Toggle */}
+        <div className="mb-6">
+          <div className="flex rounded-lg border border-gray-300">
+            <button
+              type="button"
+              className={`flex-1 rounded-l-lg px-4 py-2 font-medium text-sm ${
+                goalType === 'goal'
+                  ? 'border-r border-gray-300 bg-gray-100 text-gray-900'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => setGoalType('goal')}
+            >
+              Goal
+            </button>
+            <button
+              type="button"
+              className={`flex-1 rounded-r-lg px-4 py-2 font-medium text-sm ${
+                goalType === 'general'
+                  ? 'border-l border-gray-300 bg-gray-100 text-gray-900'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => setGoalType('general')}
+            >
+              General
+            </button>
+          </div>
+        </div>
+
+        {/* Event Name */}
+        <div className="mb-6">
+          <Controller
+            control={control}
+            name="name"
+            render={({ field, fieldState: { invalid, error } }) => (
+              <Input
+                label="Event Name"
+                placeholder='Enter something like "Purchase"'
+                required
+                error={invalid}
+                hint={error?.message}
+                {...field}
+              />
+            )}
+          />
+        </div>
+
+        {/* Pattern */}
+        <div className="mb-6">
+          <label className="mb-2 block font-medium text-sm text-gray-700">Pattern</label>
+          <div className="flex rounded-lg border border-gray-300">
+            <span className="flex items-center rounded-l-lg border-r border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+              Equals
+            </span>
+            <Controller
+              control={control}
+              name="pattern"
+              render={({ field, fieldState: { invalid, error } }) => (
+                <Input
+                  placeholder="URL"
+                  className="rounded-l-none border-0"
+                  required
+                  error={invalid}
+                  hint={error?.message}
+                  {...field}
+                />
+              )}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end">
+          <Button variant="primary" className="px-8" spinning={isPending}>
+            Add event
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default Events;
