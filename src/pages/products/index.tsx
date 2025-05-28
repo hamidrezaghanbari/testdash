@@ -56,6 +56,12 @@ function Products() {
       _domain: product?.domain,
     })) || [];
 
+  useEffect(() => {
+    if (userProducts?.length !== 0 && !domain) {
+      setDomain(userProducts?.[0]?.domain || '');
+    }
+  }, [userProducts, domain]);
+
   return (
     <Page>
       <AddProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
@@ -81,7 +87,6 @@ function Products() {
         domain={domainForCopy}
         isOpen={!!domainForCopy}
         onClose={() => setDomainForCopy('')}
-        scriptCode={'const a = Math.floor(33)'}
       />
 
       <div className="flex w-full items-center justify-between">
@@ -186,12 +191,12 @@ const AddProductModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   const notify = useNotify();
   const { domain, setDomain } = useDomainStore();
 
-  const { handleSubmit, formState, control, reset } = useCreateProductForm();
+  const { handleSubmit, formState, control, reset, watch } = useCreateProductForm();
 
   const { mutate: createProduct, isPending } = useSitesServicePostApiV1Sites({});
 
   // TODO fill this
-  const scriptCode = getScriptCode(domain);
+  const scriptCode = getScriptCode(watch('domain'));
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(scriptCode);
