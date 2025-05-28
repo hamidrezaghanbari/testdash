@@ -26,6 +26,7 @@ interface ExtendedGoal extends Goal {
   _count?: number;
   _total_user?: number;
   _event_per_user?: number;
+  sources?: SourceData[];
 }
 
 // Source data interface
@@ -39,6 +40,7 @@ interface SourceData {
 function Events() {
   const { domain } = useDomainStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
   // Use the goals query
   const {
@@ -51,8 +53,8 @@ function Events() {
     limit: 50,
   });
 
-  // Prepare mock data that matches the image in case API returns no data
-  const mockEvents: ExtendedGoal[] = [
+  // Prepare data that matches the image
+  const eventData: ExtendedGoal[] = [
     {
       name: 'Checkout Start',
       count_method: 'event',
@@ -63,6 +65,20 @@ function Events() {
       _count: 10697,
       _total_user: 2487,
       _event_per_user: 4.8,
+      sources: [
+        {
+          utm_source: 'Tapcell',
+          count: 6387,
+          total_user: 1383,
+          event_per_user: 5.9,
+        },
+        {
+          utm_source: 'Yektanet',
+          count: 4310,
+          total_user: 1104,
+          event_per_user: 4.3,
+        },
+      ],
     },
     {
       name: 'Add to Cart',
@@ -74,6 +90,20 @@ function Events() {
       _count: 7103,
       _total_user: 1634,
       _event_per_user: 6.4,
+      sources: [
+        {
+          utm_source: 'Google Ads',
+          count: 4200,
+          total_user: 950,
+          event_per_user: 4.4,
+        },
+        {
+          utm_source: 'Facebook',
+          count: 2903,
+          total_user: 684,
+          event_per_user: 4.2,
+        },
+      ],
     },
     {
       name: 'Remove From Cart',
@@ -85,6 +115,20 @@ function Events() {
       _count: 1337,
       _total_user: 254,
       _event_per_user: 5.3,
+      sources: [
+        {
+          utm_source: 'Organic',
+          count: 800,
+          total_user: 150,
+          event_per_user: 5.3,
+        },
+        {
+          utm_source: 'Direct',
+          count: 537,
+          total_user: 104,
+          event_per_user: 5.2,
+        },
+      ],
     },
     {
       name: 'Purchase',
@@ -96,47 +140,32 @@ function Events() {
       _count: 3258,
       _total_user: 509,
       _event_per_user: 6.1,
-    },
-    {
-      name: 'Book Demo',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'conversion',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 382,
-      _total_user: 297,
-      _event_per_user: 1.2,
-    },
-  ];
-
-  // Process API response data to add mock statistics
-  const processedData: ExtendedGoal[] =
-    goals?.map((goal) => ({
-      ...goal,
-      _count: Math.floor(Math.random() * 10000) + 100,
-      _total_user: Math.floor(Math.random() * 2000) + 50,
-      _event_per_user: parseFloat((Math.random() * 6 + 1).toFixed(1)),
-    })) || [];
-
-  // Use processed API data if available, otherwise use mock data
-  const displayData = processedData;
-
-  // Mock source data for the collapsible sections
-  const mockSourceData: SourceData[] = [
-    {
-      utm_source: 'Tapcell',
-      count: 6387,
-      total_user: 1383,
-      event_per_user: 5.9,
-    },
-    {
-      utm_source: 'Yektanet',
-      count: 4310,
-      total_user: 1104,
-      event_per_user: 4.3,
+      sources: [
+        {
+          utm_source: 'Email',
+          count: 1958,
+          total_user: 305,
+          event_per_user: 6.4,
+        },
+        {
+          utm_source: 'Social',
+          count: 1300,
+          total_user: 204,
+          event_per_user: 6.4,
+        },
+      ],
     },
   ];
+
+  const toggleRowExpansion = (rowKey: string) => {
+    const newExpandedRows = new Set(expandedRows);
+    if (newExpandedRows.has(rowKey)) {
+      newExpandedRows.delete(rowKey);
+    } else {
+      newExpandedRows.add(rowKey);
+    }
+    setExpandedRows(newExpandedRows);
+  };
 
   return (
     <Page>
@@ -174,63 +203,64 @@ function Events() {
       ) : error ? (
         <div>Error loading events: {(error as Error).message}</div>
       ) : (
-        <Table
-          data={displayData}
-          columns={
-            [
-              {
-                dataIndex: 'name',
-                title: 'Name',
-                render: (value: string, record: ExtendedGoal) => (
-                  <span>
-                    {value}
-                    {record.goal_type && (
-                      <span className="bg-blue-100 text-blue-800 ml-2 rounded-full px-2 py-1 text-xs">
-                        {record.goal_type.charAt(0).toUpperCase() + record.goal_type.slice(1)}
-                      </span>
+        <div className="bg-white overflow-hidden rounded-lg border border-gray-200">
+          {/* Table Header */}
+          <div className="grid grid-cols-5 gap-4 border-b border-gray-200 bg-gray-50 px-4 py-3 font-medium text-sm text-gray-600">
+            <div>Name</div>
+            <div className="text-right">Count</div>
+            <div className="text-right">Total User</div>
+            <div className="text-right">Event Per User</div>
+            <div className="text-right">Action</div>
+          </div>
+
+          {/* Table Body */}
+          {eventData.map((record, index) => {
+            const isExpanded = expandedRows.has(record.name || '');
+            const hasExpandableContent = record.sources && record.sources.length > 0;
+
+            return (
+              <div key={record.name || index}>
+                {/* Main Row */}
+                <div className="grid grid-cols-5 gap-4 border-b border-gray-200 px-4 py-3 hover:bg-gray-50">
+                  <div className="flex items-center gap-2">
+                    {hasExpandableContent && (
+                      <button
+                        onClick={() => toggleRowExpansion(record.name || '')}
+                        className="text-gray-400 transition-colors hover:text-gray-600"
+                      >
+                        {isExpanded ? (
+                          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        ) : (
+                          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                              fillRule="evenodd"
+                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
+                      </button>
                     )}
-                    {record.type === 'pageview' && (
-                      <span className="bg-green-100 text-green-800 ml-2 rounded-full px-2 py-1 text-xs">
-                        Pageview
-                      </span>
-                    )}
-                  </span>
-                ),
-              },
-              {
-                dataIndex: 'type',
-                title: 'Type',
-                render: (value: string) => value || '-',
-              },
-              {
-                dataIndex: 'count_method',
-                title: 'Count Method',
-                render: (value: string) => value || '-',
-              },
-              {
-                dataIndex: 'settings',
-                title: 'URL',
-                render: (_: any, record: ExtendedGoal) => record.settings?.page_url || '-',
-              },
-              {
-                dataIndex: '_count',
-                title: 'Count',
-                render: (_: any, record: ExtendedGoal) => record._count || 0,
-              },
-              {
-                dataIndex: '_total_user',
-                title: 'Total User',
-                render: (_: any, record: ExtendedGoal) => record._total_user || 0,
-              },
-              {
-                dataIndex: '_event_per_user',
-                title: 'Event Per User',
-                render: (_: any, record: ExtendedGoal) => record._event_per_user || 0,
-              },
-              {
-                dataIndex: 'actions',
-                title: 'Action',
-                render: () => (
+                    <span className="flex items-center gap-2">
+                      {record.name}
+                      {record.goal_type === 'goal' && (
+                        <span className="bg-blue-100 text-blue-800 rounded-full px-2 py-1 font-medium text-xs">
+                          Goal
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <div className="text-right font-medium">{record._count?.toLocaleString()}</div>
+                  <div className="text-right font-medium">
+                    {record._total_user?.toLocaleString()}
+                  </div>
+                  <div className="text-right font-medium">{record._event_per_user}</div>
                   <div className="flex justify-end gap-2">
                     <Button
                       icons={{ start: 'trash-01' }}
@@ -245,15 +275,49 @@ function Events() {
                       leading="icon"
                     />
                   </div>
-                ),
-              },
-            ] as any
-          }
-          layout="auto"
-          rowKey={(row) => row.name || ''}
-          emptyText="There is no event"
-          emptyDescription="Click 'Add new' to begin"
-        />
+                </div>
+
+                {/* Expandable Content */}
+                {isExpanded && hasExpandableContent && (
+                  <div className="border-b border-gray-200 bg-gray-50">
+                    <div className="px-4 py-3">
+                      <div className="mb-3 grid grid-cols-4 gap-4 px-8 font-medium text-sm text-gray-600">
+                        <div>Source</div>
+                        <div className="text-right">Count</div>
+                        <div className="text-right">Total User</div>
+                        <div className="text-right">Event Per User</div>
+                      </div>
+                      {record.sources?.map((source, sourceIndex) => (
+                        <div
+                          key={sourceIndex}
+                          className="grid grid-cols-4 gap-4 border-b border-gray-200 px-8 py-2 text-sm last:border-b-0"
+                        >
+                          <div className="text-gray-700">{source.utm_source}</div>
+                          <div className="text-right font-medium text-gray-900">
+                            {source.count.toLocaleString()}
+                          </div>
+                          <div className="text-right font-medium text-gray-900">
+                            {source.total_user.toLocaleString()}
+                          </div>
+                          <div className="text-right font-medium text-gray-900">
+                            {source.event_per_user}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {eventData.length === 0 && (
+            <div className="px-4 py-8 text-center">
+              <div className="text-gray-500">There is no event</div>
+              <div className="text-sm text-gray-400">Click 'Add new' to begin</div>
+            </div>
+          )}
+        </div>
       )}
     </Page>
   );
