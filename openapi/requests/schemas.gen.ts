@@ -19,20 +19,18 @@ export const $DomainSegments = {
     title: 'DomainSegments'
 } as const;
 
-export const $Goal = {
+export const $EventGoalCreate = {
     properties: {
         name: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
+            type: 'string',
             title: 'Name'
         },
         type: {
+            type: 'string',
+            title: 'Type',
+            default: 'event'
+        },
+        category: {
             anyOf: [
                 {
                     type: 'string'
@@ -41,7 +39,169 @@ export const $Goal = {
                     type: 'null'
                 }
             ],
+            title: 'Category',
+            default: 'goal'
+        },
+        count_method: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Count Method'
+        },
+        event_type: {
+            type: 'string',
+            title: 'Event Type'
+        },
+        page_url: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Page Url'
+        },
+        url_pattern: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Url Pattern',
+            default: 'equals'
+        },
+        referrer: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Referrer'
+        },
+        element_text: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Element Text'
+        },
+        css_selector: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Css Selector'
+        },
+        time_threshold: {
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Time Threshold'
+        },
+        js_code: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Js Code'
+        },
+        form_selector: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Form Selector'
+        }
+    },
+    type: 'object',
+    required: ['name', 'event_type'],
+    title: 'EventGoalCreate',
+    description: 'DTO for creating event goals'
+} as const;
+
+export const $Goal = {
+    properties: {
+        name: {
+            type: 'string',
+            title: 'Name'
+        },
+        type: {
+            type: 'string',
             title: 'Type'
+        },
+        category: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Category',
+            default: 'goal'
+        },
+        site_uuid: {
+            type: 'string',
+            format: 'uuid',
+            title: 'Site Uuid'
+        },
+        goal_uuid: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Goal Uuid'
+        },
+        event_type: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Event Type'
         },
         count_method: {
             anyOf: [
@@ -65,22 +225,6 @@ export const $Goal = {
                 }
             ],
             title: 'Settings'
-        },
-        site_uuid: {
-            type: 'string',
-            format: 'uuid',
-            title: 'Site Uuid'
-        },
-        goal_type: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Goal Type'
         },
         created_at: {
             anyOf: [
@@ -96,92 +240,8 @@ export const $Goal = {
         }
     },
     type: 'object',
-    required: ['site_uuid'],
+    required: ['name', 'type', 'site_uuid'],
     title: 'Goal'
-} as const;
-
-export const $GoalCreate = {
-    properties: {
-        name: {
-            type: 'string',
-            title: 'Name'
-        },
-        type: {
-            type: 'string',
-            title: 'Type'
-        },
-        count_method: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Count Method'
-        },
-        settings: {
-            anyOf: [
-                {
-                    additionalProperties: true,
-                    type: 'object'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Settings'
-        },
-        site_uuid: {
-            anyOf: [
-                {
-                    type: 'string',
-                    format: 'uuid'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Site Uuid'
-        },
-        page_url: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Page Url'
-        },
-        referrer: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Referrer'
-        },
-        url_pattern: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Url Pattern'
-        }
-    },
-    type: 'object',
-    required: ['name', 'type'],
-    title: 'GoalCreate'
 } as const;
 
 export const $GoalStats = {
@@ -200,6 +260,11 @@ export const $GoalStats = {
             type: 'string',
             title: 'Type',
             description: 'The goal type'
+        },
+        category: {
+            type: 'string',
+            title: 'Category',
+            description: 'The goal category (goal or default)'
         },
         count: {
             type: 'integer',
@@ -233,7 +298,7 @@ export const $GoalStats = {
         }
     },
     type: 'object',
-    required: ['id', 'name', 'type', 'count', 'total_user', 'event_per_user'],
+    required: ['id', 'name', 'type', 'category', 'count', 'total_user', 'event_per_user'],
     title: 'GoalStats'
 } as const;
 
@@ -279,6 +344,18 @@ export const $GoalStatsRequest = {
             ],
             title: 'Goal Type',
             description: "Filter by goal type (e.g., 'pageview', 'event')"
+        },
+        category: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Category',
+            description: "Filter by goal category ('goal' or 'default')"
         }
     },
     type: 'object',
@@ -351,7 +428,7 @@ export const $GoalUpdate = {
             ],
             title: 'Type'
         },
-        count_method: {
+        category: {
             anyOf: [
                 {
                     type: 'string'
@@ -360,19 +437,7 @@ export const $GoalUpdate = {
                     type: 'null'
                 }
             ],
-            title: 'Count Method'
-        },
-        settings: {
-            anyOf: [
-                {
-                    additionalProperties: true,
-                    type: 'object'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Settings'
+            title: 'Category'
         },
         event_type: {
             anyOf: [
@@ -384,6 +449,17 @@ export const $GoalUpdate = {
                 }
             ],
             title: 'Event Type'
+        },
+        count_method: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Count Method'
         },
         page_url: {
             anyOf: [
@@ -472,10 +548,287 @@ export const $GoalUpdate = {
                 }
             ],
             title: 'Form Selector'
+        },
+        revenue_value: {
+            anyOf: [
+                {
+                    type: 'number'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Revenue Value'
+        },
+        currency: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Currency'
         }
     },
     type: 'object',
-    title: 'GoalUpdate'
+    title: 'GoalUpdate',
+    description: 'DTO for updating goals - all fields optional'
+} as const;
+
+export const $PageAnalyticsItem = {
+    properties: {
+        pathname: {
+            type: 'string',
+            title: 'Pathname',
+            description: 'Page path'
+        },
+        unique_visitors: {
+            type: 'integer',
+            title: 'Unique Visitors',
+            description: 'Number of unique visitors'
+        },
+        sessions: {
+            type: 'integer',
+            title: 'Sessions',
+            description: 'Number of sessions'
+        },
+        avg_engagement_time: {
+            anyOf: [
+                {
+                    type: 'number'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Avg Engagement Time',
+            description: 'Average engagement time in seconds'
+        }
+    },
+    type: 'object',
+    required: ['pathname', 'unique_visitors', 'sessions'],
+    title: 'PageAnalyticsItem',
+    description: 'Single page analytics item',
+    example: {
+        avg_engagement_time: 45.5,
+        pathname: '/home',
+        sessions: 200,
+        unique_visitors: 150
+    }
+} as const;
+
+export const $PageAnalyticsRequest = {
+    properties: {
+        domain: {
+            type: 'string',
+            title: 'Domain',
+            description: 'Site domain'
+        },
+        start_date: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Start Date',
+            description: 'Start date (YYYY-MM-DD format)'
+        },
+        end_date: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'End Date',
+            description: 'End date (YYYY-MM-DD format)'
+        },
+        pathname_filter: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Pathname Filter',
+            description: 'Filter by pathname (partial match)'
+        },
+        limit: {
+            type: 'integer',
+            maximum: 1000,
+            minimum: 1,
+            title: 'Limit',
+            description: 'Maximum number of results',
+            default: 100
+        },
+        offset: {
+            type: 'integer',
+            minimum: 0,
+            title: 'Offset',
+            description: 'Number of results to skip',
+            default: 0
+        }
+    },
+    type: 'object',
+    required: ['domain'],
+    title: 'PageAnalyticsRequest',
+    description: 'Request model for page analytics',
+    example: {
+        domain: 'example.com',
+        end_date: '2024-01-31',
+        limit: 50,
+        offset: 0,
+        pathname_filter: '/blog',
+        start_date: '2024-01-01'
+    }
+} as const;
+
+export const $PageAnalyticsResponse = {
+    properties: {
+        domain: {
+            type: 'string',
+            title: 'Domain',
+            description: 'Site domain'
+        },
+        data: {
+            items: {
+                '$ref': '#/components/schemas/PageAnalyticsItem'
+            },
+            type: 'array',
+            title: 'Data',
+            description: 'List of page analytics'
+        },
+        total_count: {
+            type: 'integer',
+            title: 'Total Count',
+            description: 'Total number of pages'
+        },
+        start_date: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Start Date',
+            description: 'Start date filter applied'
+        },
+        end_date: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'End Date',
+            description: 'End date filter applied'
+        }
+    },
+    type: 'object',
+    required: ['domain', 'data', 'total_count'],
+    title: 'PageAnalyticsResponse',
+    description: 'Page analytics response with metadata',
+    example: {
+        data: [
+            {
+                avg_engagement_time: 45.5,
+                pathname: '/home',
+                sessions: 200,
+                unique_visitors: 150
+            },
+            {
+                avg_engagement_time: 32.1,
+                pathname: '/about',
+                sessions: 100,
+                unique_visitors: 89
+            }
+        ],
+        domain: 'example.com',
+        end_date: '2024-01-31',
+        start_date: '2024-01-01',
+        total_count: 2
+    }
+} as const;
+
+export const $PageviewGoalCreate = {
+    properties: {
+        name: {
+            type: 'string',
+            title: 'Name'
+        },
+        type: {
+            type: 'string',
+            title: 'Type',
+            default: 'pageview'
+        },
+        category: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Category',
+            default: 'goal'
+        },
+        count_method: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Count Method'
+        },
+        page_url: {
+            type: 'string',
+            title: 'Page Url'
+        },
+        url_pattern: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Url Pattern',
+            default: 'equals'
+        },
+        referrer: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Referrer'
+        }
+    },
+    type: 'object',
+    required: ['name', 'page_url'],
+    title: 'PageviewGoalCreate',
+    description: 'DTO for creating pageview goals'
 } as const;
 
 export const $ReferrerCategory = {
@@ -601,6 +954,104 @@ export const $ReferrerStatsResponse = {
     title: 'ReferrerStatsResponse'
 } as const;
 
+export const $RevenueGoalCreate = {
+    properties: {
+        name: {
+            type: 'string',
+            title: 'Name'
+        },
+        type: {
+            type: 'string',
+            title: 'Type',
+            default: 'revenue'
+        },
+        category: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Category',
+            default: 'goal'
+        },
+        count_method: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Count Method'
+        },
+        page_url: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Page Url'
+        },
+        url_pattern: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Url Pattern',
+            default: 'equals'
+        },
+        referrer: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Referrer'
+        },
+        revenue_value: {
+            anyOf: [
+                {
+                    type: 'number'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Revenue Value'
+        },
+        currency: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Currency',
+            default: 'USD'
+        }
+    },
+    type: 'object',
+    required: ['name'],
+    title: 'RevenueGoalCreate',
+    description: 'DTO for creating revenue goals'
+} as const;
+
 export const $Segment = {
     properties: {
         domain: {
@@ -684,6 +1135,18 @@ export const $SegmentAnalyticsRequest = {
             ],
             title: 'End Date',
             description: 'End date (YYYY-MM-DD)'
+        },
+        category: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Category',
+            description: "Filter goals by category ('goal' or 'default')"
         }
     },
     type: 'object',
@@ -942,29 +1405,6 @@ export const $SiteUpdate = {
                 }
             ],
             title: 'Public'
-        },
-        user_id: {
-            anyOf: [
-                {
-                    type: 'string'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'User Id'
-        },
-        stats_start_date: {
-            anyOf: [
-                {
-                    type: 'string',
-                    format: 'date-time'
-                },
-                {
-                    type: 'null'
-                }
-            ],
-            title: 'Stats Start Date'
         }
     },
     type: 'object',

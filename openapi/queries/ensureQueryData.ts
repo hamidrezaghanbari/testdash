@@ -12,13 +12,14 @@ export const ensureUseSitesServiceGetApiV1SitesDomainByDomainData = (queryClient
   domain: string;
   userId: string;
 }) => queryClient.ensureQueryData({ queryKey: Common.UseSitesServiceGetApiV1SitesDomainByDomainKeyFn({ domain, userId }), queryFn: () => SitesService.getApiV1SitesDomainByDomain({ domain, userId }) });
-export const ensureUseGoalsServiceGetApiV1GoalsSiteDomainByDomainData = (queryClient: QueryClient, { domain, goalType, limit, skip, userId }: {
+export const ensureUseGoalsServiceGetApiV1GoalsSiteDomainByDomainData = (queryClient: QueryClient, { category, domain, goalType, limit, skip, userId }: {
+  category?: string;
   domain: string;
   goalType?: string;
   limit?: number;
   skip?: number;
   userId: string;
-}) => queryClient.ensureQueryData({ queryKey: Common.UseGoalsServiceGetApiV1GoalsSiteDomainByDomainKeyFn({ domain, goalType, limit, skip, userId }), queryFn: () => GoalsService.getApiV1GoalsSiteDomainByDomain({ domain, goalType, limit, skip, userId }) });
+}) => queryClient.ensureQueryData({ queryKey: Common.UseGoalsServiceGetApiV1GoalsSiteDomainByDomainKeyFn({ category, domain, goalType, limit, skip, userId }), queryFn: () => GoalsService.getApiV1GoalsSiteDomainByDomain({ category, domain, goalType, limit, skip, userId }) });
 export const ensureUseGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameData = (queryClient: QueryClient, { domain, name, userId }: {
   domain: string;
   name: string;
