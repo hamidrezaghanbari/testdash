@@ -52,8 +52,6 @@ function Campaigns() {
     });
   }, []);
 
-  console.log(referrerStats, 'fuck');
-
   // Prepare mock data that matches the image in case API returns no data
   // const mockEvents: ExtendedGoal[] = [
   //   {

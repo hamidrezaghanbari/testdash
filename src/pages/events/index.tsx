@@ -1,6 +1,6 @@
 import { Button, GroupButton, Input, Table, Text, useNotify } from '@smartech/ui';
 import Cookies from 'js-cookie';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -8,8 +8,10 @@ import { createFormHandler } from '@/common';
 import { Card } from '@/components';
 import Page from '@/layouts/container';
 import {
+  useAnalyticsServicePostApiV1AnalyticsSiteDomainGoalsStats,
   useGoalsServiceGetApiV1GoalsSiteDomainByDomain,
   useGoalsServicePostApiV1GoalsSiteDomainByDomain,
+  useGoalsServicePutApiV1GoalsSiteDomainByDomainGoalByName,
 } from '@/openapi/queries';
 import { Goal } from '@/openapi/requests/types.gen';
 import { useDomainStore } from '@/store';
@@ -45,149 +47,47 @@ function Events() {
   const [deletingEvent, setDeletingEvent] = useState<ExtendedGoal | null>(null);
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
-  // Use the goals query
   const {
-    data: goals,
-    isLoading,
+    mutate,
+    data,
+    isPending: isLoading,
     error,
-    refetch,
-  } = useGoalsServiceGetApiV1GoalsSiteDomainByDomain({
-    domain: domain || 'paneltest3.adtrace.io',
-    limit: 50,
-  });
+  } = useAnalyticsServicePostApiV1AnalyticsSiteDomainGoalsStats();
 
-  // Process API response data and add mock statistics and sources
-  const processedGoals: ExtendedGoal[] =
-    goals?.map((goal, index) => ({
-      ...goal,
-      _count: Math.floor(Math.random() * 10000) + 100,
-      _total_user: Math.floor(Math.random() * 2000) + 50,
-      _event_per_user: parseFloat((Math.random() * 6 + 1).toFixed(1)),
+  // Transform API response data into ExtendedGoal format
+  const processedGoals: ExtendedGoal[] = React.useMemo(() => {
+    if (!data?.goals) return [];
+
+    return Object.values(data.goals).map((goal) => ({
+      name: goal.name,
+      type: goal.type,
+      count_method: 'event',
+      goal_type: goal.type === 'goal' ? 'goal' : 'conversion',
+      site_uuid: domain,
+      created_at: new Date().toISOString(),
+      _count: goal.count,
+      _total_user: goal.total_user,
+      _event_per_user: goal.event_per_user,
       sources:
-        index < 4
-          ? [
-              {
-                utm_source: 'Tapcell',
-                count: Math.floor(Math.random() * 5000) + 1000,
-                total_user: Math.floor(Math.random() * 1000) + 200,
-                event_per_user: parseFloat((Math.random() * 4 + 2).toFixed(1)),
-              },
-              {
-                utm_source: 'Yektanet',
-                count: Math.floor(Math.random() * 4000) + 800,
-                total_user: Math.floor(Math.random() * 800) + 150,
-                event_per_user: parseFloat((Math.random() * 3 + 2).toFixed(1)),
-              },
-            ]
-          : [],
-    })) || [];
+        goal.utm_sources?.map((source) => ({
+          utm_source: source.utm_source,
+          count: source.count,
+          total_user: source.total_user,
+          event_per_user: source.event_per_user,
+        })) || [],
+    }));
+  }, [data?.goals, domain]);
 
-  // Fallback data that matches the image if no API data
-  const fallbackEventData: ExtendedGoal[] = [
-    {
-      name: 'Checkout Start',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'conversion',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 10697,
-      _total_user: 2487,
-      _event_per_user: 4.8,
-      sources: [
-        {
-          utm_source: 'Tapcell',
-          count: 6387,
-          total_user: 1383,
-          event_per_user: 5.9,
-        },
-        {
-          utm_source: 'Yektanet',
-          count: 4310,
-          total_user: 1104,
-          event_per_user: 4.3,
-        },
-      ],
-    },
-    {
-      name: 'Add to Cart',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'goal',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 7103,
-      _total_user: 1634,
-      _event_per_user: 6.4,
-      sources: [
-        {
-          utm_source: 'Google Ads',
-          count: 4200,
-          total_user: 950,
-          event_per_user: 4.4,
-        },
-        {
-          utm_source: 'Facebook',
-          count: 2903,
-          total_user: 684,
-          event_per_user: 4.2,
-        },
-      ],
-    },
-    {
-      name: 'Remove From Cart',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'conversion',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 1337,
-      _total_user: 254,
-      _event_per_user: 5.3,
-      sources: [
-        {
-          utm_source: 'Organic',
-          count: 800,
-          total_user: 150,
-          event_per_user: 5.3,
-        },
-        {
-          utm_source: 'Direct',
-          count: 537,
-          total_user: 104,
-          event_per_user: 5.2,
-        },
-      ],
-    },
-    {
-      name: 'Purchase',
-      count_method: 'event',
-      type: 'event',
-      goal_type: 'goal',
-      site_uuid: domain,
-      created_at: new Date().toISOString(),
-      _count: 3258,
-      _total_user: 509,
-      _event_per_user: 6.1,
-      sources: [
-        {
-          utm_source: 'Email',
-          count: 1958,
-          total_user: 305,
-          event_per_user: 6.4,
-        },
-        {
-          utm_source: 'Social',
-          count: 1300,
-          total_user: 204,
-          event_per_user: 6.4,
-        },
-      ],
-    },
-  ];
+  const refetch = () => {
+    mutate({ requestBody: { domain: domain } });
+  };
 
-  // Use processed API data if available, otherwise use fallback data
-  const displayData = processedGoals.length > 0 ? processedGoals : fallbackEventData;
+  useEffect(() => {
+    mutate({ requestBody: { domain: domain } });
+  }, []);
+
+  // Remove the fallback data since we're now using real data
+  const displayData = processedGoals;
 
   const toggleRowExpansion = (rowKey: string) => {
     const newExpandedRows = new Set(expandedRows);
@@ -318,7 +218,7 @@ function Events() {
                     )}
                     <span className="flex items-center gap-2">
                       {record.name}
-                      {record.goal_type === 'goal' && (
+                      {record.type === 'goal' && (
                         <span className="bg-blue-100 text-blue-800 rounded-full px-2 py-1 font-medium text-xs">
                           Goal
                         </span>
@@ -429,6 +329,9 @@ const AddEventModal = ({
 
   const { mutate: createGoal, isPending } = useGoalsServicePostApiV1GoalsSiteDomainByDomain({});
 
+  const { mutate: updateGoal, isPending: isUpdating } =
+    useGoalsServicePutApiV1GoalsSiteDomainByDomainGoalByName();
+
   // Reset form when editingEvent changes
   React.useEffect(() => {
     if (editingEvent) {
@@ -446,37 +349,57 @@ const AddEventModal = ({
   if (!isOpen) return null;
 
   const onSubmit = (data: { name: string; pattern: string }) => {
-    createGoal(
-      {
-        domain: domain || 'paneltest3.adtrace.io',
-        requestBody: {
-          name: data.name,
-          type: 'pageview',
-          count_method: 'once_per_page',
-          url_pattern: 'equals',
-          page_url: data?.pattern,
+    const onSuccess = () => {
+      notify.open({
+        title: isEditing ? 'Event updated' : 'Event added',
+        description: isEditing ? 'Event updated successfully' : 'Event added successfully',
+        type: 'success',
+      });
+      onClose();
+      reset();
+      refetch();
+    };
+
+    const onError = (error: any) => {
+      notify.open({
+        title: 'Error',
+        description: error?.message || `Failed to ${isEditing ? 'update' : 'create'} event`,
+        type: 'error',
+      });
+    };
+
+    if (isEditing) {
+      updateGoal(
+        {
+          domain: domain,
+          name: editingEvent?.name || '',
+          requestBody: {
+            name: data.name || '',
+          },
         },
-      },
-      {
-        onSuccess: () => {
-          notify.open({
-            title: isEditing ? 'Event updated' : 'Event added',
-            description: isEditing ? 'Event updated successfully' : 'Event added successfully',
-            type: 'success',
-          });
-          onClose();
-          reset();
-          refetch();
+        {
+          onSuccess,
+          onError,
         },
-        onError: (error: any) => {
-          notify.open({
-            title: 'Error',
-            description: error?.message || `Failed to ${isEditing ? 'update' : 'create'} event`,
-            type: 'error',
-          });
+      );
+    } else {
+      createGoal(
+        {
+          domain: domain || 'paneltest3.adtrace.io',
+          requestBody: {
+            name: data.name,
+            type: 'pageview',
+            count_method: 'once_per_page',
+            url_pattern: 'equals',
+            page_url: data?.pattern,
+          },
         },
-      },
-    );
+        {
+          onSuccess,
+          onError,
+        },
+      );
+    }
   };
 
   return (
@@ -573,10 +496,10 @@ const AddEventModal = ({
         </div>
 
         <div className="flex justify-end gap-3">
-          <Button variant="secondary" onClick={onClose} disabled={isPending}>
+          <Button variant="secondary" onClick={onClose} disabled={isPending || isUpdating}>
             Cancel
           </Button>
-          <Button variant="primary" className="px-8" spinning={isPending}>
+          <Button variant="primary" className="px-8" spinning={isPending || isUpdating}>
             {isEditing ? 'Update event' : 'Add event'}
           </Button>
         </div>

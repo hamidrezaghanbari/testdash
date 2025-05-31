@@ -10,7 +10,8 @@ const missmatch: Missmatcher = function (path) {
 
     if (!path.startsWith('/')) path = `/${path}`;
 
-    return redirect(generatePath(`/product/:productId` + path, { productId }));
+    // return redirect(generatePath(`/product/:productId` + path, { productId }));
+    return redirect(generatePath(`/events`));
   };
 };
 
