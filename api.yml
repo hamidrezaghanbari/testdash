@@ -1128,6 +1128,12 @@ paths:
       tags:
         - goals
       summary: Read Goals By Domain
+      description: |-
+        Get goals by domain with optional filtering by type and category.
+
+        - **domain**: The domain of the site
+        - **goal_type**: Filter by goal type (pageview, event, revenue)
+        - **category**: Filter by goal category (goal, default)
       operationId: goals-read_goals_by_domain
       parameters:
         - name: domain
@@ -1166,6 +1172,16 @@ paths:
             description: 'Filter goals by type (e.g., ''pageview'', ''event'', ''revenue'')'
             title: Goal Type
           description: 'Filter goals by type (e.g., ''pageview'', ''event'', ''revenue'')'
+        - name: category
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: 'Filter goals by category (e.g., ''goal'', ''default'')'
+            title: Category
+          description: 'Filter goals by category (e.g., ''goal'', ''default'')'
         - name: user-id
           in: header
           required: true
@@ -1379,6 +1395,18 @@ paths:
       tags:
         - goals
       summary: Create Goal By Domain
+      description: >-
+        Create a new goal for a site by domain.
+
+
+        Accepts pageview, event, or revenue goals with simplified request
+        structure.
+
+        Only required fields need to be provided - no site_uuid or complex
+        settings object.
+
+
+        The goal category defaults to 'goal' if not specified.
       operationId: goals-create_goal_by_domain
       parameters:
         - name: domain
@@ -1402,7 +1430,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GoalCreate'
+              anyOf:
+                - $ref: '#/components/schemas/PageviewGoalCreate'
+                - $ref: '#/components/schemas/EventGoalCreate'
+                - $ref: '#/components/schemas/RevenueGoalCreate'
+              title: Goal In
       responses:
         '201':
           description: Successful Response
@@ -4109,6 +4141,233 @@ paths:
                       - http_status
                     additionalProperties: false
                     description: Detailed error information
+  /api/v1/analytics/pages:
+    post:
+      tags:
+        - analytics
+      summary: Get Page Analytics
+      description: >-
+        Get page analytics for a site with pagination and filtering
+
+
+        Returns analytics data showing unique visitors and average engagement
+        time per page.
+
+        Uses domain to identify the site and requires user authorization.
+      operationId: analytics-get_page_analytics
+      parameters:
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+            description: User identifier for authorization
+            title: User-Id
+          description: User identifier for authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageAnalyticsRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageAnalyticsResponse'
+        '400':
+          description: Invalid argument provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: INVALID_ARGUMENT
+                    description: Error code identifier
+                  detail:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: INVALID_ARGUMENT
+                        description: Error code identifier
+                      message_en:
+                        type: string
+                        example: Invalid argument provided
+                        description: Error message in English
+                      message_fa:
+                        type: string
+                        example: پارامتر ورودی نامعتبر است.
+                        description: Error message in Persian
+                      http_status:
+                        type: integer
+                        example: 400
+                        description: HTTP status code
+                      argument:
+                        type: string
+                        example: mobile_number
+                        description: Argument that was invalid
+                    required:
+                      - code
+                      - message_en
+                      - message_fa
+                      - http_status
+                    additionalProperties: false
+                    description: Detailed error information
+        '404':
+          description: Requested resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: NOT_FOUND
+                    description: Error code identifier
+                  detail:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: NOT_FOUND
+                        description: Error code identifier
+                      message_en:
+                        type: string
+                        example: Requested resource not found
+                        description: Error message in English
+                      message_fa:
+                        type: string
+                        example: منبع درخواستی یافت نشد.
+                        description: Error message in Persian
+                      http_status:
+                        type: integer
+                        example: 404
+                        description: HTTP status code
+                      resource_type:
+                        type: string
+                        example: user
+                        description: Type of resource that was not found
+                    required:
+                      - code
+                      - message_en
+                      - message_fa
+                      - http_status
+                    additionalProperties: false
+                    description: Detailed error information
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: VALIDATION_ERROR
+                    description: Error code identifier
+                  detail:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: email
+                          description: Field name that failed validation
+                        message:
+                          type: string
+                          example: Invalid email format
+                          description: Validation error message
+                        value:
+                          type: string
+                          example: invalid@email
+                          description: Invalid value that caused the error
+                    example:
+                      - field: email
+                        message: Invalid email format
+                        value: invalid@email
+                      - field: password
+                        message: Password must be at least 8 characters
+                        value: '123'
+        '500':
+          description: An unknown error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: UNKNOWN_ERROR
+                    description: Error code identifier
+                  detail:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: UNKNOWN_ERROR
+                        description: Error code identifier
+                      message_en:
+                        type: string
+                        example: An unknown error occurred
+                        description: Error message in English
+                      message_fa:
+                        type: string
+                        example: خطای ناشناخته‌ای رخ داده است.
+                        description: Error message in Persian
+                      http_status:
+                        type: integer
+                        example: 500
+                        description: HTTP status code
+                    required:
+                      - code
+                      - message_en
+                      - message_fa
+                      - http_status
+                    additionalProperties: false
+                    description: Detailed error information
+        '503':
+          description: Service is currently unavailable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: UNAVAILABLE
+                    description: Error code identifier
+                  detail:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: UNAVAILABLE
+                        description: Error code identifier
+                      message_en:
+                        type: string
+                        example: Service is currently unavailable
+                        description: Error message in English
+                      message_fa:
+                        type: string
+                        example: سرویس در حال حاضر در دسترس نیست.
+                        description: Error message in Persian
+                      http_status:
+                        type: integer
+                        example: 503
+                        description: HTTP status code
+                    required:
+                      - code
+                      - message_en
+                      - message_fa
+                      - http_status
+                    additionalProperties: false
+                    description: Detailed error information
 components:
   schemas:
     DomainSegments:
@@ -4126,18 +4385,105 @@ components:
         - domain
         - segments
       title: DomainSegments
+    EventGoalCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          title: Type
+          default: event
+        category:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Category
+          default: goal
+        count_method:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Count Method
+        event_type:
+          type: string
+          title: Event Type
+        page_url:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Page Url
+        url_pattern:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Url Pattern
+          default: equals
+        referrer:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Referrer
+        element_text:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Element Text
+        css_selector:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Css Selector
+        time_threshold:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          title: Time Threshold
+        js_code:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Js Code
+        form_selector:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Form Selector
+      type: object
+      required:
+        - name
+        - event_type
+      title: EventGoalCreate
+      description: DTO for creating event goals
     Goal:
       properties:
         name:
-          anyOf:
-            - type: string
-            - type: 'null'
+          type: string
           title: Name
         type:
+          type: string
+          title: Type
+        category:
           anyOf:
             - type: string
             - type: 'null'
-          title: Type
+          title: Category
+          default: goal
+        site_uuid:
+          type: string
+          format: uuid
+          title: Site Uuid
+        goal_uuid:
+          anyOf:
+            - type: string
+              format: uuid
+            - type: 'null'
+          title: Goal Uuid
+        event_type:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Event Type
         count_method:
           anyOf:
             - type: string
@@ -4149,15 +4495,6 @@ components:
               type: object
             - type: 'null'
           title: Settings
-        site_uuid:
-          type: string
-          format: uuid
-          title: Site Uuid
-        goal_type:
-          anyOf:
-            - type: string
-            - type: 'null'
-          title: Goal Type
         created_at:
           anyOf:
             - type: string
@@ -4166,53 +4503,10 @@ components:
           title: Created At
       type: object
       required:
-        - site_uuid
-      title: Goal
-    GoalCreate:
-      properties:
-        name:
-          type: string
-          title: Name
-        type:
-          type: string
-          title: Type
-        count_method:
-          anyOf:
-            - type: string
-            - type: 'null'
-          title: Count Method
-        settings:
-          anyOf:
-            - additionalProperties: true
-              type: object
-            - type: 'null'
-          title: Settings
-        site_uuid:
-          anyOf:
-            - type: string
-              format: uuid
-            - type: 'null'
-          title: Site Uuid
-        page_url:
-          anyOf:
-            - type: string
-            - type: 'null'
-          title: Page Url
-        referrer:
-          anyOf:
-            - type: string
-            - type: 'null'
-          title: Referrer
-        url_pattern:
-          anyOf:
-            - type: string
-            - type: 'null'
-          title: Url Pattern
-      type: object
-      required:
         - name
         - type
-      title: GoalCreate
+        - site_uuid
+      title: Goal
     GoalStats:
       properties:
         id:
@@ -4227,6 +4521,10 @@ components:
           type: string
           title: Type
           description: The goal type
+        category:
+          type: string
+          title: Category
+          description: The goal category (goal or default)
         count:
           type: integer
           title: Count
@@ -4252,6 +4550,7 @@ components:
         - id
         - name
         - type
+        - category
         - count
         - total_user
         - event_per_user
@@ -4280,6 +4579,12 @@ components:
             - type: 'null'
           title: Goal Type
           description: 'Filter by goal type (e.g., ''pageview'', ''event'')'
+        category:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Category
+          description: Filter by goal category ('goal' or 'default')
       type: object
       required:
         - domain
@@ -4321,22 +4626,21 @@ components:
             - type: string
             - type: 'null'
           title: Type
-        count_method:
+        category:
           anyOf:
             - type: string
             - type: 'null'
-          title: Count Method
-        settings:
-          anyOf:
-            - additionalProperties: true
-              type: object
-            - type: 'null'
-          title: Settings
+          title: Category
         event_type:
           anyOf:
             - type: string
             - type: 'null'
           title: Event Type
+        count_method:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Count Method
         page_url:
           anyOf:
             - type: string
@@ -4377,8 +4681,189 @@ components:
             - type: string
             - type: 'null'
           title: Form Selector
+        revenue_value:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Revenue Value
+        currency:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Currency
       type: object
       title: GoalUpdate
+      description: DTO for updating goals - all fields optional
+    PageAnalyticsItem:
+      properties:
+        pathname:
+          type: string
+          title: Pathname
+          description: Page path
+        unique_visitors:
+          type: integer
+          title: Unique Visitors
+          description: Number of unique visitors
+        sessions:
+          type: integer
+          title: Sessions
+          description: Number of sessions
+        avg_engagement_time:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Avg Engagement Time
+          description: Average engagement time in seconds
+      type: object
+      required:
+        - pathname
+        - unique_visitors
+        - sessions
+      title: PageAnalyticsItem
+      description: Single page analytics item
+      example:
+        avg_engagement_time: 45.5
+        pathname: /home
+        sessions: 200
+        unique_visitors: 150
+    PageAnalyticsRequest:
+      properties:
+        domain:
+          type: string
+          title: Domain
+          description: Site domain
+        start_date:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Start Date
+          description: Start date (YYYY-MM-DD format)
+        end_date:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: End Date
+          description: End date (YYYY-MM-DD format)
+        pathname_filter:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Pathname Filter
+          description: Filter by pathname (partial match)
+        limit:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          title: Limit
+          description: Maximum number of results
+          default: 100
+        offset:
+          type: integer
+          minimum: 0
+          title: Offset
+          description: Number of results to skip
+          default: 0
+      type: object
+      required:
+        - domain
+      title: PageAnalyticsRequest
+      description: Request model for page analytics
+      example:
+        domain: example.com
+        end_date: '2024-01-31'
+        limit: 50
+        offset: 0
+        pathname_filter: /blog
+        start_date: '2024-01-01'
+    PageAnalyticsResponse:
+      properties:
+        domain:
+          type: string
+          title: Domain
+          description: Site domain
+        data:
+          items:
+            $ref: '#/components/schemas/PageAnalyticsItem'
+          type: array
+          title: Data
+          description: List of page analytics
+        total_count:
+          type: integer
+          title: Total Count
+          description: Total number of pages
+        start_date:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Start Date
+          description: Start date filter applied
+        end_date:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: End Date
+          description: End date filter applied
+      type: object
+      required:
+        - domain
+        - data
+        - total_count
+      title: PageAnalyticsResponse
+      description: Page analytics response with metadata
+      example:
+        data:
+          - avg_engagement_time: 45.5
+            pathname: /home
+            sessions: 200
+            unique_visitors: 150
+          - avg_engagement_time: 32.1
+            pathname: /about
+            sessions: 100
+            unique_visitors: 89
+        domain: example.com
+        end_date: '2024-01-31'
+        start_date: '2024-01-01'
+        total_count: 2
+    PageviewGoalCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          title: Type
+          default: pageview
+        category:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Category
+          default: goal
+        count_method:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Count Method
+        page_url:
+          type: string
+          title: Page Url
+        url_pattern:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Url Pattern
+          default: equals
+        referrer:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Referrer
+      type: object
+      required:
+        - name
+        - page_url
+      title: PageviewGoalCreate
+      description: DTO for creating pageview goals
     ReferrerCategory:
       properties:
         category:
@@ -4466,6 +4951,58 @@ components:
         - domain
         - referrer_stats
       title: ReferrerStatsResponse
+    RevenueGoalCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          title: Type
+          default: revenue
+        category:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Category
+          default: goal
+        count_method:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Count Method
+        page_url:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Page Url
+        url_pattern:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Url Pattern
+          default: equals
+        referrer:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Referrer
+        revenue_value:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Revenue Value
+        currency:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Currency
+          default: USD
+      type: object
+      required:
+        - name
+      title: RevenueGoalCreate
+      description: DTO for creating revenue goals
     Segment:
       properties:
         domain:
@@ -4517,6 +5054,12 @@ components:
             - type: 'null'
           title: End Date
           description: End date (YYYY-MM-DD)
+        category:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Category
+          description: Filter goals by category ('goal' or 'default')
       type: object
       required:
         - domain
@@ -4671,17 +5214,6 @@ components:
             - type: boolean
             - type: 'null'
           title: Public
-        user_id:
-          anyOf:
-            - type: string
-            - type: 'null'
-          title: User Id
-        stats_start_date:
-          anyOf:
-            - type: string
-              format: date-time
-            - type: 'null'
-          title: Stats Start Date
       type: object
       title: SiteUpdate
     SourceStats:

@@ -9,6 +9,7 @@ import { Card } from '@/components';
 import Page from '@/layouts/container';
 import {
   useAnalyticsServicePostApiV1AnalyticsSiteDomainGoalsStats,
+  useAnalyticsServicePostApiV1AnalyticsSiteDomainReferrerStats,
   useGoalsServiceGetApiV1GoalsSiteDomainByDomain,
   useGoalsServicePostApiV1GoalsSiteDomainByDomain,
   useGoalsServicePutApiV1GoalsSiteDomainByDomainGoalByName,

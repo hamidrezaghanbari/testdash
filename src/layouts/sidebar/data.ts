@@ -73,6 +73,13 @@ export const data = [
         href: '/segment',
         permissions: ['ROLE_PRODUCT_SEGMENT_LIST'],
       },
+      {
+        title: 'Pages and Screens',
+        icon: 'layout-alt-02',
+        children: [],
+        href: '/pages-screens',
+        permissions: ['ROLE_PRODUCT_SEGMENT_LIST'],
+      },
       // {
       //   title: 'Pages and Screens',
       //   icon: 'layout-alt-02',
