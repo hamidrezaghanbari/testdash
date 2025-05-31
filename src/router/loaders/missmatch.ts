@@ -6,11 +6,12 @@ const missmatch: Missmatcher = function (path) {
   return ({ params }) => {
     const { productId } = params;
 
-    if (!productId) return redirect('/');
+    if (!productId) return redirect('/events');
 
     if (!path.startsWith('/')) path = `/${path}`;
 
-    return redirect(generatePath(`/product/:productId` + path, { productId }));
+    // return redirect(generatePath(`/product/:productId` + path, { productId }));
+    return redirect(generatePath(`/events`));
   };
 };
 

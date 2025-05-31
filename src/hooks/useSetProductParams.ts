@@ -58,7 +58,7 @@ const useSetProductParams = () => {
 
         if (!success) return;
         const pattern = match.pattern.path.replace('*', data['*']);
-        navigate(generatePath(pattern, { productId }));
+        navigate('/events');
       }
     });
   };

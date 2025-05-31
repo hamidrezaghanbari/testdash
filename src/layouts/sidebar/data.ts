@@ -28,22 +28,22 @@ export const data = [
   [
     'Analytics',
     addUniqueIds([
-      {
-        title: 'dashboard',
-        icon: 'home-line',
-        children: [],
-        href: '/product/:productId',
-        permissions: [
-          'ROLE_MANAGEMENT_DASHBOARD_ALL',
-          'ROLE_MANAGEMENT_DASHBOARD_USER',
-          'ROLE_MANAGEMENT_DASHBOARD_EVENT',
-          'ROLE_MANAGEMENT_DASHBOARD_COMMUNICATION',
-          'ROLE_MANAGEMENT_DASHBOARD_REVENUE',
-          'ROLE_MANAGEMENT_DASHBOARD_CHANNEL',
-          'ROLE_MANAGEMENT_DASHBOARD_INVOICE',
-          'ROLE_MANAGEMENT_DASHBOARD_PROJECT',
-        ],
-      },
+      // {
+      //   title: 'dashboard',
+      //   icon: 'home-line',
+      //   children: [],
+      //   href: '/product/:productId',
+      //   permissions: [
+      //     'ROLE_MANAGEMENT_DASHBOARD_ALL',
+      //     'ROLE_MANAGEMENT_DASHBOARD_USER',
+      //     'ROLE_MANAGEMENT_DASHBOARD_EVENT',
+      //     'ROLE_MANAGEMENT_DASHBOARD_COMMUNICATION',
+      //     'ROLE_MANAGEMENT_DASHBOARD_REVENUE',
+      //     'ROLE_MANAGEMENT_DASHBOARD_CHANNEL',
+      //     'ROLE_MANAGEMENT_DASHBOARD_INVOICE',
+      //     'ROLE_MANAGEMENT_DASHBOARD_PROJECT',
+      //   ],
+      // },
       {
         title: 'Event Tracking',
         icon: 'chart-breakout-square',
@@ -71,6 +71,13 @@ export const data = [
         icon: 'users-01',
         children: [],
         href: '/segment',
+        permissions: ['ROLE_PRODUCT_SEGMENT_LIST'],
+      },
+      {
+        title: 'Pages and Screens',
+        icon: 'layout-alt-02',
+        children: [],
+        href: '/pages-screens',
         permissions: ['ROLE_PRODUCT_SEGMENT_LIST'],
       },
       // {

@@ -8,7 +8,7 @@ const domainGuardLoader: LoaderFunction = async ({ request }) => {
 
   // If no domain is set and user is not trying to access products page, redirect to products
   if (!domain && !url.pathname.startsWith('/products')) {
-    throw redirect('/products');
+    throw redirect('/events');
   }
 
   return null;

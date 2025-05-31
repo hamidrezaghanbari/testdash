@@ -2,7 +2,7 @@
 
 import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from "@tanstack/react-query";
 import { AnalyticsService, GoalsService, SegmentsService, SitesService } from "../requests/services.gen";
-import { GoalCreate, GoalStatsRequest, GoalUpdate, ReferrerStatsRequest, SegmentAnalyticsRequest, SegmentCreate, SegmentUpdate, SiteCreate, SiteUpdate } from "../requests/types.gen";
+import { EventGoalCreate, GoalStatsRequest, GoalUpdate, PageAnalyticsRequest, PageviewGoalCreate, ReferrerStatsRequest, RevenueGoalCreate, SegmentAnalyticsRequest, SegmentCreate, SegmentUpdate, SiteCreate, SiteUpdate } from "../requests/types.gen";
 import * as Common from "./common";
 export const useSitesServiceGetApiV1SitesUserByUserId = <TData = Common.SitesServiceGetApiV1SitesUserByUserIdDefaultResponse, TError = unknown, TQueryKey extends Array<unknown> = unknown[]>({ limit, skip, userId }: {
   limit?: number;
@@ -13,13 +13,14 @@ export const useSitesServiceGetApiV1SitesDomainByDomain = <TData = Common.SitesS
   domain: string;
   userId: string;
 }, queryKey?: TQueryKey, options?: Omit<UseQueryOptions<TData, TError>, "queryKey" | "queryFn">) => useQuery<TData, TError>({ queryKey: Common.UseSitesServiceGetApiV1SitesDomainByDomainKeyFn({ domain, userId }, queryKey), queryFn: () => SitesService.getApiV1SitesDomainByDomain({ domain, userId }) as TData, ...options });
-export const useGoalsServiceGetApiV1GoalsSiteDomainByDomain = <TData = Common.GoalsServiceGetApiV1GoalsSiteDomainByDomainDefaultResponse, TError = unknown, TQueryKey extends Array<unknown> = unknown[]>({ domain, goalType, limit, skip, userId }: {
+export const useGoalsServiceGetApiV1GoalsSiteDomainByDomain = <TData = Common.GoalsServiceGetApiV1GoalsSiteDomainByDomainDefaultResponse, TError = unknown, TQueryKey extends Array<unknown> = unknown[]>({ category, domain, goalType, limit, skip, userId }: {
+  category?: string;
   domain: string;
   goalType?: string;
   limit?: number;
   skip?: number;
   userId: string;
-}, queryKey?: TQueryKey, options?: Omit<UseQueryOptions<TData, TError>, "queryKey" | "queryFn">) => useQuery<TData, TError>({ queryKey: Common.UseGoalsServiceGetApiV1GoalsSiteDomainByDomainKeyFn({ domain, goalType, limit, skip, userId }, queryKey), queryFn: () => GoalsService.getApiV1GoalsSiteDomainByDomain({ domain, goalType, limit, skip, userId }) as TData, ...options });
+}, queryKey?: TQueryKey, options?: Omit<UseQueryOptions<TData, TError>, "queryKey" | "queryFn">) => useQuery<TData, TError>({ queryKey: Common.UseGoalsServiceGetApiV1GoalsSiteDomainByDomainKeyFn({ category, domain, goalType, limit, skip, userId }, queryKey), queryFn: () => GoalsService.getApiV1GoalsSiteDomainByDomain({ category, domain, goalType, limit, skip, userId }) as TData, ...options });
 export const useGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByName = <TData = Common.GoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameDefaultResponse, TError = unknown, TQueryKey extends Array<unknown> = unknown[]>({ domain, name, userId }: {
   domain: string;
   name: string;
@@ -46,11 +47,11 @@ export const useSitesServicePostApiV1Sites = <TData = Common.SitesServicePostApi
 }, TContext>({ mutationFn: ({ requestBody, userId }) => SitesService.postApiV1Sites({ requestBody, userId }) as unknown as Promise<TData>, ...options });
 export const useGoalsServicePostApiV1GoalsSiteDomainByDomain = <TData = Common.GoalsServicePostApiV1GoalsSiteDomainByDomainMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
   domain: string;
-  requestBody: GoalCreate;
+  requestBody: EventGoalCreate | PageviewGoalCreate | RevenueGoalCreate;
   userId: string;
 }, TContext>, "mutationFn">) => useMutation<TData, TError, {
   domain: string;
-  requestBody: GoalCreate;
+  requestBody: EventGoalCreate | PageviewGoalCreate | RevenueGoalCreate;
   userId: string;
 }, TContext>({ mutationFn: ({ domain, requestBody, userId }) => GoalsService.postApiV1GoalsSiteDomainByDomain({ domain, requestBody, userId }) as unknown as Promise<TData>, ...options });
 export const useSegmentsServicePostApiV1Segments = <TData = Common.SegmentsServicePostApiV1SegmentsMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
@@ -81,6 +82,13 @@ export const useAnalyticsServicePostApiV1AnalyticsAnalytics = <TData = Common.An
   requestBody: SegmentAnalyticsRequest;
   userId: string;
 }, TContext>({ mutationFn: ({ requestBody, userId }) => AnalyticsService.postApiV1AnalyticsAnalytics({ requestBody, userId }) as unknown as Promise<TData>, ...options });
+export const useAnalyticsServicePostApiV1AnalyticsPages = <TData = Common.AnalyticsServicePostApiV1AnalyticsPagesMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
+  requestBody: PageAnalyticsRequest;
+  userId: string;
+}, TContext>, "mutationFn">) => useMutation<TData, TError, {
+  requestBody: PageAnalyticsRequest;
+  userId: string;
+}, TContext>({ mutationFn: ({ requestBody, userId }) => AnalyticsService.postApiV1AnalyticsPages({ requestBody, userId }) as unknown as Promise<TData>, ...options });
 export const useSitesServicePutApiV1SitesDomainByDomain = <TData = Common.SitesServicePutApiV1SitesDomainByDomainMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
   domain: string;
   requestBody: SiteUpdate;
