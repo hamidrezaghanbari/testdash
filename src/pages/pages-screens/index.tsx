@@ -55,69 +55,7 @@ function PagesScreens() {
   // Transform API response data into PageAnalytics format
   const processedPages: PageAnalytics[] = React.useMemo(() => {
     if (!data?.data) {
-      // Fallback data matching the image provided
-      return [
-        {
-          page: 'alphawave.com',
-          sessions: 4288,
-          avg_time: 84, // 1m 24s
-          percentage: 62.4,
-        },
-        {
-          page: 'alphawave.com/pricing',
-          sessions: 582,
-          avg_time: 68, // 1m 8s
-          percentage: 8.2,
-        },
-        {
-          page: 'alphawave.com/blog',
-          sessions: 464,
-          avg_time: 72, // 1m 12s
-          percentage: 7.6,
-        },
-        {
-          page: 'alphawave.com/booking',
-          sessions: 446,
-          avg_time: 142, // 2m 22s
-          percentage: 7.2,
-        },
-        {
-          page: 'alphawave.com/download/win',
-          sessions: 382,
-          avg_time: 48, // 48s
-          percentage: 7.0,
-        },
-        {
-          page: 'alphawave.com/faqs',
-          sessions: 326,
-          avg_time: 56, // 56s
-          percentage: 6.4,
-        },
-        {
-          page: 'alphawave.com/download/mac',
-          sessions: 262,
-          avg_time: 74, // 1m 14s
-          percentage: 5.4,
-        },
-        {
-          page: 'alphawave.com/download/linux',
-          sessions: 382,
-          avg_time: 48, // 48s
-          percentage: 7.0,
-        },
-        {
-          page: 'alphawave.com/download/android',
-          sessions: 326,
-          avg_time: 56, // 56s
-          percentage: 6.4,
-        },
-        {
-          page: 'alphawave.com/blog',
-          sessions: 262,
-          avg_time: 74, // 1m 14s
-          percentage: 5.4,
-        },
-      ];
+      return [];
     }
 
     // Calculate total sessions for percentage calculation
@@ -208,9 +146,21 @@ function PagesScreens() {
       </div>
 
       {isLoading ? (
-        <div>Loading pages...</div>
+        <div className="bg-white overflow-hidden rounded-lg border border-gray-200 p-8">
+          <div className="flex items-center justify-center">
+            <div className="text-gray-500">Loading page analytics data...</div>
+          </div>
+        </div>
       ) : error ? (
-        <div>Error loading pages: {(error as Error).message}</div>
+        <div className="bg-white overflow-hidden rounded-lg border border-gray-200 p-8">
+          <div className="flex flex-col items-center justify-center gap-2">
+            <div className="text-red-500">Failed to load page analytics</div>
+            <div className="text-sm text-gray-500">{(error as Error).message}</div>
+            <Button variant="secondary" onClick={refetch} className="mt-2">
+              Try Again
+            </Button>
+          </div>
+        </div>
       ) : (
         <div className="bg-white overflow-hidden rounded-lg border border-gray-200">
           {/* Table Header */}
