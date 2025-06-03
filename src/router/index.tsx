@@ -17,7 +17,13 @@ import {
 } from './handlers';
 import { lazyLoad } from './helpers';
 import { domainGuardLoader, rootLoader } from './loaders';
-import { campaignsChildren, eventsChildren, pagesScreensChildren, segmentChildren } from './routes';
+import {
+  campaignsChildren,
+  eventsChildren,
+  pagesScreensChildren,
+  productsChildren,
+  segmentChildren,
+} from './routes';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +61,12 @@ const router = createBrowserRouter([
         path: 'pages-screens',
         loader: domainGuardLoader,
         children: pagesScreensChildren,
+        hasErrorBoundary: true,
+      },
+      {
+        path: 'products',
+        loader: domainGuardLoader,
+        children: productsChildren,
         hasErrorBoundary: true,
       },
     ],
