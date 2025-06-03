@@ -8,7 +8,7 @@ const productsChildren: RouteObject[] = [
     id: 'products-list',
     path: '',
     lazy: lazyLoad('products'),
-    loader: captchaLoader,
+    // loader: captchaLoader,
   },
 ];
 

@@ -18,11 +18,9 @@ type ChannelExtraData = {
 type ChannelResult = ChannelData & ChannelExtraData;
 
 const channelLoader: LoaderFunction = async ({ params }) => {
-  const { success, data, error } = await channelSchema.safeParseAsync(params);
-
-  if (success) return data;
-
-  throw new Error(error.message);
+  // const { success, data, error } = await channelSchema.safeParseAsync(params);
+  // if (success) return data;
+  // throw new Error(error.message);
 };
 
 export type { ChannelData, ChannelResult };

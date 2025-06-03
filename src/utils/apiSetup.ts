@@ -54,7 +54,10 @@ export function setupApiInterceptors(): void {
   // Add request interceptor to include user-id header from cookie
   OpenAPI.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
     try {
-      const userUuid = getCookie('userUuid');
+      // const userUuid = getCookie('userUuid');
+      const userUuid = '5b0d595e-a2b0-472e-8738-295eed652657';
+
+      console.log(userUuid, 'ffff');
 
       if (userUuid) {
         // Ensure headers object exists

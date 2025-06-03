@@ -2,6 +2,7 @@ import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 
 import { Loading } from '@/components/atoms';
 import { FullScreenLayout } from '@/layouts/FullScreenLayout';
+import PagesScreens from '@/pages/pages-screens';
 import { NotFound, Unauthorized } from '@/utils';
 
 import { ErrorBoundary } from './error';
@@ -13,6 +14,7 @@ import {
   backOfficeChildren,
   campaignsChildren,
   eventsChildren,
+  pagesScreensChildren,
   productChildren,
   productsChildren,
   segmentChildren,
@@ -84,6 +86,16 @@ const router = createBrowserRouter([
     hasErrorBoundary: true,
     children: campaignsChildren,
   },
+  // {
+  //   path: '/pages-screens',
+  //   id: 'pages-screens',
+  //   Component: PagesScreens,
+  //   loader: protectedRouteLoader,
+  //   ErrorBoundary,
+  //   HydrateFallback: Loading,
+  //   hasErrorBoundary: true,
+  //   children: pagesScreensChildren,
+  // },
   {
     path: '/segment',
     id: 'segment',
