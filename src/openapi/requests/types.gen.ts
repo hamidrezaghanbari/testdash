@@ -5,29 +5,37 @@ export type DomainSegments = {
     segments: Array<SegmentInList>;
 };
 
-export type Goal = {
-    name?: string | null;
-    type?: string | null;
+/**
+ * DTO for creating event goals
+ */
+export type EventGoalCreate = {
+    name: string;
+    type?: string;
+    category?: string | null;
     count_method?: string | null;
-    settings?: {
-    [key: string]: unknown;
-} | null;
-    site_uuid: string;
-    goal_type?: string | null;
-    created_at?: string | null;
+    event_type: string;
+    page_url?: string | null;
+    url_pattern?: string | null;
+    referrer?: string | null;
+    element_text?: string | null;
+    css_selector?: string | null;
+    time_threshold?: number | null;
+    js_code?: string | null;
+    form_selector?: string | null;
 };
 
-export type GoalCreate = {
+export type Goal = {
     name: string;
     type: string;
+    category?: string | null;
+    site_uuid: string;
+    goal_uuid?: string | null;
+    event_type?: string | null;
     count_method?: string | null;
     settings?: {
     [key: string]: unknown;
 } | null;
-    site_uuid?: string | null;
-    page_url?: string | null;
-    referrer?: string | null;
-    url_pattern?: string | null;
+    created_at?: string | null;
 };
 
 export type GoalStats = {
@@ -43,6 +51,10 @@ export type GoalStats = {
      * The goal type
      */
     type: string;
+    /**
+     * The goal category (goal or default)
+     */
+    category: string;
     /**
      * Total number of events
      */
@@ -78,6 +90,10 @@ export type GoalStatsRequest = {
      * Filter by goal type (e.g., 'pageview', 'event')
      */
     goal_type?: string | null;
+    /**
+     * Filter by goal category ('goal' or 'default')
+     */
+    category?: string | null;
 };
 
 export type GoalStatsResponse = {
@@ -89,14 +105,15 @@ export type GoalStatsResponse = {
     };
 };
 
+/**
+ * DTO for updating goals - all fields optional
+ */
 export type GoalUpdate = {
     name?: string | null;
     type?: string | null;
-    count_method?: string | null;
-    settings?: {
-    [key: string]: unknown;
-} | null;
+    category?: string | null;
     event_type?: string | null;
+    count_method?: string | null;
     page_url?: string | null;
     referrer?: string | null;
     url_pattern?: string | null;
@@ -105,6 +122,99 @@ export type GoalUpdate = {
     time_threshold?: number | null;
     js_code?: string | null;
     form_selector?: string | null;
+    revenue_value?: number | null;
+    currency?: string | null;
+};
+
+/**
+ * Single page analytics item
+ */
+export type PageAnalyticsItem = {
+    /**
+     * Page path
+     */
+    pathname: string;
+    /**
+     * Number of unique visitors
+     */
+    unique_visitors: number;
+    /**
+     * Number of sessions
+     */
+    sessions: number;
+    /**
+     * Average engagement time in seconds
+     */
+    avg_engagement_time?: number | null;
+};
+
+/**
+ * Request model for page analytics
+ */
+export type PageAnalyticsRequest = {
+    /**
+     * Site domain
+     */
+    domain: string;
+    /**
+     * Start date (YYYY-MM-DD format)
+     */
+    start_date?: string | null;
+    /**
+     * End date (YYYY-MM-DD format)
+     */
+    end_date?: string | null;
+    /**
+     * Filter by pathname (partial match)
+     */
+    pathname_filter?: string | null;
+    /**
+     * Maximum number of results
+     */
+    limit?: number;
+    /**
+     * Number of results to skip
+     */
+    offset?: number;
+};
+
+/**
+ * Page analytics response with metadata
+ */
+export type PageAnalyticsResponse = {
+    /**
+     * Site domain
+     */
+    domain: string;
+    /**
+     * List of page analytics
+     */
+    data: Array<PageAnalyticsItem>;
+    /**
+     * Total number of pages
+     */
+    total_count: number;
+    /**
+     * Start date filter applied
+     */
+    start_date?: string | null;
+    /**
+     * End date filter applied
+     */
+    end_date?: string | null;
+};
+
+/**
+ * DTO for creating pageview goals
+ */
+export type PageviewGoalCreate = {
+    name: string;
+    type?: string;
+    category?: string | null;
+    count_method?: string | null;
+    page_url: string;
+    url_pattern?: string | null;
+    referrer?: string | null;
 };
 
 export type ReferrerCategory = {
@@ -168,6 +278,21 @@ export type ReferrerStatsResponse = {
     referrer_stats: Array<ReferrerCategory>;
 };
 
+/**
+ * DTO for creating revenue goals
+ */
+export type RevenueGoalCreate = {
+    name: string;
+    type?: string;
+    category?: string | null;
+    count_method?: string | null;
+    page_url?: string | null;
+    url_pattern?: string | null;
+    referrer?: string | null;
+    revenue_value?: number | null;
+    currency?: string | null;
+};
+
 export type Segment = {
     domain?: string | null;
     name: string;
@@ -189,6 +314,10 @@ export type SegmentAnalyticsRequest = {
      * End date (YYYY-MM-DD)
      */
     end_date?: string | null;
+    /**
+     * Filter goals by category ('goal' or 'default')
+     */
+    category?: string | null;
 };
 
 /**
@@ -219,7 +348,6 @@ export type SegmentUpdate = {
 
 export type Site = {
     domain: string;
-    user_id: string;
     timezone?: string | null;
     public?: boolean | null;
     stats_start_date?: string | null;
@@ -228,17 +356,14 @@ export type Site = {
 
 export type SiteCreate = {
     domain: string;
-    user_id: string;
     timezone?: string | null;
     public?: boolean | null;
 };
 
 export type SiteUpdate = {
     domain?: string | null;
-    user_id?: string | null;
     timezone?: string | null;
     public?: boolean | null;
-    stats_start_date?: string | null;
 };
 
 export type SourceStats = {
@@ -302,6 +427,10 @@ export type GetApiV1SitesUserByUserIdResponse = Array<Site>;
 
 export type PostApiV1SitesData = {
     requestBody: SiteCreate;
+    /**
+     * The user ID creating the site
+     */
+    userId: string;
 };
 
 export type PostApiV1SitesResponse = Site;
@@ -311,6 +440,10 @@ export type GetApiV1SitesDomainByDomainData = {
      * The domain of the site to retrieve
      */
     domain: string;
+    /**
+     * The user ID requesting the site
+     */
+    userId: string;
 };
 
 export type GetApiV1SitesDomainByDomainResponse = Site;
@@ -321,6 +454,10 @@ export type PutApiV1SitesDomainByDomainData = {
      */
     domain: string;
     requestBody: SiteUpdate;
+    /**
+     * The user ID updating the site
+     */
+    userId: string;
 };
 
 export type PutApiV1SitesDomainByDomainResponse = Site;
@@ -330,11 +467,19 @@ export type DeleteApiV1SitesDomainByDomainData = {
      * The domain of the site to delete
      */
     domain: string;
+    /**
+     * The user ID deleting the site
+     */
+    userId: string;
 };
 
 export type DeleteApiV1SitesDomainByDomainResponse = Site;
 
 export type GetApiV1GoalsSiteDomainByDomainData = {
+    /**
+     * Filter goals by category (e.g., 'goal', 'default')
+     */
+    category?: string | null;
     /**
      * The domain of the site to get goals for
      */
@@ -351,6 +496,10 @@ export type GetApiV1GoalsSiteDomainByDomainData = {
      * Number of records to skip (for pagination)
      */
     skip?: number;
+    /**
+     * The user ID requesting the goals
+     */
+    userId: string;
 };
 
 export type GetApiV1GoalsSiteDomainByDomainResponse = Array<Goal>;
@@ -360,7 +509,11 @@ export type PostApiV1GoalsSiteDomainByDomainData = {
      * The domain of the site to create a goal for
      */
     domain: string;
-    requestBody: GoalCreate;
+    requestBody: PageviewGoalCreate | EventGoalCreate | RevenueGoalCreate;
+    /**
+     * The user ID creating the goal
+     */
+    userId: string;
 };
 
 export type PostApiV1GoalsSiteDomainByDomainResponse = Goal;
@@ -374,6 +527,10 @@ export type GetApiV1GoalsSiteDomainByDomainGoalByNameData = {
      * The name of the goal to retrieve
      */
     name: string;
+    /**
+     * The user ID requesting the goal
+     */
+    userId: string;
 };
 
 export type GetApiV1GoalsSiteDomainByDomainGoalByNameResponse = Goal;
@@ -388,6 +545,10 @@ export type PutApiV1GoalsSiteDomainByDomainGoalByNameData = {
      */
     name: string;
     requestBody: GoalUpdate;
+    /**
+     * The user ID updating the goal
+     */
+    userId: string;
 };
 
 export type PutApiV1GoalsSiteDomainByDomainGoalByNameResponse = Goal;
@@ -401,6 +562,10 @@ export type DeleteApiV1GoalsSiteDomainByDomainGoalByNameData = {
      * The name of the goal to delete
      */
     name: string;
+    /**
+     * The user ID deleting the goal
+     */
+    userId: string;
 };
 
 export type DeleteApiV1GoalsSiteDomainByDomainGoalByNameResponse = Goal;
@@ -422,12 +587,20 @@ export type GetApiV1SegmentsData = {
      * Number of records to skip (for pagination)
      */
     skip?: number;
+    /**
+     * The user ID requesting the segments
+     */
+    userId: string;
 };
 
 export type GetApiV1SegmentsResponse = DomainSegments;
 
 export type PostApiV1SegmentsData = {
     requestBody: SegmentCreate;
+    /**
+     * The user ID creating the segment
+     */
+    userId: string;
 };
 
 export type PostApiV1SegmentsResponse = Segment;
@@ -441,6 +614,10 @@ export type GetApiV1SegmentsByDomainByNameData = {
      * The name of the segment to retrieve
      */
     name: string;
+    /**
+     * The user ID requesting the segment
+     */
+    userId: string;
 };
 
 export type GetApiV1SegmentsByDomainByNameResponse = Segment;
@@ -455,6 +632,10 @@ export type PutApiV1SegmentsByDomainByNameData = {
      */
     name: string;
     requestBody: SegmentUpdate;
+    /**
+     * The user ID updating the segment
+     */
+    userId: string;
 };
 
 export type PutApiV1SegmentsByDomainByNameResponse = Segment;
@@ -468,27 +649,53 @@ export type DeleteApiV1SegmentsByDomainByNameData = {
      * The name of the segment to delete
      */
     name: string;
+    /**
+     * The user ID deleting the segment
+     */
+    userId: string;
 };
 
 export type DeleteApiV1SegmentsByDomainByNameResponse = Segment;
 
 export type PostApiV1AnalyticsSiteDomainGoalsStatsData = {
     requestBody: GoalStatsRequest;
+    /**
+     * The user ID requesting the goal statistics
+     */
+    userId: string;
 };
 
 export type PostApiV1AnalyticsSiteDomainGoalsStatsResponse = GoalStatsResponse;
 
 export type PostApiV1AnalyticsSiteDomainReferrerStatsData = {
     requestBody: ReferrerStatsRequest;
+    /**
+     * The user ID requesting the referrer statistics
+     */
+    userId: string;
 };
 
 export type PostApiV1AnalyticsSiteDomainReferrerStatsResponse = ReferrerStatsResponse;
 
 export type PostApiV1AnalyticsAnalyticsData = {
     requestBody: SegmentAnalyticsRequest;
+    /**
+     * The user ID requesting the segment analytics
+     */
+    userId: string;
 };
 
 export type PostApiV1AnalyticsAnalyticsResponse = unknown;
+
+export type PostApiV1AnalyticsPagesData = {
+    requestBody: PageAnalyticsRequest;
+    /**
+     * User identifier for authorization
+     */
+    userId: string;
+};
+
+export type PostApiV1AnalyticsPagesResponse = PageAnalyticsResponse;
 
 export type $OpenApiTs = {
     '/api/v1/sites/user/{user_id}': {
@@ -3237,6 +3444,168 @@ export type $OpenApiTs = {
                  * Successful Response
                  */
                 200: unknown;
+                /**
+                 * Invalid argument provided
+                 */
+                400: {
+                    /**
+                     * Error code identifier
+                     */
+                    error?: string;
+                    /**
+                     * Detailed error information
+                     */
+                    detail?: {
+                        /**
+                         * Error code identifier
+                         */
+                        code: string;
+                        /**
+                         * Error message in English
+                         */
+                        message_en: string;
+                        /**
+                         * Error message in Persian
+                         */
+                        message_fa: string;
+                        /**
+                         * HTTP status code
+                         */
+                        http_status: number;
+                        /**
+                         * Argument that was invalid
+                         */
+                        argument?: string;
+                    };
+                };
+                /**
+                 * Requested resource not found
+                 */
+                404: {
+                    /**
+                     * Error code identifier
+                     */
+                    error?: string;
+                    /**
+                     * Detailed error information
+                     */
+                    detail?: {
+                        /**
+                         * Error code identifier
+                         */
+                        code: string;
+                        /**
+                         * Error message in English
+                         */
+                        message_en: string;
+                        /**
+                         * Error message in Persian
+                         */
+                        message_fa: string;
+                        /**
+                         * HTTP status code
+                         */
+                        http_status: number;
+                        /**
+                         * Type of resource that was not found
+                         */
+                        resource_type?: string;
+                    };
+                };
+                /**
+                 * Validation Error
+                 */
+                422: {
+                    /**
+                     * Error code identifier
+                     */
+                    error?: string;
+                    detail?: Array<{
+                        /**
+                         * Field name that failed validation
+                         */
+                        field?: string;
+                        /**
+                         * Validation error message
+                         */
+                        message?: string;
+                        /**
+                         * Invalid value that caused the error
+                         */
+                        value?: string;
+                    }>;
+                };
+                /**
+                 * An unknown error occurred
+                 */
+                500: {
+                    /**
+                     * Error code identifier
+                     */
+                    error?: string;
+                    /**
+                     * Detailed error information
+                     */
+                    detail?: {
+                        /**
+                         * Error code identifier
+                         */
+                        code: string;
+                        /**
+                         * Error message in English
+                         */
+                        message_en: string;
+                        /**
+                         * Error message in Persian
+                         */
+                        message_fa: string;
+                        /**
+                         * HTTP status code
+                         */
+                        http_status: number;
+                    };
+                };
+                /**
+                 * Service is currently unavailable
+                 */
+                503: {
+                    /**
+                     * Error code identifier
+                     */
+                    error?: string;
+                    /**
+                     * Detailed error information
+                     */
+                    detail?: {
+                        /**
+                         * Error code identifier
+                         */
+                        code: string;
+                        /**
+                         * Error message in English
+                         */
+                        message_en: string;
+                        /**
+                         * Error message in Persian
+                         */
+                        message_fa: string;
+                        /**
+                         * HTTP status code
+                         */
+                        http_status: number;
+                    };
+                };
+            };
+        };
+    };
+    '/api/v1/analytics/pages': {
+        post: {
+            req: PostApiV1AnalyticsPagesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: PageAnalyticsResponse;
                 /**
                  * Invalid argument provided
                  */

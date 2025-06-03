@@ -13,47 +13,54 @@ export const UseSitesServiceGetApiV1SitesUserByUserIdKeyFn = ({ limit, skip, use
 export type SitesServiceGetApiV1SitesDomainByDomainDefaultResponse = Awaited<ReturnType<typeof SitesService.getApiV1SitesDomainByDomain>>;
 export type SitesServiceGetApiV1SitesDomainByDomainQueryResult<TData = SitesServiceGetApiV1SitesDomainByDomainDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useSitesServiceGetApiV1SitesDomainByDomainKey = "SitesServiceGetApiV1SitesDomainByDomain";
-export const UseSitesServiceGetApiV1SitesDomainByDomainKeyFn = ({ domain }: {
+export const UseSitesServiceGetApiV1SitesDomainByDomainKeyFn = ({ domain, userId }: {
   domain: string;
-}, queryKey?: Array<unknown>) => [useSitesServiceGetApiV1SitesDomainByDomainKey, ...(queryKey ?? [{ domain }])];
+  userId: string;
+}, queryKey?: Array<unknown>) => [useSitesServiceGetApiV1SitesDomainByDomainKey, ...(queryKey ?? [{ domain, userId }])];
 export type GoalsServiceGetApiV1GoalsSiteDomainByDomainDefaultResponse = Awaited<ReturnType<typeof GoalsService.getApiV1GoalsSiteDomainByDomain>>;
 export type GoalsServiceGetApiV1GoalsSiteDomainByDomainQueryResult<TData = GoalsServiceGetApiV1GoalsSiteDomainByDomainDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useGoalsServiceGetApiV1GoalsSiteDomainByDomainKey = "GoalsServiceGetApiV1GoalsSiteDomainByDomain";
-export const UseGoalsServiceGetApiV1GoalsSiteDomainByDomainKeyFn = ({ domain, goalType, limit, skip }: {
+export const UseGoalsServiceGetApiV1GoalsSiteDomainByDomainKeyFn = ({ category, domain, goalType, limit, skip, userId }: {
+  category?: string;
   domain: string;
   goalType?: string;
   limit?: number;
   skip?: number;
-}, queryKey?: Array<unknown>) => [useGoalsServiceGetApiV1GoalsSiteDomainByDomainKey, ...(queryKey ?? [{ domain, goalType, limit, skip }])];
+  userId: string;
+}, queryKey?: Array<unknown>) => [useGoalsServiceGetApiV1GoalsSiteDomainByDomainKey, ...(queryKey ?? [{ category, domain, goalType, limit, skip, userId }])];
 export type GoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameDefaultResponse = Awaited<ReturnType<typeof GoalsService.getApiV1GoalsSiteDomainByDomainGoalByName>>;
 export type GoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameQueryResult<TData = GoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameKey = "GoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByName";
-export const UseGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameKeyFn = ({ domain, name }: {
+export const UseGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameKeyFn = ({ domain, name, userId }: {
   domain: string;
   name: string;
-}, queryKey?: Array<unknown>) => [useGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameKey, ...(queryKey ?? [{ domain, name }])];
+  userId: string;
+}, queryKey?: Array<unknown>) => [useGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameKey, ...(queryKey ?? [{ domain, name, userId }])];
 export type SegmentsServiceGetApiV1SegmentsDefaultResponse = Awaited<ReturnType<typeof SegmentsService.getApiV1Segments>>;
 export type SegmentsServiceGetApiV1SegmentsQueryResult<TData = SegmentsServiceGetApiV1SegmentsDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useSegmentsServiceGetApiV1SegmentsKey = "SegmentsServiceGetApiV1Segments";
-export const UseSegmentsServiceGetApiV1SegmentsKeyFn = ({ dataType, domain, limit, skip }: {
+export const UseSegmentsServiceGetApiV1SegmentsKeyFn = ({ dataType, domain, limit, skip, userId }: {
   dataType?: string;
   domain: string;
   limit?: number;
   skip?: number;
-}, queryKey?: Array<unknown>) => [useSegmentsServiceGetApiV1SegmentsKey, ...(queryKey ?? [{ dataType, domain, limit, skip }])];
+  userId: string;
+}, queryKey?: Array<unknown>) => [useSegmentsServiceGetApiV1SegmentsKey, ...(queryKey ?? [{ dataType, domain, limit, skip, userId }])];
 export type SegmentsServiceGetApiV1SegmentsByDomainByNameDefaultResponse = Awaited<ReturnType<typeof SegmentsService.getApiV1SegmentsByDomainByName>>;
 export type SegmentsServiceGetApiV1SegmentsByDomainByNameQueryResult<TData = SegmentsServiceGetApiV1SegmentsByDomainByNameDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useSegmentsServiceGetApiV1SegmentsByDomainByNameKey = "SegmentsServiceGetApiV1SegmentsByDomainByName";
-export const UseSegmentsServiceGetApiV1SegmentsByDomainByNameKeyFn = ({ domain, name }: {
+export const UseSegmentsServiceGetApiV1SegmentsByDomainByNameKeyFn = ({ domain, name, userId }: {
   domain: string;
   name: string;
-}, queryKey?: Array<unknown>) => [useSegmentsServiceGetApiV1SegmentsByDomainByNameKey, ...(queryKey ?? [{ domain, name }])];
+  userId: string;
+}, queryKey?: Array<unknown>) => [useSegmentsServiceGetApiV1SegmentsByDomainByNameKey, ...(queryKey ?? [{ domain, name, userId }])];
 export type SitesServicePostApiV1SitesMutationResult = Awaited<ReturnType<typeof SitesService.postApiV1Sites>>;
 export type GoalsServicePostApiV1GoalsSiteDomainByDomainMutationResult = Awaited<ReturnType<typeof GoalsService.postApiV1GoalsSiteDomainByDomain>>;
 export type SegmentsServicePostApiV1SegmentsMutationResult = Awaited<ReturnType<typeof SegmentsService.postApiV1Segments>>;
 export type AnalyticsServicePostApiV1AnalyticsSiteDomainGoalsStatsMutationResult = Awaited<ReturnType<typeof AnalyticsService.postApiV1AnalyticsSiteDomainGoalsStats>>;
 export type AnalyticsServicePostApiV1AnalyticsSiteDomainReferrerStatsMutationResult = Awaited<ReturnType<typeof AnalyticsService.postApiV1AnalyticsSiteDomainReferrerStats>>;
 export type AnalyticsServicePostApiV1AnalyticsAnalyticsMutationResult = Awaited<ReturnType<typeof AnalyticsService.postApiV1AnalyticsAnalytics>>;
+export type AnalyticsServicePostApiV1AnalyticsPagesMutationResult = Awaited<ReturnType<typeof AnalyticsService.postApiV1AnalyticsPages>>;
 export type SitesServicePutApiV1SitesDomainByDomainMutationResult = Awaited<ReturnType<typeof SitesService.putApiV1SitesDomainByDomain>>;
 export type GoalsServicePutApiV1GoalsSiteDomainByDomainGoalByNameMutationResult = Awaited<ReturnType<typeof GoalsService.putApiV1GoalsSiteDomainByDomainGoalByName>>;
 export type SegmentsServicePutApiV1SegmentsByDomainByNameMutationResult = Awaited<ReturnType<typeof SegmentsService.putApiV1SegmentsByDomainByName>>;
