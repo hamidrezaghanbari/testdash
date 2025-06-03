@@ -8,26 +8,32 @@ export const ensureUseSitesServiceGetApiV1SitesUserByUserIdData = (queryClient: 
   skip?: number;
   userId: string;
 }) => queryClient.ensureQueryData({ queryKey: Common.UseSitesServiceGetApiV1SitesUserByUserIdKeyFn({ limit, skip, userId }), queryFn: () => SitesService.getApiV1SitesUserByUserId({ limit, skip, userId }) });
-export const ensureUseSitesServiceGetApiV1SitesDomainByDomainData = (queryClient: QueryClient, { domain }: {
+export const ensureUseSitesServiceGetApiV1SitesDomainByDomainData = (queryClient: QueryClient, { domain, userId }: {
   domain: string;
-}) => queryClient.ensureQueryData({ queryKey: Common.UseSitesServiceGetApiV1SitesDomainByDomainKeyFn({ domain }), queryFn: () => SitesService.getApiV1SitesDomainByDomain({ domain }) });
-export const ensureUseGoalsServiceGetApiV1GoalsSiteDomainByDomainData = (queryClient: QueryClient, { domain, goalType, limit, skip }: {
+  userId: string;
+}) => queryClient.ensureQueryData({ queryKey: Common.UseSitesServiceGetApiV1SitesDomainByDomainKeyFn({ domain, userId }), queryFn: () => SitesService.getApiV1SitesDomainByDomain({ domain, userId }) });
+export const ensureUseGoalsServiceGetApiV1GoalsSiteDomainByDomainData = (queryClient: QueryClient, { category, domain, goalType, limit, skip, userId }: {
+  category?: string;
   domain: string;
   goalType?: string;
   limit?: number;
   skip?: number;
-}) => queryClient.ensureQueryData({ queryKey: Common.UseGoalsServiceGetApiV1GoalsSiteDomainByDomainKeyFn({ domain, goalType, limit, skip }), queryFn: () => GoalsService.getApiV1GoalsSiteDomainByDomain({ domain, goalType, limit, skip }) });
-export const ensureUseGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameData = (queryClient: QueryClient, { domain, name }: {
+  userId: string;
+}) => queryClient.ensureQueryData({ queryKey: Common.UseGoalsServiceGetApiV1GoalsSiteDomainByDomainKeyFn({ category, domain, goalType, limit, skip, userId }), queryFn: () => GoalsService.getApiV1GoalsSiteDomainByDomain({ category, domain, goalType, limit, skip, userId }) });
+export const ensureUseGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameData = (queryClient: QueryClient, { domain, name, userId }: {
   domain: string;
   name: string;
-}) => queryClient.ensureQueryData({ queryKey: Common.UseGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameKeyFn({ domain, name }), queryFn: () => GoalsService.getApiV1GoalsSiteDomainByDomainGoalByName({ domain, name }) });
-export const ensureUseSegmentsServiceGetApiV1SegmentsData = (queryClient: QueryClient, { dataType, domain, limit, skip }: {
+  userId: string;
+}) => queryClient.ensureQueryData({ queryKey: Common.UseGoalsServiceGetApiV1GoalsSiteDomainByDomainGoalByNameKeyFn({ domain, name, userId }), queryFn: () => GoalsService.getApiV1GoalsSiteDomainByDomainGoalByName({ domain, name, userId }) });
+export const ensureUseSegmentsServiceGetApiV1SegmentsData = (queryClient: QueryClient, { dataType, domain, limit, skip, userId }: {
   dataType?: string;
   domain: string;
   limit?: number;
   skip?: number;
-}) => queryClient.ensureQueryData({ queryKey: Common.UseSegmentsServiceGetApiV1SegmentsKeyFn({ dataType, domain, limit, skip }), queryFn: () => SegmentsService.getApiV1Segments({ dataType, domain, limit, skip }) });
-export const ensureUseSegmentsServiceGetApiV1SegmentsByDomainByNameData = (queryClient: QueryClient, { domain, name }: {
+  userId: string;
+}) => queryClient.ensureQueryData({ queryKey: Common.UseSegmentsServiceGetApiV1SegmentsKeyFn({ dataType, domain, limit, skip, userId }), queryFn: () => SegmentsService.getApiV1Segments({ dataType, domain, limit, skip, userId }) });
+export const ensureUseSegmentsServiceGetApiV1SegmentsByDomainByNameData = (queryClient: QueryClient, { domain, name, userId }: {
   domain: string;
   name: string;
-}) => queryClient.ensureQueryData({ queryKey: Common.UseSegmentsServiceGetApiV1SegmentsByDomainByNameKeyFn({ domain, name }), queryFn: () => SegmentsService.getApiV1SegmentsByDomainByName({ domain, name }) });
+  userId: string;
+}) => queryClient.ensureQueryData({ queryKey: Common.UseSegmentsServiceGetApiV1SegmentsByDomainByNameKeyFn({ domain, name, userId }), queryFn: () => SegmentsService.getApiV1SegmentsByDomainByName({ domain, name, userId }) });

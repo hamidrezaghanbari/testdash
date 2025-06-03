@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetApiV1SitesUserByUserIdData, GetApiV1SitesUserByUserIdResponse, PostApiV1SitesData, PostApiV1SitesResponse, GetApiV1SitesDomainByDomainData, GetApiV1SitesDomainByDomainResponse, PutApiV1SitesDomainByDomainData, PutApiV1SitesDomainByDomainResponse, DeleteApiV1SitesDomainByDomainData, DeleteApiV1SitesDomainByDomainResponse, GetApiV1GoalsSiteDomainByDomainData, GetApiV1GoalsSiteDomainByDomainResponse, PostApiV1GoalsSiteDomainByDomainData, PostApiV1GoalsSiteDomainByDomainResponse, GetApiV1GoalsSiteDomainByDomainGoalByNameData, GetApiV1GoalsSiteDomainByDomainGoalByNameResponse, PutApiV1GoalsSiteDomainByDomainGoalByNameData, PutApiV1GoalsSiteDomainByDomainGoalByNameResponse, DeleteApiV1GoalsSiteDomainByDomainGoalByNameData, DeleteApiV1GoalsSiteDomainByDomainGoalByNameResponse, GetApiV1SegmentsData, GetApiV1SegmentsResponse, PostApiV1SegmentsData, PostApiV1SegmentsResponse, GetApiV1SegmentsByDomainByNameData, GetApiV1SegmentsByDomainByNameResponse, PutApiV1SegmentsByDomainByNameData, PutApiV1SegmentsByDomainByNameResponse, DeleteApiV1SegmentsByDomainByNameData, DeleteApiV1SegmentsByDomainByNameResponse, PostApiV1AnalyticsSiteDomainGoalsStatsData, PostApiV1AnalyticsSiteDomainGoalsStatsResponse, PostApiV1AnalyticsSiteDomainReferrerStatsData, PostApiV1AnalyticsSiteDomainReferrerStatsResponse, PostApiV1AnalyticsAnalyticsData, PostApiV1AnalyticsAnalyticsResponse } from './types.gen';
+import type { GetApiV1SitesUserByUserIdData, GetApiV1SitesUserByUserIdResponse, PostApiV1SitesData, PostApiV1SitesResponse, GetApiV1SitesDomainByDomainData, GetApiV1SitesDomainByDomainResponse, PutApiV1SitesDomainByDomainData, PutApiV1SitesDomainByDomainResponse, DeleteApiV1SitesDomainByDomainData, DeleteApiV1SitesDomainByDomainResponse, GetApiV1GoalsSiteDomainByDomainData, GetApiV1GoalsSiteDomainByDomainResponse, PostApiV1GoalsSiteDomainByDomainData, PostApiV1GoalsSiteDomainByDomainResponse, GetApiV1GoalsSiteDomainByDomainGoalByNameData, GetApiV1GoalsSiteDomainByDomainGoalByNameResponse, PutApiV1GoalsSiteDomainByDomainGoalByNameData, PutApiV1GoalsSiteDomainByDomainGoalByNameResponse, DeleteApiV1GoalsSiteDomainByDomainGoalByNameData, DeleteApiV1GoalsSiteDomainByDomainGoalByNameResponse, GetApiV1SegmentsData, GetApiV1SegmentsResponse, PostApiV1SegmentsData, PostApiV1SegmentsResponse, GetApiV1SegmentsByDomainByNameData, GetApiV1SegmentsByDomainByNameResponse, PutApiV1SegmentsByDomainByNameData, PutApiV1SegmentsByDomainByNameResponse, DeleteApiV1SegmentsByDomainByNameData, DeleteApiV1SegmentsByDomainByNameResponse, PostApiV1AnalyticsSiteDomainGoalsStatsData, PostApiV1AnalyticsSiteDomainGoalsStatsResponse, PostApiV1AnalyticsSiteDomainReferrerStatsData, PostApiV1AnalyticsSiteDomainReferrerStatsResponse, PostApiV1AnalyticsAnalyticsData, PostApiV1AnalyticsAnalyticsResponse, PostApiV1AnalyticsPagesData, PostApiV1AnalyticsPagesResponse } from './types.gen';
 
 export class SitesService {
     /**
@@ -38,6 +38,7 @@ export class SitesService {
     /**
      * Create Site
      * @param data The data for the request.
+     * @param data.userId The user ID creating the site
      * @param data.requestBody
      * @returns Site Successful Response
      * @throws ApiError
@@ -46,6 +47,9 @@ export class SitesService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/sites/',
+            headers: {
+                'user-id': data.userId
+            },
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -62,6 +66,7 @@ export class SitesService {
      * Read Site By Domain
      * @param data The data for the request.
      * @param data.domain The domain of the site to retrieve
+     * @param data.userId The user ID requesting the site
      * @returns Site Successful Response
      * @throws ApiError
      */
@@ -71,6 +76,9 @@ export class SitesService {
             url: '/api/v1/sites/domain/{domain}',
             path: {
                 domain: data.domain
+            },
+            headers: {
+                'user-id': data.userId
             },
             errors: {
                 400: 'Invalid argument provided',
@@ -86,6 +94,7 @@ export class SitesService {
      * Update Site By Domain
      * @param data The data for the request.
      * @param data.domain The domain of the site to update
+     * @param data.userId The user ID updating the site
      * @param data.requestBody
      * @returns Site Successful Response
      * @throws ApiError
@@ -96,6 +105,9 @@ export class SitesService {
             url: '/api/v1/sites/domain/{domain}',
             path: {
                 domain: data.domain
+            },
+            headers: {
+                'user-id': data.userId
             },
             body: data.requestBody,
             mediaType: 'application/json',
@@ -114,6 +126,7 @@ export class SitesService {
      * Delete Site By Domain
      * @param data The data for the request.
      * @param data.domain The domain of the site to delete
+     * @param data.userId The user ID deleting the site
      * @returns Site Successful Response
      * @throws ApiError
      */
@@ -123,6 +136,9 @@ export class SitesService {
             url: '/api/v1/sites/domain/{domain}',
             path: {
                 domain: data.domain
+            },
+            headers: {
+                'user-id': data.userId
             },
             errors: {
                 400: 'Invalid argument provided',
@@ -139,11 +155,18 @@ export class SitesService {
 export class GoalsService {
     /**
      * Read Goals By Domain
+     * Get goals by domain with optional filtering by type and category.
+     *
+     * - **domain**: The domain of the site
+     * - **goal_type**: Filter by goal type (pageview, event, revenue)
+     * - **category**: Filter by goal category (goal, default)
      * @param data The data for the request.
      * @param data.domain The domain of the site to get goals for
+     * @param data.userId The user ID requesting the goals
      * @param data.skip Number of records to skip (for pagination)
      * @param data.limit Maximum number of records to return (for pagination)
      * @param data.goalType Filter goals by type (e.g., 'pageview', 'event', 'revenue')
+     * @param data.category Filter goals by category (e.g., 'goal', 'default')
      * @returns Goal Successful Response
      * @throws ApiError
      */
@@ -154,10 +177,14 @@ export class GoalsService {
             path: {
                 domain: data.domain
             },
+            headers: {
+                'user-id': data.userId
+            },
             query: {
                 skip: data.skip,
                 limit: data.limit,
-                goal_type: data.goalType
+                goal_type: data.goalType,
+                category: data.category
             },
             errors: {
                 400: 'Invalid argument provided',
@@ -171,8 +198,15 @@ export class GoalsService {
     
     /**
      * Create Goal By Domain
+     * Create a new goal for a site by domain.
+     *
+     * Accepts pageview, event, or revenue goals with simplified request structure.
+     * Only required fields need to be provided - no site_uuid or complex settings object.
+     *
+     * The goal category defaults to 'goal' if not specified.
      * @param data The data for the request.
      * @param data.domain The domain of the site to create a goal for
+     * @param data.userId The user ID creating the goal
      * @param data.requestBody
      * @returns Goal Successful Response
      * @throws ApiError
@@ -183,6 +217,9 @@ export class GoalsService {
             url: '/api/v1/goals/site/domain/{domain}',
             path: {
                 domain: data.domain
+            },
+            headers: {
+                'user-id': data.userId
             },
             body: data.requestBody,
             mediaType: 'application/json',
@@ -201,6 +238,7 @@ export class GoalsService {
      * @param data The data for the request.
      * @param data.domain The domain of the site
      * @param data.name The name of the goal to retrieve
+     * @param data.userId The user ID requesting the goal
      * @returns Goal Successful Response
      * @throws ApiError
      */
@@ -211,6 +249,9 @@ export class GoalsService {
             path: {
                 domain: data.domain,
                 name: data.name
+            },
+            headers: {
+                'user-id': data.userId
             },
             errors: {
                 400: 'Invalid argument provided',
@@ -227,6 +268,7 @@ export class GoalsService {
      * @param data The data for the request.
      * @param data.domain The domain of the site
      * @param data.name The name of the goal to update
+     * @param data.userId The user ID updating the goal
      * @param data.requestBody
      * @returns Goal Successful Response
      * @throws ApiError
@@ -238,6 +280,9 @@ export class GoalsService {
             path: {
                 domain: data.domain,
                 name: data.name
+            },
+            headers: {
+                'user-id': data.userId
             },
             body: data.requestBody,
             mediaType: 'application/json',
@@ -256,6 +301,7 @@ export class GoalsService {
      * @param data The data for the request.
      * @param data.domain The domain of the site
      * @param data.name The name of the goal to delete
+     * @param data.userId The user ID deleting the goal
      * @returns Goal Successful Response
      * @throws ApiError
      */
@@ -266,6 +312,9 @@ export class GoalsService {
             path: {
                 domain: data.domain,
                 name: data.name
+            },
+            headers: {
+                'user-id': data.userId
             },
             errors: {
                 400: 'Invalid argument provided',
@@ -284,6 +333,7 @@ export class SegmentsService {
      * Read Segments
      * @param data The data for the request.
      * @param data.domain Domain to filter segments by
+     * @param data.userId The user ID requesting the segments
      * @param data.skip Number of records to skip (for pagination)
      * @param data.limit Maximum number of records to return (for pagination)
      * @param data.dataType Filter segments by data type (e.g., 'does', 'does_not', 'time')
@@ -294,6 +344,9 @@ export class SegmentsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/segments/',
+            headers: {
+                'user-id': data.userId
+            },
             query: {
                 domain: data.domain,
                 skip: data.skip,
@@ -313,6 +366,7 @@ export class SegmentsService {
     /**
      * Create Segment
      * @param data The data for the request.
+     * @param data.userId The user ID creating the segment
      * @param data.requestBody
      * @returns Segment Successful Response
      * @throws ApiError
@@ -321,6 +375,9 @@ export class SegmentsService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/segments/',
+            headers: {
+                'user-id': data.userId
+            },
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -338,6 +395,7 @@ export class SegmentsService {
      * @param data The data for the request.
      * @param data.domain The domain of the segment to retrieve
      * @param data.name The name of the segment to retrieve
+     * @param data.userId The user ID requesting the segment
      * @returns Segment Successful Response
      * @throws ApiError
      */
@@ -348,6 +406,9 @@ export class SegmentsService {
             path: {
                 domain: data.domain,
                 name: data.name
+            },
+            headers: {
+                'user-id': data.userId
             },
             errors: {
                 400: 'Invalid argument provided',
@@ -364,6 +425,7 @@ export class SegmentsService {
      * @param data The data for the request.
      * @param data.domain The domain of the segment to update
      * @param data.name The name of the segment to update
+     * @param data.userId The user ID updating the segment
      * @param data.requestBody
      * @returns Segment Successful Response
      * @throws ApiError
@@ -375,6 +437,9 @@ export class SegmentsService {
             path: {
                 domain: data.domain,
                 name: data.name
+            },
+            headers: {
+                'user-id': data.userId
             },
             body: data.requestBody,
             mediaType: 'application/json',
@@ -393,6 +458,7 @@ export class SegmentsService {
      * @param data The data for the request.
      * @param data.domain The domain of the segment to delete
      * @param data.name The name of the segment to delete
+     * @param data.userId The user ID deleting the segment
      * @returns Segment Successful Response
      * @throws ApiError
      */
@@ -403,6 +469,9 @@ export class SegmentsService {
             path: {
                 domain: data.domain,
                 name: data.name
+            },
+            headers: {
+                'user-id': data.userId
             },
             errors: {
                 400: 'Invalid argument provided',
@@ -420,6 +489,7 @@ export class AnalyticsService {
     /**
      * Get Goal Statistics
      * @param data The data for the request.
+     * @param data.userId The user ID requesting the goal statistics
      * @param data.requestBody
      * @returns GoalStatsResponse Successful Response
      * @throws ApiError
@@ -428,6 +498,9 @@ export class AnalyticsService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/analytics/site/domain/goals/stats',
+            headers: {
+                'user-id': data.userId
+            },
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -443,6 +516,7 @@ export class AnalyticsService {
     /**
      * Get Referrer Statistics
      * @param data The data for the request.
+     * @param data.userId The user ID requesting the referrer statistics
      * @param data.requestBody
      * @returns ReferrerStatsResponse Successful Response
      * @throws ApiError
@@ -451,6 +525,9 @@ export class AnalyticsService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/analytics/site/domain/referrer/stats',
+            headers: {
+                'user-id': data.userId
+            },
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -466,6 +543,7 @@ export class AnalyticsService {
     /**
      * Get Segment Analytics
      * @param data The data for the request.
+     * @param data.userId The user ID requesting the segment analytics
      * @param data.requestBody
      * @returns unknown Successful Response
      * @throws ApiError
@@ -474,6 +552,40 @@ export class AnalyticsService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/analytics/analytics',
+            headers: {
+                'user-id': data.userId
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                400: 'Invalid argument provided',
+                404: 'Requested resource not found',
+                422: 'Validation Error',
+                500: 'An unknown error occurred',
+                503: 'Service is currently unavailable'
+            }
+        });
+    }
+    
+    /**
+     * Get Page Analytics
+     * Get page analytics for a site with pagination and filtering
+     *
+     * Returns analytics data showing unique visitors and average engagement time per page.
+     * Uses domain to identify the site and requires user authorization.
+     * @param data The data for the request.
+     * @param data.userId User identifier for authorization
+     * @param data.requestBody
+     * @returns PageAnalyticsResponse Successful Response
+     * @throws ApiError
+     */
+    public static postApiV1AnalyticsPages(data: PostApiV1AnalyticsPagesData): CancelablePromise<PostApiV1AnalyticsPagesResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/analytics/pages',
+            headers: {
+                'user-id': data.userId
+            },
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {

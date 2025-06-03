@@ -11,19 +11,13 @@ const campaignSchema = z.object({
 const DEFAULT_CAMPAIGN_TAB: CampaignTabData = { tab: 'list' };
 
 const campaignLoader: LoaderFunction = async ({ request }) => {
-  const url = new URL(request.url);
-
-  const queries = qs.parse(url.search, { ignoreQueryPrefix: true });
-
-  const { data, success } = await campaignSchema.safeParseAsync(queries);
-
-  if (success) return data;
-
-  const search = qs.stringify(DEFAULT_CAMPAIGN_TAB, { addQueryPrefix: true });
-
-  const target = url.origin + url.pathname + search;
-
-  return replace(target);
+  // const url = new URL(request.url);
+  // const queries = qs.parse(url.search, { ignoreQueryPrefix: true });
+  // const { data, success } = await campaignSchema.safeParseAsync(queries);
+  // if (success) return data;
+  // const search = qs.stringify(DEFAULT_CAMPAIGN_TAB, { addQueryPrefix: true });
+  // const target = url.origin + url.pathname + search;
+  // return replace(target);
 };
 
 export { campaignLoader, DEFAULT_CAMPAIGN_TAB };

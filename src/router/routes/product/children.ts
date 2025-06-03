@@ -4,6 +4,7 @@ import { ProductRedirection } from '@/router/handlers';
 import { lazyLoad } from '@/router/helpers';
 import { usersLoader } from '@/router/loaders/users';
 
+import { pagesScreensChildren } from '../pages-screens';
 import { analyticsChildren } from './analytics';
 import { channelsChildren } from './channels';
 import { dataPlatformChildren } from './dataPlatform';
@@ -35,6 +36,10 @@ const productChildren: RouteObject[] = [
         path: 'segment',
         children: segmentChildren,
       },
+      // {
+      //   path: 'pages-screens',
+      //   children: pagesScreensChildren,
+      // },
       {
         path: 'dataPlatform',
         children: dataPlatformChildren,

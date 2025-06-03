@@ -8,7 +8,7 @@ const campaignsChildren: RouteObject[] = [
     id: 'campaigns-list',
     path: '',
     lazy: lazyLoad('campaigns'),
-    loader: captchaLoader,
+    // loader: captchaLoader,
   },
 ];
 

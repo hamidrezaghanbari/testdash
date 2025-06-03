@@ -8,7 +8,7 @@ const segmentChildren: RouteObject[] = [
     id: 'segment-list',
     path: '',
     lazy: lazyLoad('segment'),
-    loader: captchaLoader,
+    // loader: captchaLoader,
   },
 ];
 

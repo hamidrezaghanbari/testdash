@@ -7,12 +7,12 @@ const protectedRouteLoader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
 
   // If no domain is set and user is not trying to access products page, redirect to products
-  if (!domain && !url.pathname.startsWith('/products')) {
-    throw redirect('/events');
-  }
+  // if (!domain && !url.pathname.startsWith('/products')) {
+  //   throw redirect('/events');
+  // }
 
   // TEMPORARY: Disable authentication check for development
-  return null;
+  // return null;
 
   /* Original authentication code (commented out temporarily)
   const user = await getCurrentUser();
