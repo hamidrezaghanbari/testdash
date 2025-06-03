@@ -15,14 +15,11 @@ const Root = () => {
 
 const RootRedirection = () => {
   // const product = useCurrentProduct();
-
   // if (product) {
   //   const { id } = product;
-
   //   return <Navigate to={generatePath('product/:id', { id: id.toString() })} replace />;
   // }
-
-  return <Navigate to="/events" replace />;
+  return <Navigate to="events" replace />;
 };
 
 export { Root, RootRedirection };

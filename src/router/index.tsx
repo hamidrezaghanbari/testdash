@@ -16,140 +16,50 @@ import {
   Segment,
 } from './handlers';
 import { lazyLoad } from './helpers';
-import { accountLoader, domainGuardLoader, protectedRouteLoader, rootLoader } from './loaders';
-import {
-  accountChildren,
-  backOfficeChildren,
-  campaignsChildren,
-  eventsChildren,
-  pagesScreensChildren,
-  productChildren,
-  productsChildren,
-  segmentChildren,
-} from './routes';
+import { domainGuardLoader, rootLoader } from './loaders';
+import { campaignsChildren, eventsChildren, pagesScreensChildren, segmentChildren } from './routes';
 
 const router = createBrowserRouter([
   {
     path: '/',
     id: 'root',
     loader: rootLoader,
-    Component: RootRedirection,
+    Component: Root,
     ErrorBoundary,
     HydrateFallback: Loading,
     hasErrorBoundary: true,
-    children: [],
-    // children: [
-    //   {
-    //     index: true,
-    //     Component: RootRedirection,
-    //   },
-    //   {
-    //     path: 'product',
-    //     loader: domainGuardLoader,
-    //     children: productChildren,
-    //   },
-    //   {
-    //     path: 'backOffice',
-    //     loader: domainGuardLoader,
-    //     children: backOfficeChildren,
-    //   },
-    //   {
-    //     path: 'notFound',
-    //     Component: NotFound,
-    //     hasErrorBoundary: false,
-    //   },
-    //   {
-    //     path: 'unauthorized',
-    //     Component: Unauthorized,
-    //     hasErrorBoundary: false,
-    //   },
-    // ],
+    children: [
+      {
+        index: true,
+        Component: RootRedirection,
+      },
+      {
+        path: 'events',
+        loader: domainGuardLoader,
+        children: eventsChildren,
+        hasErrorBoundary: true,
+      },
+      {
+        path: 'campaigns',
+        loader: domainGuardLoader,
+        children: campaignsChildren,
+        hasErrorBoundary: true,
+      },
+      {
+        path: 'segment',
+        loader: domainGuardLoader,
+        children: segmentChildren,
+        hasErrorBoundary: true,
+      },
+      {
+        path: 'pages-screens',
+        loader: domainGuardLoader,
+        children: pagesScreensChildren,
+        hasErrorBoundary: true,
+      },
+    ],
   },
-  // {
-  //   path: '/account',
-  //   id: 'account',
-  //   Component: Account,
-  //   loader: protectedRouteLoader,
-  //   ErrorBoundary,
-  //   HydrateFallback: Loading,
-  //   hasErrorBoundary: true,
-  //   children: accountChildren,
-  // },
-  {
-    path: '/events',
-    id: 'events',
-    Component: Events,
-    // loader: protectedRouteLoader,
-    ErrorBoundary,
-    HydrateFallback: Loading,
-    hasErrorBoundary: true,
-    children: eventsChildren,
-  },
-  {
-    path: '/campaigns',
-    id: 'campaigns',
-    Component: Campaigns,
-    // loader: protectedRouteLoader,
-    ErrorBoundary,
-    HydrateFallback: Loading,
-    hasErrorBoundary: true,
-    children: campaignsChildren,
-  },
-  // {
-  //   path: '/pages-screens',
-  //   id: 'pages-screens',
-  //   Component: PagesScreens,
-  //   loader: protectedRouteLoader,
-  //   ErrorBoundary,
-  //   HydrateFallback: Loading,
-  //   hasErrorBoundary: true,
-  //   children: pagesScreensChildren,
-  // },
-  {
-    path: '/segment',
-    id: 'segment',
-    Component: Segment,
-    // loader: protectedRouteLoader,
-    ErrorBoundary,
-    HydrateFallback: Loading,
-    hasErrorBoundary: true,
-    children: segmentChildren,
-  },
-  {
-    path: '/pages-screens',
-    id: 'pages-screens',
-    Component: PagesScreens,
-    // loader: protectedRouteLoader,
-    ErrorBoundary,
-    HydrateFallback: Loading,
-    hasErrorBoundary: true,
-    children: pagesScreensChildren,
-  },
-  // {
-  //   path: '/products',
-  //   id: 'products',
-  //   Component: Products,
-  //   loader: accountLoader,
-  //   ErrorBoundary,
-  //   HydrateFallback: Loading,
-  //   hasErrorBoundary: true,
-  //   children: productsChildren,
-  // },
-  // {
-  //   path: '/fullscreen',
-  //   element: (
-  //     <FullScreenLayout>
-  //       <Outlet />
-  //     </FullScreenLayout>
-  //   ),
-  //   children: [
-  //     {
-  //       path: 'invoice-preview/:id',
-  //       lazy: lazyLoad('backOffice/financial/invoice-list-preview'),
-  //     },
-  //     // Add more full-screen routes here
-  //   ],
-  // },
+
   {
     path: '*',
     element: <Navigate to="/events" />,

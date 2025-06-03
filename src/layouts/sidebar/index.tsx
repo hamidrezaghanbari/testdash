@@ -1,6 +1,5 @@
 import { Text } from '@smartech/ui';
-import { memo, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { memo, useState } from 'react';
 
 import LogoSvg from '@/assets/images/logo.svg';
 import { cn } from '@/common';
@@ -24,11 +23,6 @@ const Sidebar = () => {
   };
 
   const { domain } = useDomainStore();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!domain) navigate('/products');
-  }, [domain]);
 
   return (
     <aside

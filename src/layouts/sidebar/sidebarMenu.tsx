@@ -3,7 +3,6 @@ import { Fragment, memo } from 'react';
 import { NavLink, generatePath, useLocation } from 'react-router-dom';
 
 import { cn, prefix } from '@/common';
-import { useCurrentProduct } from '@/hooks';
 import { Render } from '@/utils';
 
 import './sidebar.scss';
@@ -19,7 +18,6 @@ interface SidebarMenuProps {
   toggle: (id: string) => void;
 }
 const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) => {
-  const product = useCurrentProduct();
   const location = useLocation();
 
   return (
@@ -27,8 +25,6 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
       {items.map(({ id, children = [], title, icon, href }) => {
         const menuHref = href;
         // const menuHref = product?.id ? generatePath(href, { productId: product?.id }) : href;
-
-        console.log(menuHref, location.pathname, 'new');
 
         const content = (
           <MenuItemContent
