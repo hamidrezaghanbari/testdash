@@ -132,7 +132,7 @@ function Products() {
         {isLoading ? (
           <div>Loading events...</div>
         ) : error ? (
-          <div>Error loading events: {(error as Error).message}</div>
+          <div>Error loading products: {(error as Error).message}</div>
         ) : (
           <Table
             data={processedData}
@@ -207,7 +207,8 @@ const AddProductModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   const onSubmit = (data: any) => {
     createProduct(
       {
-        requestBody: { domain: data?.domain, user_id: Cookies.get('userUuid') || '' },
+        requestBody: { domain: data?.domain },
+        userId: Cookies.get('userUuid') || '',
       },
       {
         onSuccess: () => {
@@ -332,6 +333,7 @@ const DeleteProductModal = ({
     deleteProduct(
       {
         domain: domain,
+        userId: Cookies.get('userUuid') || '',
       },
       {
         onSuccess: () => {
