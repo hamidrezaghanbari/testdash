@@ -173,7 +173,7 @@ function PagesScreens() {
       <div className="flex w-full items-center justify-between">
         <div className="flex flex-col gap-1 pt-8">
           <Text size="md" variant="semibold">
-            Referrer Analytics
+            Pages & Screens
           </Text>
         </div>
 

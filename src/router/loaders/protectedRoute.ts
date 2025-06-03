@@ -12,7 +12,7 @@ const protectedRouteLoader: LoaderFunction = async ({ request }) => {
   // }
 
   // TEMPORARY: Disable authentication check for development
-  return null;
+  // return null;
 
   /* Original authentication code (commented out temporarily)
   const user = await getCurrentUser();
