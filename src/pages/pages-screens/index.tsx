@@ -196,16 +196,6 @@ function PagesScreens() {
             Pages & Screens
           </Text>
         </div>
-
-        <Button
-          leading="icon"
-          icons={{ start: 'plus' }}
-          className="ml-auto"
-          variant="primary"
-          onClick={handleAddEvent}
-        >
-          Add new
-        </Button>
       </div>
 
       <div className="mb-4">
