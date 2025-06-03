@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     path: '/',
     id: 'root',
     loader: rootLoader,
-    Component: Events,
+    Component: RootRedirection,
     ErrorBoundary,
     HydrateFallback: Loading,
     hasErrorBoundary: true,
