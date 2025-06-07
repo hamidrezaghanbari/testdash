@@ -65,7 +65,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'products',
-        loader: domainGuardLoader,
+        // loader: domainGuardLoader,
         children: productsChildren,
         hasErrorBoundary: true,
       },
