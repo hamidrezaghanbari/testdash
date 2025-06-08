@@ -324,7 +324,10 @@ const AddEventModal = ({
     },
     z.object({
       name: z.string().min(1, { message: 'Event name is required' }),
-      pattern: z.string().min(1, { message: 'Pattern is required' }),
+      pattern: z
+        .string()
+        .min(1, { message: 'Pattern is required' })
+        .startsWith('/', { message: 'Pattern must start with /' }),
     }),
   );
 
@@ -378,6 +381,8 @@ const AddEventModal = ({
           name: editingEvent?.name || '',
           requestBody: {
             name: data.name || '',
+            page_url: data.pattern,
+            category: goalType === 'goal' ? 'goal' : 'general',
           },
           userId: Cookies.get('userUuid') || '',
         },
@@ -482,14 +487,14 @@ const AddEventModal = ({
           <label className="mb-2 block font-medium text-sm text-gray-700">Pattern</label>
           <div className="flex rounded-lg border border-gray-300">
             <span className="flex items-center rounded-l-lg border-r border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-              {domain}/
+              {domain}
             </span>
             <Controller
               control={control}
               name="pattern"
               render={({ field, fieldState: { invalid, error } }) => (
                 <Input
-                  placeholder="Pathname (e.g. checkout)"
+                  placeholder="Pathname (e.g. /checkout)"
                   className="rounded-l-none border-0"
                   required
                   error={invalid}
