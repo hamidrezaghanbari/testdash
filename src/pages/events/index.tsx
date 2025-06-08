@@ -396,6 +396,7 @@ const AddEventModal = ({
             count_method: 'once_per_page',
             url_pattern: 'equals',
             page_url: data?.pattern,
+            category: goalType === 'goal' ? 'goal' : 'general',
           },
           userId: Cookies.get('userUuid') || '',
         },
@@ -432,13 +433,13 @@ const AddEventModal = ({
 
         {/* Goal Type Toggle */}
         <div className="mb-6">
-          <div className="flex rounded-lg border border-gray-300">
+          <div className="flex space-x-1 rounded-lg bg-gray-100 p-1">
             <button
               type="button"
-              className={`flex-1 rounded-l-lg px-4 py-2 font-medium text-sm ${
+              className={`flex-1 rounded-md py-2 font-medium text-sm transition-colors ${
                 goalType === 'goal'
-                  ? 'border-r border-gray-300 bg-gray-100 text-gray-900'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-base-white text-gray-900 shadow-sm'
+                  : 'bg-transparent hover:bg-white/50 text-gray-500'
               }`}
               onClick={() => setGoalType('goal')}
             >
@@ -446,10 +447,10 @@ const AddEventModal = ({
             </button>
             <button
               type="button"
-              className={`flex-1 rounded-r-lg px-4 py-2 font-medium text-sm ${
+              className={`flex-1 rounded-md py-2 font-medium text-sm transition-colors ${
                 goalType === 'general'
-                  ? 'border-l border-gray-300 bg-gray-100 text-gray-900'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-base-white text-gray-900 shadow-sm'
+                  : 'bg-transparent hover:bg-white/50 text-gray-500'
               }`}
               onClick={() => setGoalType('general')}
             >
@@ -481,14 +482,14 @@ const AddEventModal = ({
           <label className="mb-2 block font-medium text-sm text-gray-700">Pattern</label>
           <div className="flex rounded-lg border border-gray-300">
             <span className="flex items-center rounded-l-lg border-r border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-              Equals
+              {domain}/
             </span>
             <Controller
               control={control}
               name="pattern"
               render={({ field, fieldState: { invalid, error } }) => (
                 <Input
-                  placeholder="URL"
+                  placeholder="Pathname (e.g. /checkout)"
                   className="rounded-l-none border-0"
                   required
                   error={invalid}
