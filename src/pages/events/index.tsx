@@ -309,7 +309,7 @@ const AddEventModal = ({
   editingEvent?: ExtendedGoal | null;
 }) => {
   const { domain } = useDomainStore();
-  const [goalType, setGoalType] = useState<'goal' | 'general'>('goal');
+  const [goalType, setGoalType] = useState<'goal' | 'default'>('goal');
   const notify = useNotify();
 
   const isEditing = !!editingEvent;
@@ -345,7 +345,7 @@ const AddEventModal = ({
         name: editingEvent.name || '',
         pattern: editingEvent.settings?.page_url || '',
       });
-      setGoalType(editingEvent.type === 'goal' ? 'goal' : 'general');
+      setGoalType(editingEvent.type === 'goal' ? 'goal' : 'default');
     } else {
       reset({ name: '', pattern: '' });
       setGoalType('goal');
@@ -382,7 +382,7 @@ const AddEventModal = ({
           requestBody: {
             name: data.name || '',
             page_url: data.pattern,
-            category: goalType === 'goal' ? 'goal' : 'general',
+            category: goalType === 'goal' ? 'goal' : 'default',
           },
           userId: Cookies.get('userUuid') || '',
         },
@@ -401,7 +401,7 @@ const AddEventModal = ({
             count_method: 'once_per_page',
             url_pattern: 'equals',
             page_url: data?.pattern,
-            category: goalType === 'goal' ? 'goal' : 'general',
+            category: goalType === 'goal' ? 'goal' : 'default',
           },
           userId: Cookies.get('userUuid') || '',
         },
@@ -453,11 +453,11 @@ const AddEventModal = ({
             <button
               type="button"
               className={`flex-1 rounded-md py-2 font-medium text-sm transition-colors ${
-                goalType === 'general'
+                goalType === 'default'
                   ? 'bg-base-white text-gray-900 shadow-sm'
                   : 'bg-transparent hover:bg-white/50 text-gray-500'
               }`}
-              onClick={() => setGoalType('general')}
+              onClick={() => setGoalType('default')}
             >
               General
             </button>
