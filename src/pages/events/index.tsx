@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { createFormHandler } from '@/common';
 import { Card } from '@/components';
+import TableLoading from '@/components/tableLoading';
 import Page from '@/layouts/container';
 import {
   useAnalyticsServicePostApiV1AnalyticsSiteDomainGoalsStats,
@@ -16,6 +17,23 @@ import {
 } from '@/openapi/queries';
 import { Goal } from '@/openapi/requests/types.gen';
 import { useDomainStore } from '@/store';
+
+const SortIcon = () => (
+  <svg
+    className="h-4 w-4 text-gray-400"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+    />
+  </svg>
+);
 
 // Extended Goal interface with settings field
 interface ExtendedGoal extends Goal {
@@ -169,17 +187,23 @@ function Events() {
       </div>
 
       {isLoading ? (
-        <div>Loading events...</div>
+        <TableLoading />
       ) : error ? (
         <div>Error loading events: {(error as Error).message}</div>
       ) : (
         <div className="bg-white overflow-hidden rounded-lg border border-gray-200">
           {/* Table Header */}
-          <div className="grid grid-cols-5 gap-4 border-b border-gray-200 bg-gray-50 px-4 py-3 font-medium text-sm text-gray-600">
+          <div className="bg-white grid grid-cols-5 gap-4 border-b border-gray-200 px-4 py-3 font-semibold text-sm text-gray-600">
             <div>Name</div>
-            <div className="text-right">Count</div>
-            <div className="text-right">Total User</div>
-            <div className="text-right">Event Per User</div>
+            <div className="flex items-center justify-end gap-1">
+              Count <SortIcon />
+            </div>
+            <div className="flex items-center justify-end gap-1">
+              Total User <SortIcon />
+            </div>
+            <div className="flex items-center justify-end gap-1">
+              Event Per User <SortIcon />
+            </div>
             <div className="text-right">Action</div>
           </div>
 
@@ -202,7 +226,7 @@ function Events() {
                           <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                             <path
                               fillRule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
                               clipRule="evenodd"
                             />
                           </svg>
@@ -210,7 +234,7 @@ function Events() {
                           <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                             <path
                               fillRule="evenodd"
-                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                               clipRule="evenodd"
                             />
                           </svg>
@@ -253,18 +277,19 @@ function Events() {
                 {isExpanded && hasExpandableContent && (
                   <div className="border-b border-gray-200 bg-gray-50">
                     <div className="px-4 py-3">
-                      <div className="mb-3 grid grid-cols-4 gap-4 px-8 font-medium text-sm text-gray-600">
-                        <div>Source</div>
+                      <div className="grid grid-cols-5 gap-4 pb-2 text-sm font-normal text-gray-600">
+                        <div className="pl-8">Source</div>
                         <div className="text-right">Count</div>
                         <div className="text-right">Total User</div>
                         <div className="text-right">Event Per User</div>
+                        <div />
                       </div>
                       {record.sources?.map((source, sourceIndex) => (
                         <div
                           key={sourceIndex}
-                          className="grid grid-cols-4 gap-4 border-b border-gray-200 px-8 py-2 text-sm last:border-b-0"
+                          className="grid grid-cols-5 gap-4 border-t border-gray-200 py-2 text-sm"
                         >
-                          <div className="text-gray-700">{source.utm_source}</div>
+                          <div className="pl-8 text-gray-700">{source.utm_source}</div>
                           <div className="text-right font-medium text-gray-900">
                             {source.count.toLocaleString()}
                           </div>
@@ -274,6 +299,7 @@ function Events() {
                           <div className="text-right font-medium text-gray-900">
                             {source.event_per_user}
                           </div>
+                          <div />
                         </div>
                       ))}
                     </div>

@@ -17,16 +17,16 @@ const Version = ({ className }: VersionProps) => {
   const { domain, setDomain } = useDomainStore();
   const navigate = useNavigate();
 
-  const { data: domainsList } = useSitesServiceGetApiV1SitesUserByUserId({
+  const { data: domainsList, isLoading } = useSitesServiceGetApiV1SitesUserByUserId({
     userId: Cookies.get('userUuid') || '',
   });
 
   useEffect(() => {
-    if (!domainsList?.length) {
+    if (!domainsList?.length && !isLoading) {
       setDomain('');
       navigate('/products');
     }
-  }, [domainsList]);
+  }, [domainsList, isLoading]);
 
   return (
     <div className={cn('flex justify-center pb-5', className)}>
