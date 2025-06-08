@@ -59,15 +59,18 @@ function Campaigns() {
       return items.map((item) => {
         const hasSubSegments = Array.isArray(item.subSegments) && item.subSegments.length > 0;
         return {
-          ...item,
+          name: item.name,
+          _total_user: item.analytics?.total_users,
+          _sessions: item.analytics?.total_sessions,
+          _avg_time: item.analytics?.avg_time,
           isExpandable: hasSubSegments,
-          subSegments: hasSubSegments ? transform(item.subSegments) : item.subSegments,
+          subSegments: hasSubSegments ? transform(item.subSegments) : undefined,
         };
       });
     };
 
-    if (Array.isArray(data)) {
-      return transform(data);
+    if (data && Array.isArray((data as any).segments)) {
+      return transform((data as any).segments);
     }
     return [];
   }, [data]);
