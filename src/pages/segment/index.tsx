@@ -10,10 +10,12 @@ import TableLoading from '@/components/tableLoading';
 import Page from '@/layouts/container';
 import {
   useAnalyticsServicePostApiV1AnalyticsAnalytics,
+  useAnalyticsServicePostApiV1AnalyticsSiteDomainGoalsStats,
   useGoalsServiceGetApiV1GoalsSiteDomainByDomain,
   useGoalsServicePostApiV1GoalsSiteDomainByDomain,
   useGoalsServicePutApiV1GoalsSiteDomainByDomainGoalByName,
   useSegmentsServicePostApiV1Segments,
+  useSegmentsServicePutApiV1SegmentsByDomainByName,
 } from '@/openapi/queries';
 import { Goal, SegmentCondition } from '@/openapi/requests/types.gen';
 import { useDomainStore } from '@/store';
@@ -36,6 +38,7 @@ interface ExtendedSegment {
   _avg_time?: number;
   subSegments?: ExtendedSegment[];
   isExpandable?: boolean;
+  conditions?: SegmentCondition[];
 }
 
 function Campaigns() {
@@ -65,6 +68,7 @@ function Campaigns() {
           _avg_time: item.analytics?.avg_time,
           isExpandable: hasSubSegments,
           subSegments: hasSubSegments ? transform(item.subSegments) : undefined,
+          conditions: item.conditions,
         };
       });
     };
@@ -332,8 +336,9 @@ const AddEventModal = ({
   const { domain } = useDomainStore();
   const notify = useNotify();
   const [conditions, setConditions] = useState<SegmentCondition[]>([
-    { data_type: '', condition: '' },
+    { data_type: 'does', condition: '' },
   ]);
+  const [goals, setGoals] = useState<{ name: string }[]>([]);
 
   const isEditing = !!editingEvent;
 
@@ -351,6 +356,28 @@ const AddEventModal = ({
   const { handleSubmit, formState, control, reset } = useCreateEventForm();
 
   const { mutate: createSegment, isPending } = useSegmentsServicePostApiV1Segments({});
+  const { mutate: updateSegment, isPending: isUpdating } =
+    useSegmentsServicePutApiV1SegmentsByDomainByName({});
+  const { mutate: getGoals, isPending: isGoalsLoading } =
+    useAnalyticsServicePostApiV1AnalyticsSiteDomainGoalsStats({});
+
+  React.useEffect(() => {
+    if (isOpen) {
+      getGoals(
+        { requestBody: { domain: domain }, userId: Cookies.get('userUuid') || '' },
+        {
+          onSuccess: (data) => {
+            if (data?.goals) {
+              const goalsArray = Object.values(data.goals).map((goalStat) => ({
+                name: goalStat.name,
+              }));
+              setGoals(goalsArray);
+            }
+          },
+        },
+      );
+    }
+  }, [isOpen, domain, getGoals]);
 
   // Reset form when editingEvent changes
   React.useEffect(() => {
@@ -358,17 +385,21 @@ const AddEventModal = ({
       reset({
         name: editingEvent.name || '',
       });
-      setConditions([{ data_type: '', condition: '' }]);
+      if (editingEvent.conditions && editingEvent.conditions.length > 0) {
+        setConditions(editingEvent.conditions);
+      } else {
+        setConditions([{ data_type: 'does', condition: '' }]);
+      }
     } else {
       reset({ name: '' });
-      setConditions([{ data_type: '', condition: '' }]);
+      setConditions([{ data_type: 'does', condition: '' }]);
     }
   }, [editingEvent, reset]);
 
   if (!isOpen) return null;
 
   const addCondition = () => {
-    setConditions([...conditions, { data_type: '', condition: '' }]);
+    setConditions([...conditions, { data_type: 'does', condition: '' }]);
   };
 
   const updateCondition = (index: number, field: 'data_type' | 'condition', value: string) => {
@@ -392,7 +423,7 @@ const AddEventModal = ({
       });
       onClose();
       reset();
-      setConditions([{ data_type: '', condition: '' }]);
+      setConditions([{ data_type: 'does', condition: '' }]);
       refetch();
     };
 
@@ -406,6 +437,26 @@ const AddEventModal = ({
 
     if (isEditing) {
       // Logic for updating a segment would go here
+      updateSegment(
+        {
+          domain: domain,
+          name: data.name,
+          requestBody: {
+            conditions: conditions,
+          },
+          userId: Cookies.get('userUuid') || '',
+          // domain: domain,
+          // requestBody: {
+          //   name: data.name,
+          //   conditions: conditions,
+          // },
+          // userId: Cookies.get('userUuid') || '',
+        },
+        {
+          onSuccess,
+          onError,
+        },
+      );
     } else {
       createSegment(
         {
@@ -473,11 +524,11 @@ const AddEventModal = ({
             <div key={index} className="mb-3">
               <div className="flex rounded-lg border border-gray-300">
                 <select
+                  name="data_type"
                   value={condition.data_type}
                   onChange={(e) => updateCondition(index, 'data_type', e.target.value)}
                   className="focus:border-blue-500 focus:ring-blue-500 flex-none rounded-l-lg border-0 border-r border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:ring-1"
                 >
-                  <option value="">Data Type</option>
                   <option value="does">Does</option>
                   <option value="does_not">Does not</option>
                   {/* <option value="time">Time</option> */}
@@ -488,13 +539,19 @@ const AddEventModal = ({
                   <option value="location">Location</option> */}
                 </select>
 
-                <input
-                  type="text"
+                <select
                   value={condition.condition}
                   onChange={(e) => updateCondition(index, 'condition', e.target.value)}
-                  placeholder="Value"
+                  disabled={isGoalsLoading}
                   className="focus:border-blue-500 focus:ring-blue-500 flex-1 rounded-r-lg border-0 px-3 py-2 text-sm focus:ring-1"
-                />
+                >
+                  <option value="">Select a goal</option>
+                  {goals.map((goal) => (
+                    <option key={goal.name} value={goal.name}>
+                      {goal.name}
+                    </option>
+                  ))}
+                </select>
 
                 {conditions.length > 1 && (
                   <button
@@ -532,10 +589,15 @@ const AddEventModal = ({
         </div>
 
         <div className="flex justify-end gap-3">
-          <Button variant="secondary" onClick={onClose} disabled={isPending}>
+          <Button variant="secondary" onClick={onClose} disabled={isPending || isUpdating}>
             Cancel
           </Button>
-          <Button variant="primary" className="px-8" spinning={isPending}>
+          <Button
+            type="submit"
+            variant="primary"
+            className="px-8"
+            spinning={isPending || isUpdating}
+          >
             {isEditing ? 'Update segment' : 'Add segment'}
           </Button>
         </div>
