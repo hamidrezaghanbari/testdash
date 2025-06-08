@@ -489,7 +489,7 @@ const AddEventModal = ({
               name="pattern"
               render={({ field, fieldState: { invalid, error } }) => (
                 <Input
-                  placeholder="Pathname (e.g. /checkout)"
+                  placeholder="Pathname (e.g. checkout)"
                   className="rounded-l-none border-0"
                   required
                   error={invalid}
