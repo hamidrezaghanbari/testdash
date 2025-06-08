@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { createFormHandler } from '@/common';
 import { Card } from '@/components';
+import TableLoading from '@/components/tableLoading';
 import Page from '@/layouts/container';
 import {
   useAnalyticsServicePostApiV1AnalyticsAnalytics,
@@ -54,81 +55,29 @@ function Campaigns() {
 
   // Transform API response data into ExtendedSegment format
   const processedSegments: ExtendedSegment[] = React.useMemo(() => {
-    // Fallback data matching the image provided
-    return [
-      {
-        name: 'All User',
-        _total_user: 2569,
-        _sessions: 4288,
-        _avg_time: 624, // 10m 24s = 624 seconds
-        isExpandable: true,
-        subSegments: [
-          {
-            name: 'Purchasers',
-            _total_user: 345,
-            _sessions: 582,
-            _avg_time: 788, // 13m 8s = 788 seconds
-          },
-        ],
-      },
-      {
-        name: 'Source',
-        _total_user: 0,
-        _sessions: 0,
-        _avg_time: 0,
-        isExpandable: true,
-        subSegments: [
-          {
-            name: 'Google',
-            _total_user: 138,
-            _sessions: 293,
-            _avg_time: 174, // 2m 54s = 174 seconds
-          },
-          {
-            name: 'Bing',
-            _total_user: 89,
-            _sessions: 196,
-            _avg_time: 111, // 1m 51s = 111 seconds
-          },
-        ],
-      },
-      {
-        name: 'Researcher',
-        _total_user: 227,
-        _sessions: 464,
-        _avg_time: 1992, // 33m 12s = 1992 seconds
-        isExpandable: false,
-      },
-      {
-        name: 'Bargain Hunter',
-        _total_user: 416,
-        _sessions: 446,
-        _avg_time: 382, // 6m 22s = 382 seconds
-        isExpandable: false,
-      },
-      {
-        name: 'Loyal Customer',
-        _total_user: 301,
-        _sessions: 382,
-        _avg_time: 648, // 10m 48s = 648 seconds
-        isExpandable: false,
-      },
-      {
-        name: 'Impulse Buyer',
-        _total_user: 259,
-        _sessions: 326,
-        _avg_time: 116, // 1m 56s = 116 seconds
-        isExpandable: false,
-      },
-    ];
+    const transform = (items: any[]): ExtendedSegment[] => {
+      return items.map((item) => {
+        const hasSubSegments = Array.isArray(item.subSegments) && item.subSegments.length > 0;
+        return {
+          ...item,
+          isExpandable: hasSubSegments,
+          subSegments: hasSubSegments ? transform(item.subSegments) : item.subSegments,
+        };
+      });
+    };
+
+    if (Array.isArray(data)) {
+      return transform(data);
+    }
+    return [];
   }, [data]);
 
   const refetch = () => {
-    mutate({ requestBody: { domain: domain } });
+    mutate({ requestBody: { domain: domain }, userId: Cookies.get('userUuid') || '' });
   };
 
   useEffect(() => {
-    mutate({ requestBody: { domain: domain } });
+    mutate({ requestBody: { domain: domain }, userId: Cookies.get('userUuid') || '' });
   }, []);
 
   // Use processed segment data
@@ -213,7 +162,7 @@ function Campaigns() {
       </div>
 
       {isLoading ? (
-        <div>Loading segments...</div>
+        <TableLoading />
       ) : error ? (
         <div>Error loading segments: {(error as Error).message}</div>
       ) : (
@@ -460,20 +409,24 @@ const AddEventModal = ({
       });
     };
 
-    // For now, we'll use the segments API for creating
-    createSegment(
-      {
-        requestBody: {
-          name: data.name,
-          conditions: conditions.filter((c) => c.data_type && c.condition),
-          domain: domain,
+    if (isEditing) {
+      // Logic for updating a segment would go here
+    } else {
+      createSegment(
+        {
+          requestBody: {
+            name: data.name,
+            conditions: conditions,
+            domain: domain,
+          },
+          userId: Cookies.get('userUuid') || '',
         },
-      },
-      {
-        onSuccess,
-        onError,
-      },
-    );
+        {
+          onSuccess,
+          onError,
+        },
+      );
+    }
   };
 
   return (
@@ -530,11 +483,14 @@ const AddEventModal = ({
                   className="focus:border-blue-500 focus:ring-blue-500 flex-none rounded-l-lg border-0 border-r border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:ring-1"
                 >
                   <option value="">Data Type</option>
-                  <option value="event">Event</option>
+                  <option value="does">Does</option>
+                  <option value="does_not">Does not</option>
+                  <option value="time">Time</option>
+                  {/* <option value="event">Event</option>
                   <option value="page_url">Page URL</option>
                   <option value="user_property">User Property</option>
                   <option value="device_type">Device Type</option>
-                  <option value="location">Location</option>
+                  <option value="location">Location</option> */}
                 </select>
 
                 <input

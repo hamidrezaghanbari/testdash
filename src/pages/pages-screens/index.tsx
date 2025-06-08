@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { createFormHandler } from '@/common';
 import { Card } from '@/components';
+import TableLoading from '@/components/tableLoading';
 import Page from '@/layouts/container';
 import {
   useAnalyticsServicePostApiV1AnalyticsAnalytics,
@@ -146,11 +147,7 @@ function PagesScreens() {
       </div>
 
       {isLoading ? (
-        <div className="bg-white overflow-hidden rounded-lg border border-gray-200 p-8">
-          <div className="flex items-center justify-center">
-            <div className="text-gray-500">Loading page analytics data...</div>
-          </div>
-        </div>
+        <TableLoading />
       ) : error ? (
         <div className="bg-white overflow-hidden rounded-lg border border-gray-200 p-8">
           <div className="flex flex-col items-center justify-center gap-2">

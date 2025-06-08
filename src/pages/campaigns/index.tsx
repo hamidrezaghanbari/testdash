@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { createFormHandler } from '@/common';
 import { Card } from '@/components';
+import TableLoading from '@/components/tableLoading';
 import Page from '@/layouts/container';
 import {
   useAnalyticsServicePostApiV1AnalyticsSiteDomainReferrerStats,
@@ -123,11 +124,11 @@ function Campaigns() {
   }, [data?.referrer_stats]);
 
   const refetch = () => {
-    mutate({ requestBody: { domain: domain } });
+    mutate({ requestBody: { domain: domain }, userId: Cookies.get('userUuid') || '' });
   };
 
   useEffect(() => {
-    mutate({ requestBody: { domain: domain } });
+    mutate({ requestBody: { domain: domain }, userId: Cookies.get('userUuid') || '' });
   }, []);
 
   // Use processed referrer data
@@ -212,7 +213,7 @@ function Campaigns() {
       </div>
 
       {isLoading ? (
-        <div>Loading referrers...</div>
+        <TableLoading />
       ) : error ? (
         <div>Error loading referrers: {(error as Error).message}</div>
       ) : (
@@ -409,6 +410,7 @@ const AddEventModal = ({
           requestBody: {
             name: data.name || '',
           },
+          userId: Cookies.get('userUuid') || '',
         },
         {
           onSuccess,
@@ -426,6 +428,7 @@ const AddEventModal = ({
             url_pattern: 'equals',
             page_url: data?.pattern,
           },
+          userId: Cookies.get('userUuid') || '',
         },
         {
           onSuccess,
