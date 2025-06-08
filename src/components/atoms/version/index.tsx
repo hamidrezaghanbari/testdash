@@ -1,6 +1,7 @@
 import { Avatar, Button, Icon, Menu, Radio, Text } from '@smartech/ui';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { cn } from '@/common';
 import { useSitesServiceGetApiV1SitesUserByUserId } from '@/openapi/queries';
@@ -14,10 +15,18 @@ interface VersionProps {
 
 const Version = ({ className }: VersionProps) => {
   const { domain, setDomain } = useDomainStore();
+  const navigate = useNavigate();
 
   const { data: domainsList } = useSitesServiceGetApiV1SitesUserByUserId({
     userId: Cookies.get('userUuid') || '',
   });
+
+  useEffect(() => {
+    if (!domainsList?.length) {
+      setDomain('');
+      navigate('/products');
+    }
+  }, [domainsList]);
 
   return (
     <div className={cn('flex justify-center pb-5', className)}>
