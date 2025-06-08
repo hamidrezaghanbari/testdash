@@ -80,11 +80,11 @@ function Events() {
   }, [data?.goals, domain]);
 
   const refetch = () => {
-    mutate({ requestBody: { domain: domain } });
+    mutate({ requestBody: { domain }, userId: Cookies.get('userUuid') || '' });
   };
 
   useEffect(() => {
-    mutate({ requestBody: { domain: domain } });
+    mutate({ requestBody: { domain }, userId: Cookies.get('userUuid') || '' });
   }, []);
 
   // Remove the fallback data since we're now using real data
@@ -340,7 +340,7 @@ const AddEventModal = ({
         name: editingEvent.name || '',
         pattern: editingEvent.settings?.page_url || '',
       });
-      setGoalType(editingEvent.goal_type === 'goal' ? 'goal' : 'general');
+      setGoalType(editingEvent.type === 'goal' ? 'goal' : 'general');
     } else {
       reset({ name: '', pattern: '' });
       setGoalType('goal');
@@ -377,6 +377,7 @@ const AddEventModal = ({
           requestBody: {
             name: data.name || '',
           },
+          userId: Cookies.get('userUuid') || '',
         },
         {
           onSuccess,
@@ -394,6 +395,7 @@ const AddEventModal = ({
             url_pattern: 'equals',
             page_url: data?.pattern,
           },
+          userId: Cookies.get('userUuid') || '',
         },
         {
           onSuccess,
