@@ -1,4 +1,4 @@
-import { Button, GroupButton, Input, Table, Text, useNotify } from '@smartech/ui';
+import { Button, GroupButton, Icon, Input, Table, Text, useNotify } from '@smartech/ui';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -191,19 +191,13 @@ function Events() {
       ) : error ? (
         <div>Error loading events: {(error as Error).message}</div>
       ) : (
-        <div className="bg-white overflow-hidden rounded-lg border border-gray-200">
+        <div className="overflow-hidden rounded-lg border border-gray-200">
           {/* Table Header */}
-          <div className="bg-white grid grid-cols-5 gap-4 border-b border-gray-200 px-4 py-3 font-semibold text-sm text-gray-600">
+          <div className="grid grid-cols-5 gap-4 border-b border-gray-200 px-4 py-3 font-semibold text-sm text-gray-600">
             <div>Name</div>
-            <div className="flex items-center justify-end gap-1">
-              Count <SortIcon />
-            </div>
-            <div className="flex items-center justify-end gap-1">
-              Total User <SortIcon />
-            </div>
-            <div className="flex items-center justify-end gap-1">
-              Event Per User <SortIcon />
-            </div>
+            <div className="flex items-center justify-end gap-1">Count</div>
+            <div className="flex items-center justify-end gap-1">Total User</div>
+            <div className="flex items-center justify-end gap-1">Event Per User</div>
             <div className="text-right">Action</div>
           </div>
 
@@ -215,7 +209,7 @@ function Events() {
             return (
               <div key={record.name || index}>
                 {/* Main Row */}
-                <div className="grid grid-cols-5 gap-4 border-b border-gray-200 px-4 py-3 hover:bg-gray-50">
+                <div className="grid grid-cols-5 gap-4 border-b border-gray-200 bg-base-white px-4 py-3 hover:bg-gray-50">
                   <div className="flex items-center gap-2">
                     {hasExpandableContent && (
                       <button
@@ -256,20 +250,19 @@ function Events() {
                   </div>
                   <div className="text-right font-medium">{record._event_per_user}</div>
                   <div className="flex justify-end gap-2">
-                    <Button
-                      icons={{ start: 'trash-01' }}
-                      variant="secondary"
-                      size="sm"
-                      leading="icon"
+                    <span
+                      className="border-none text-gray-400 transition-colors hover:text-gray-600"
                       onClick={() => handleDeleteEvent(record)}
-                    />
-                    <Button
-                      icons={{ start: 'edit-03' }}
-                      variant="secondary"
-                      size="sm"
-                      leading="icon"
+                    >
+                      <Icon name="trash-01" />
+                    </span>
+
+                    <span
+                      className="border-none text-gray-400 transition-colors hover:text-gray-600"
                       onClick={() => handleEditEvent(record)}
-                    />
+                    >
+                      <Icon name="edit-01" />
+                    </span>
                   </div>
                 </div>
 

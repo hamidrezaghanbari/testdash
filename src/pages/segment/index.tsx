@@ -1,4 +1,4 @@
-import { Button, GroupButton, Input, Table, Text, useNotify } from '@smartech/ui';
+import { Button, GroupButton, Icon, Input, Table, Text, useNotify } from '@smartech/ui';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -169,7 +169,7 @@ function Campaigns() {
       ) : error ? (
         <div>Error loading segments: {(error as Error).message}</div>
       ) : (
-        <div className="bg-white overflow-hidden rounded-lg border border-gray-200">
+        <div className="overflow-hidden rounded-lg border border-gray-200 bg-base-white">
           {/* Table Header */}
           <div className="grid grid-cols-5 gap-4 border-b border-gray-200 bg-gray-50 px-4 py-3 font-medium text-sm text-gray-600">
             <div>Name</div>
@@ -188,7 +188,7 @@ function Campaigns() {
             return (
               <div key={record.name || index}>
                 {/* Main Row */}
-                <div className="grid grid-cols-5 gap-4 border-b border-gray-200 px-4 py-3 hover:bg-gray-50">
+                <div className="bg-white grid grid-cols-5 gap-4 border-b border-gray-200 px-4 py-3 hover:bg-gray-50">
                   <div className="flex items-center gap-2">
                     {hasExpandableContent && (
                       <button
@@ -232,21 +232,13 @@ function Campaigns() {
                           onClick={() => handleDeleteEvent(record)}
                           className="hover:text-red-600 text-gray-400 transition-colors"
                         >
-                          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                              fillRule="evenodd"
-                              d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9zM4 5a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM6 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
+                          <Icon name="trash-01" />
                         </button>
                         <button
                           onClick={() => handleEditEvent(record)}
                           className="hover:text-blue-600 text-gray-400 transition-colors"
                         >
-                          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                          </svg>
+                          <Icon name="edit-01" />
                         </button>
                       </div>
                     )}
@@ -255,7 +247,7 @@ function Campaigns() {
 
                 {/* Expandable Content */}
                 {isExpanded && hasExpandableContent && (
-                  <div className="border-b border-gray-200 bg-gray-50">
+                  <div className="border-b border-gray-200 bg-base-white">
                     <div className="px-4 py-3">
                       <div className="mb-3 grid grid-cols-5 gap-4 px-8 font-medium text-sm text-gray-600">
                         <div>Name</div>
