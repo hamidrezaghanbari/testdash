@@ -55,72 +55,17 @@ function Campaigns() {
 
   // Transform API response data into ExtendedReferrer format
   const processedReferrers: ExtendedReferrer[] = React.useMemo(() => {
-    if (!data?.referrer_stats) {
-      // Fallback data matching the image provided
-      return [
-        {
-          name: 'Direct',
-          category: 'direct',
-          _total_user: 2569,
-          _new_user: 534,
-          _sessions: 4288,
-          _avg_time: 84, // 1m 24s = 84 seconds
-          sources: [],
-        },
-        {
-          name: 'Referral',
-          category: 'referral',
-          _total_user: 345,
-          _new_user: 33,
-          _sessions: 416,
-          _avg_time: 68, // 1m 8s = 68 seconds
-          sources: [],
-        },
-        {
-          name: 'Organic',
-          category: 'organic',
-          _total_user: 227,
-          _new_user: 54,
-          _sessions: 489,
-          _avg_time: 142, // 2m 22s = 142 seconds
-          sources: [
-            {
-              source: 'Google',
-              total_user: 138,
-              new_user: 40,
-              sessions: 293,
-              avg_time: 174, // 2m 54s = 174 seconds
-            },
-            {
-              source: 'Bing',
-              total_user: 89,
-              new_user: -3,
-              sessions: 196,
-              avg_time: 111, // 1m 51s = 111 seconds
-            },
-          ],
-        },
-        {
-          name: 'Other',
-          category: 'other',
-          _total_user: 582,
-          _new_user: 464,
-          _sessions: 446,
-          _avg_time: 72, // 1m 12s = 72 seconds
-          sources: [],
-        },
-      ];
-    }
-
-    return data.referrer_stats.map((referrerCategory: ReferrerCategory) => ({
-      name: referrerCategory.category === 'direct' ? 'Direct' : referrerCategory.category,
-      category: referrerCategory.category,
-      _total_user: referrerCategory.total_user,
-      _new_user: referrerCategory.new_user,
-      _sessions: referrerCategory.sessions,
-      _avg_time: referrerCategory.avg_time,
-      sources: referrerCategory.sources || [],
-    }));
+    return (
+      data?.referrer_stats?.map((referrerCategory: ReferrerCategory) => ({
+        name: referrerCategory.category === 'direct' ? 'Direct' : referrerCategory.category,
+        category: referrerCategory.category,
+        _total_user: referrerCategory.total_user,
+        _new_user: referrerCategory.new_user,
+        _sessions: referrerCategory.sessions,
+        _avg_time: referrerCategory.avg_time,
+        sources: referrerCategory.sources || [],
+      })) || []
+    );
   }, [data?.referrer_stats]);
 
   const refetch = () => {
@@ -128,7 +73,7 @@ function Campaigns() {
   };
 
   useEffect(() => {
-    mutate({ requestBody: { domain: domain }, userId: Cookies.get('userUuid') || '' });
+    refetch();
   }, []);
 
   // Use processed referrer data
@@ -192,7 +137,7 @@ function Campaigns() {
           </Text>
         </div>
 
-        <Button
+        {/* <Button
           leading="icon"
           icons={{ start: 'plus' }}
           className="ml-auto"
@@ -200,7 +145,7 @@ function Campaigns() {
           onClick={handleAddEvent}
         >
           Add new
-        </Button>
+        </Button> */}
       </div>
 
       <div className="mb-4">
@@ -217,7 +162,7 @@ function Campaigns() {
       ) : error ? (
         <div>Error loading referrers: {(error as Error).message}</div>
       ) : (
-        <div className="bg-white overflow-hidden rounded-lg border border-gray-200">
+        <div className="overflow-hidden rounded-lg border border-gray-200">
           {/* Table Header */}
           <div className="grid grid-cols-5 gap-4 border-b border-gray-200 bg-gray-50 px-4 py-3 font-medium text-sm text-gray-600">
             <div>Category</div>
@@ -235,7 +180,7 @@ function Campaigns() {
             return (
               <div key={record.name || index}>
                 {/* Main Row */}
-                <div className="grid grid-cols-5 gap-4 border-b border-gray-200 px-4 py-3 hover:bg-gray-50">
+                <div className="grid grid-cols-5 gap-4 border-b border-gray-200 bg-base-white px-4 py-3 hover:bg-gray-50">
                   <div className="flex items-center gap-2">
                     {hasExpandableContent && (
                       <button
@@ -315,7 +260,7 @@ function Campaigns() {
           })}
 
           {displayData.length === 0 && (
-            <div className="px-4 py-8 text-center">
+            <div className="bg-base-white px-4 py-8 text-center">
               <div className="text-gray-500">There is no referrer data</div>
               <div className="text-sm text-gray-400">
                 Data will appear when you have referrer traffic
@@ -340,7 +285,7 @@ const AddEventModal = ({
   editingEvent?: ExtendedReferrer | null;
 }) => {
   const { domain } = useDomainStore();
-  const [goalType, setGoalType] = useState<'goal' | 'general'>('goal');
+  const [goalType, setGoalType] = useState<'goal' | 'default'>('goal');
   const notify = useNotify();
 
   const isEditing = !!editingEvent;
@@ -427,6 +372,8 @@ const AddEventModal = ({
             count_method: 'once_per_page',
             url_pattern: 'equals',
             page_url: data?.pattern,
+
+            category: goalType === 'goal' ? 'goal' : 'default',
           },
           userId: Cookies.get('userUuid') || '',
         },
@@ -478,11 +425,11 @@ const AddEventModal = ({
             <button
               type="button"
               className={`flex-1 rounded-r-lg px-4 py-2 font-medium text-sm ${
-                goalType === 'general'
+                goalType === 'default'
                   ? 'border-l border-gray-300 bg-gray-100 text-gray-900'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
-              onClick={() => setGoalType('general')}
+              onClick={() => setGoalType('default')}
             >
               General
             </button>
@@ -508,7 +455,7 @@ const AddEventModal = ({
         </div>
 
         {/* Category */}
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <label className="mb-2 block font-medium text-sm text-gray-700">Category</label>
           <div className="flex rounded-lg border border-gray-300">
             <span className="flex items-center rounded-l-lg border-r border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
@@ -529,7 +476,7 @@ const AddEventModal = ({
               )}
             />
           </div>
-        </div>
+        </div> */}
 
         <div className="flex justify-end gap-3">
           <Button variant="secondary" onClick={onClose} disabled={isPending || isUpdating}>

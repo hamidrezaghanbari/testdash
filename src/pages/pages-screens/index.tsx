@@ -149,7 +149,7 @@ function PagesScreens() {
       {isLoading ? (
         <TableLoading />
       ) : error ? (
-        <div className="bg-white overflow-hidden rounded-lg border border-gray-200 p-8">
+        <div className="overflow-hidden rounded-lg border border-gray-200 bg-base-white p-8">
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="text-red-500">Failed to load page analytics</div>
             <div className="text-sm text-gray-500">{(error as Error).message}</div>
@@ -159,7 +159,7 @@ function PagesScreens() {
           </div>
         </div>
       ) : (
-        <div className="bg-white overflow-hidden rounded-lg border border-gray-200">
+        <div className="overflow-hidden rounded-lg border border-gray-200">
           {/* Table Header */}
           <div className="grid grid-cols-4 gap-4 border-b border-gray-200 bg-gray-50 px-4 py-3 font-medium text-sm text-gray-600">
             <div>Pages</div>
@@ -172,7 +172,7 @@ function PagesScreens() {
           {currentData.map((record, index) => (
             <div
               key={record.page || index}
-              className="grid grid-cols-4 gap-4 border-b border-gray-200 px-4 py-3 hover:bg-gray-50"
+              className="grid grid-cols-4 gap-4 border-b border-gray-200 bg-base-white px-4 py-3 hover:bg-gray-50"
             >
               <div className="flex items-center">
                 <span className="font-medium text-gray-900">{record.page}</span>
@@ -200,7 +200,7 @@ function PagesScreens() {
           ))}
 
           {currentData.length === 0 && (
-            <div className="px-4 py-8 text-center">
+            <div className="bg-base-white px-4 py-8 text-center">
               <div className="text-gray-500">There is no page data</div>
               <div className="text-sm text-gray-400">
                 Data will appear when you have page traffic
