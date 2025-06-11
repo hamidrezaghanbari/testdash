@@ -41,7 +41,7 @@ export const DateRangePicker = forwardRef<
           id="date"
           variant={'outline'}
           className={cn(
-            'w-[300px] justify-start text-left font-normal',
+            'w-64 justify-start text-left font-normal',
             !date && 'text-muted-foreground',
             className,
           )}
@@ -60,7 +60,7 @@ export const DateRangePicker = forwardRef<
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="bg-background text-foreground w-auto p-0" align="start">
         <div className="flex">
           <Calendar
             initialFocus
