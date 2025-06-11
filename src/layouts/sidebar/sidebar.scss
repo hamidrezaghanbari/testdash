@@ -57,7 +57,7 @@
   }
 
   .sidebarItemToggleIcon {
-    @apply rotate-0 text-md text-gray-400 transition-all duration-[250];
+    @apply rotate-0 text-md text-gray-400 transition-all duration-300;
 
     &.visible {
       @apply rotate-180;

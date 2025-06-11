@@ -16,7 +16,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
     <div className={classes.intk}>
       <Sidebar />
       <section className={classes.mainSection}>
-        {/* <Header /> */}
+        <Header />
         <main className={classes.pageContainer}>
           <Suspense fallback={<Loading />}>{children}</Suspense>
         </main>
