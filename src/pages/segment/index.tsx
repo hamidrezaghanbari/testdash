@@ -23,7 +23,8 @@ import { useDomainStore } from '@/store';
 import { useDateRangeStore } from '@/store/date-range';
 
 // Helper function to format time in minutes and seconds
-const formatTime = (seconds: number): string => {
+const formatTime = (milliseconds: number): string => {
+  const seconds = Math.floor(milliseconds / 1000);
   if (seconds < 60) {
     return `${Math.round(seconds)}s`;
   }

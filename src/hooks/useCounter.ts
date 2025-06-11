@@ -13,9 +13,10 @@ function pad(input: number) {
   return input.toString().padStart(2, '0');
 }
 
-function getTimer(seconds: number) {
-  const minutes = Math.floor(seconds / 60);
-  seconds %= 60;
+function getTimer(milliseconds: number) {
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
 
   return `${pad(minutes)}:${pad(seconds)}`;
 }
@@ -84,7 +85,7 @@ function useCounter({ duration, local, onReset }: UseCounterOptions) {
     };
   }, []);
 
-  const timer = getTimer(count);
+  const timer = getTimer(count * 1000);
 
   return { count, timer, start, reset, isCounting };
 }
