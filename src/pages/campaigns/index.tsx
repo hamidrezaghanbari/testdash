@@ -187,6 +187,8 @@ function Campaigns() {
             const isExpanded = expandedRows.has(record.name || '');
             const hasExpandableContent = record.sources && record.sources.length > 0;
 
+            console.log(record?.sources, 'fuck');
+
             return (
               <div key={record.name || index}>
                 {/* Main Row */}
@@ -238,11 +240,10 @@ function Campaigns() {
                       <div className="mb-3 grid grid-cols-5 gap-4 px-8 font-medium text-sm text-gray-600">
                         <div>Source</div>
                         <div className="text-right">Total Users</div>
-                        <div className="text-right">New Users</div>
                         <div className="text-right">Sessions</div>
                         <div className="text-right">Avg Time</div>
                       </div>
-                      {record.sources?.map((source, sourceIndex) => (
+                      {record?.sources?.map((source, sourceIndex) => (
                         <div
                           key={sourceIndex}
                           className="grid grid-cols-5 gap-4 border-b border-gray-200 px-8 py-2 text-sm last:border-b-0"
@@ -251,9 +252,7 @@ function Campaigns() {
                           <div className="text-right font-medium text-gray-900">
                             {source.total_user.toLocaleString()}
                           </div>
-                          <div className="text-right font-medium text-gray-900">
-                            {source.new_user.toLocaleString()}
-                          </div>
+
                           <div className="text-right font-medium text-gray-900">
                             {source.sessions.toLocaleString()}
                           </div>
