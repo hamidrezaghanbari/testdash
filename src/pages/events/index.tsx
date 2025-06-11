@@ -1,4 +1,5 @@
 import { Button, GroupButton, Icon, Input, Table, Text, useNotify } from '@smartech/ui';
+import { format } from 'date-fns';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -17,6 +18,7 @@ import {
 } from '@/openapi/queries';
 import { Goal } from '@/openapi/requests/types.gen';
 import { useDomainStore } from '@/store';
+import { useDateRangeStore } from '@/store/date-range';
 
 // Extended Goal interface with settings field
 interface ExtendedGoal extends Goal {
@@ -80,13 +82,23 @@ function Events() {
     }));
   }, [data?.goals, domain]);
 
+  const { dateRange } = useDateRangeStore();
+
+  const timeRequest = {
+    start_date: dateRange.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined,
+    end_date: dateRange.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined,
+  };
+
   const refetch = () => {
-    mutate({ requestBody: { domain }, userId: Cookies.get('userUuid') || '' });
+    mutate({
+      requestBody: { domain, ...timeRequest },
+      userId: Cookies.get('userUuid') || '',
+    });
   };
 
   useEffect(() => {
-    mutate({ requestBody: { domain }, userId: Cookies.get('userUuid') || '' });
-  }, []);
+    mutate({ requestBody: { domain, ...timeRequest }, userId: Cookies.get('userUuid') || '' });
+  }, [domain, dateRange]);
 
   // Remove the fallback data since we're now using real data
   const displayData = processedGoals;

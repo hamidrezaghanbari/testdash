@@ -31,7 +31,7 @@ const CampaignArchive = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4 py-2">
+    <div className="flex flex-col gap-4 pb-2">
       <div className="flex w-full items-center justify-between gap-4">
         <Input placeholder="Campaign name" fieldClassName="max-w-[400px]" />
         <IconButton icon="filter-lines" variant="secondary" size="md" />

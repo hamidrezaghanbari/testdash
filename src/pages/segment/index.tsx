@@ -1,4 +1,5 @@
 import { Button, GroupButton, Icon, Input, Table, Text, useNotify } from '@smartech/ui';
+import { format } from 'date-fns';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -19,6 +20,7 @@ import {
 } from '@/openapi/queries';
 import { Goal, SegmentCondition } from '@/openapi/requests/types.gen';
 import { useDomainStore } from '@/store';
+import { useDateRangeStore } from '@/store/date-range';
 
 // Helper function to format time in minutes and seconds
 const formatTime = (seconds: number): string => {
@@ -48,6 +50,13 @@ function Campaigns() {
   const [editingEvent, setEditingEvent] = useState<ExtendedSegment | null>(null);
   const [deletingEvent, setDeletingEvent] = useState<ExtendedSegment | null>(null);
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+
+  const { dateRange } = useDateRangeStore();
+
+  const timeRequest = {
+    start_date: dateRange.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined,
+    end_date: dateRange.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined,
+  };
 
   const {
     mutate,
@@ -80,12 +89,12 @@ function Campaigns() {
   }, [data]);
 
   const refetch = () => {
-    mutate({ requestBody: { domain: domain }, userId: Cookies.get('userUuid') || '' });
+    mutate({ requestBody: { domain, ...timeRequest }, userId: Cookies.get('userUuid') || '' });
   };
 
   useEffect(() => {
-    mutate({ requestBody: { domain: domain }, userId: Cookies.get('userUuid') || '' });
-  }, []);
+    mutate({ requestBody: { domain, ...timeRequest }, userId: Cookies.get('userUuid') || '' });
+  }, [domain, dateRange]);
 
   // Use processed segment data
   const displayData = processedSegments;

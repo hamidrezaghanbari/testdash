@@ -6,7 +6,7 @@ import { useDateRangeStore } from '@/store/date-range';
 const Header = () => {
   const { dateRange, setDateRange } = useDateRangeStore();
   return (
-    <div className="flex justify-end p-4">
+    <div className="flex justify-end p-4 pb-0">
       <DateRangePicker value={dateRange} onValueChange={setDateRange} />
     </div>
   );

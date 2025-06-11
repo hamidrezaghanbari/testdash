@@ -1,4 +1,5 @@
 import { Button, GroupButton, Input, Table, Text, useNotify } from '@smartech/ui';
+import { format } from 'date-fns';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -15,6 +16,7 @@ import {
 } from '@/openapi/queries';
 import { Goal, ReferrerCategory, SourceStats } from '@/openapi/requests/types.gen';
 import { useDomainStore } from '@/store';
+import { useDateRangeStore } from '@/store/date-range';
 
 // Helper function to format time in minutes and seconds
 const formatTime = (seconds: number): string => {
@@ -46,6 +48,13 @@ function PagesScreens() {
   // Get userId from cookies
   const userId = Cookies.get('userId') || '';
 
+  const { dateRange } = useDateRangeStore();
+
+  const timeRequest = {
+    start_date: dateRange.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined,
+    end_date: dateRange.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined,
+  };
+
   const {
     mutate,
     data,
@@ -73,7 +82,7 @@ function PagesScreens() {
   const refetch = () => {
     if (userId) {
       mutate({
-        requestBody: { domain: domain },
+        requestBody: { domain, ...timeRequest },
         userId: userId,
       });
     }
@@ -82,11 +91,11 @@ function PagesScreens() {
   useEffect(() => {
     if (userId) {
       mutate({
-        requestBody: { domain: domain },
+        requestBody: { domain, ...timeRequest },
         userId: userId,
       });
     }
-  }, [userId, domain]);
+  }, [userId, domain, timeRequest]);
 
   // Pagination logic
   const totalPages = Math.ceil(processedPages.length / itemsPerPage);

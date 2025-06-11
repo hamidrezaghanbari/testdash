@@ -8,7 +8,7 @@ interface DateRangeState {
 }
 
 const initialDateRange: DateRange = {
-  from: subDays(new Date(), 20),
+  from: subDays(new Date(), 7),
   to: new Date(),
 };
 
