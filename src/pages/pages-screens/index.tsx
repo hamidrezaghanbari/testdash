@@ -46,7 +46,7 @@ function PagesScreens() {
   const [itemsPerPage] = useState(10);
 
   // Get userId from cookies
-  const userId = Cookies.get('userId') || '';
+  const userId = Cookies.get('userUuid') || '';
 
   const { dateRange } = useDateRangeStore();
 
