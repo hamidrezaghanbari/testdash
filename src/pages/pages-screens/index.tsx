@@ -89,13 +89,8 @@ function PagesScreens() {
   };
 
   useEffect(() => {
-    if (userId) {
-      mutate({
-        requestBody: { domain, ...timeRequest },
-        userId: userId,
-      });
-    }
-  }, [userId, domain, timeRequest]);
+    refetch();
+  }, [userId, domain, dateRange]);
 
   // Pagination logic
   const totalPages = Math.ceil(processedPages.length / itemsPerPage);
@@ -162,7 +157,7 @@ function PagesScreens() {
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="text-red-500">Failed to load page analytics</div>
             <div className="text-sm text-gray-500">{(error as Error).message}</div>
-            <Button variant="secondary" onClick={refetch} className="mt-2">
+            <Button variant="secondary" onClick={() => refetch()} className="mt-2">
               Try Again
             </Button>
           </div>
