@@ -60,7 +60,7 @@ export const DateRangePicker = forwardRef<
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="bg-background text-foreground w-auto p-0" align="start">
+      <PopoverContent className="w-auto bg-background p-0 text-foreground" align="start">
         <div className="flex">
           <Calendar
             initialFocus
@@ -69,6 +69,7 @@ export const DateRangePicker = forwardRef<
             selected={date}
             onSelect={handleUpdate}
             numberOfMonths={2}
+            disabled={{ after: new Date() }}
           />
         </div>
       </PopoverContent>
