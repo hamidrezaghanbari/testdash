@@ -2,6 +2,12 @@ import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 
 import { Loading } from '@/components/atoms';
 import { FullScreenLayout } from '@/layouts/FullScreenLayout';
+// import { pagesScreensRoutes } from '@/router/routes';
+
+// import { productRoutes } from '@/router/routes/product';
+// import { productsRoutes } from '@/router/routes/products';
+// import { segmentRoutes } from '@/router/routes/segment';
+import { testRoutes } from '@/router/routes';
 import { NotFound, Unauthorized } from '@/utils';
 
 import { ErrorBoundary } from './error';
@@ -69,6 +75,7 @@ const router = createBrowserRouter([
         children: productsChildren,
         hasErrorBoundary: true,
       },
+      ...testRoutes,
     ],
   },
 

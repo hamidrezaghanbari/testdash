@@ -6,3 +6,4 @@ export * from './campaigns';
 export * from './segment';
 export * from './products';
 export * from './pages-screens';
+export * from './test';
