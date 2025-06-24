@@ -15,6 +15,7 @@ import {
   useGoalsServiceGetApiV1GoalsSiteDomainByDomain,
   useGoalsServicePostApiV1GoalsSiteDomainByDomain,
   useGoalsServicePutApiV1GoalsSiteDomainByDomainGoalByName,
+  useSegmentsServiceDeleteApiV1SegmentsByDomainByName,
   useSegmentsServicePostApiV1Segments,
   useSegmentsServicePutApiV1SegmentsByDomainByName,
 } from '@/openapi/queries';
@@ -65,6 +66,9 @@ function Campaigns() {
     isPending: isLoading,
     error,
   } = useAnalyticsServicePostApiV1AnalyticsAnalytics();
+
+  const { mutate: deleteSegment, isPending: deleteSegmentPending } =
+    useSegmentsServiceDeleteApiV1SegmentsByDomainByName();
 
   // Transform API response data into ExtendedSegment format
   const processedSegments: ExtendedSegment[] = React.useMemo(() => {
@@ -121,7 +125,9 @@ function Campaigns() {
   };
 
   const handleDeleteEvent = (event: ExtendedSegment) => {
-    setDeletingEvent(event);
+    deleteSegment({ domain, name: event?.name, userId: Cookies.get('userUuid') || '' });
+    refetch();
+    // setDeletingEvent(event);
     setIsDeleteModalOpen(true);
   };
 
