@@ -37,7 +37,11 @@
 .sidebarItem {
   @apply flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 transition-colors hover:bg-gray-100;
   &.active {
-    @apply bg-primary-600;
+    @apply bg-gray-100;
+    .sidebarItemTitle,
+    .sidebarItemIcon {
+      @apply text-gray-800;
+    }
   }
 
   &.layer-1 {

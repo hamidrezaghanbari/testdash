@@ -20,6 +20,10 @@ interface SidebarMenuProps {
 const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) => {
   const location = useLocation();
 
+  const isActive = (href: string) => {
+    return location.pathname.startsWith(href);
+  };
+
   return (
     <div className={'sidebarItems'}>
       {items.map(({ id, children = [], title, icon, href }) => {
@@ -41,22 +45,25 @@ const SidebarMenu = ({ items, menuIds, toggle, layer = 0 }: SidebarMenuProps) =>
             <Render
               when={children.length > 0}
               fallback={
-                location.pathname !== menuHref ? (
-                  <NavLink
-                    tabIndex={-1}
-                    to={menuHref}
-                    className={cn('sidebarItem', prefix(layer, 'layer'))}
-                    viewTransition
-                    end
-                  >
-                    {content}
-                  </NavLink>
-                ) : (
-                  <div className={cn('sidebarItem', prefix(layer, 'layer'))}>{content}</div>
-                )
+                <NavLink
+                  tabIndex={-1}
+                  to={menuHref}
+                  className={({ isActive }) =>
+                    cn('sidebarItem', prefix(layer, 'layer'), { active: isActive })
+                  }
+                  viewTransition
+                  end
+                >
+                  {content}
+                </NavLink>
               }
             >
-              <div className={cn('sidebarItem', prefix(layer, 'layer'))} onClick={() => toggle(id)}>
+              <div
+                className={cn('sidebarItem', prefix(layer, 'layer'), {
+                  active: isActive(menuHref),
+                })}
+                onClick={() => toggle(id)}
+              >
                 {content}
               </div>
             </Render>
