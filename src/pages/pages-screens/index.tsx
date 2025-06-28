@@ -6,7 +6,7 @@ import { Controller } from 'react-hook-form';
 import { z } from 'zod';
 
 import { createFormHandler } from '@/common';
-import { Card } from '@/components';
+import { Card, ProgressBar } from '@/components';
 import TableLoading from '@/components/tableLoading';
 import Page from '@/layouts/container';
 import {
@@ -181,17 +181,7 @@ function PagesScreens() {
                 {formatTime(record.avg_time)}
               </div>
               <div className="flex items-center justify-end gap-2 text-right">
-                <div className="flex w-full items-center gap-2">
-                  <div className="h-2 flex-1 rounded-full bg-gray-200">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min(record.percentage, 100)}%` }}
-                    ></div>
-                  </div>
-                  <span className="min-w-[3rem] font-medium text-gray-900">
-                    {record.percentage.toFixed(1)}%
-                  </span>
-                </div>
+                <ProgressBar value={record.percentage} />
               </div>
             </div>
           ))}
