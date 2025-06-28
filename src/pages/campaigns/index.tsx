@@ -140,24 +140,6 @@ function Campaigns() {
         refetch={refetch}
       />
 
-      <div className="flex w-full items-center justify-between">
-        <div className="flex flex-col gap-1 pt-8">
-          <Text size="md" variant="semibold">
-            Referrer Analytics
-          </Text>
-        </div>
-
-        {/* <Button
-          leading="icon"
-          icons={{ start: 'plus' }}
-          className="ml-auto"
-          variant="primary"
-          onClick={handleAddEvent}
-        >
-          Add new
-        </Button> */}
-      </div>
-
       <div className="mb-4">
         <GroupButton>
           <GroupButton.Item>12 months</GroupButton.Item>

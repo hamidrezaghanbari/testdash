@@ -134,14 +134,6 @@ function PagesScreens() {
 
   return (
     <Page>
-      <div className="flex w-full items-center justify-between">
-        <div className="flex flex-col gap-1 pt-8">
-          <Text size="md" variant="semibold">
-            Pages & Screens
-          </Text>
-        </div>
-      </div>
-
       <div className="mb-4">
         <GroupButton>
           <GroupButton.Item>12 months</GroupButton.Item>

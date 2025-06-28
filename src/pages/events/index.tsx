@@ -155,12 +155,6 @@ function Events() {
       />
 
       <div className="flex w-full items-center justify-between">
-        <div className="flex flex-col gap-1 pt-8">
-          <Text size="md" variant="semibold">
-            Event Tracking
-          </Text>
-        </div>
-
         <Button
           leading="icon"
           icons={{ start: 'plus' }}

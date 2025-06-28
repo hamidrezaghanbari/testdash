@@ -158,12 +158,6 @@ function Campaigns() {
       />
 
       <div className="flex w-full items-center justify-between">
-        <div className="flex flex-col gap-1 pt-8">
-          <Text size="md" variant="semibold">
-            Segment Analytics
-          </Text>
-        </div>
-
         <Button
           leading="icon"
           icons={{ start: 'plus' }}

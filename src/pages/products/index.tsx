@@ -90,24 +90,6 @@ function Products() {
       />
 
       <div className="flex w-full items-center justify-between">
-        <div className="flex flex-col gap-1 pt-8">
-          {!processedData.length ? (
-            <>
-              <Text size="md" variant="semibold">
-                Begin your journey
-              </Text>
-
-              <Text size="xs" variant="regular" className="text-gray-600">
-                Please, Add your Product (web)
-              </Text>
-            </>
-          ) : (
-            <Text size="md" variant="semibold">
-              Product Management
-            </Text>
-          )}
-        </div>
-
         <Button
           leading="icon"
           icons={{ start: 'plus' }}
