@@ -29,7 +29,7 @@ const Header = () => {
 
   return (
     <div className="flex w-full items-center justify-between p-4 pb-0">
-      <span className="base-text size-md variant-semibold">{title}</span>
+      <span className="base-text size-md variant-semibold">{title || 'Products Management'}</span>
 
       <DateRangePicker value={dateRange} onValueChange={setDateRange} />
     </div>

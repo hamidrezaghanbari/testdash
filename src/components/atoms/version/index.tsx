@@ -68,10 +68,10 @@ const Version = ({ className }: VersionProps) => {
                 </Text>
 
                 <div className="flex flex-col gap-1">
-                  {/* <Radio.Group onChange={(val) => setDomain(val)}> */}
                   {domainsList?.map((domainItem) => (
                     <div
                       key={domainItem?.domain}
+                      onClick={() => setDomain(domainItem?.domain || '')}
                       className="flex items-center gap-1 rounded-sm px-2 py-1 hover:cursor-pointer hover:bg-gray-100"
                     >
                       <Avatar size="md" />
@@ -87,15 +87,13 @@ const Version = ({ className }: VersionProps) => {
                       </div>
 
                       <div className="ml-auto">
-                        <Radio.Group value={domain} onChange={(val) => setDomain(val)}>
+                        <Radio.Group value={domain} onChange={(val) => setDomain(val as string)}>
                           <Radio label="" value={domainItem?.domain} />
                           <Radio label="" value={domainItem?.domain + '__'} className="hidden" />
                         </Radio.Group>
                       </div>
                     </div>
                   ))}
-
-                  {/* </Radio.Group> */}
                 </div>
 
                 <Link to="/products" className="mx-2 my-2">
