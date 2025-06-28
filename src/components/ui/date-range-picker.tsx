@@ -7,11 +7,8 @@ import { DateRange } from 'react-day-picker';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-
-import { DateInput } from './date-input';
 
 export const DateRangePicker = forwardRef<
   HTMLDivElement,
@@ -21,21 +18,30 @@ export const DateRangePicker = forwardRef<
   }
 >(({ value, onValueChange, className, ...props }, ref) => {
   const [date, setDate] = useState<DateRange | undefined>(value);
+  const [pickerDate, setPickerDate] = useState<DateRange | undefined>(date);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setDate(value);
   }, [value]);
 
-  const handleUpdate = (newDate: DateRange | undefined) => {
-    setDate(newDate);
-    if (newDate && onValueChange) {
-      onValueChange(newDate);
+  const handleOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      setPickerDate(date);
     }
+    setOpen(isOpen);
+  };
+
+  const handleApply = () => {
+    setDate(pickerDate);
+    if (pickerDate && onValueChange) {
+      onValueChange(pickerDate);
+    }
+    setOpen(false);
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button
           id="date"
@@ -61,16 +67,26 @@ export const DateRangePicker = forwardRef<
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto bg-background p-0 text-foreground" align="start">
-        <div className="flex">
-          <Calendar
-            initialFocus
-            mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={handleUpdate}
-            numberOfMonths={2}
-            disabled={{ after: new Date() }}
-          />
+        <Calendar
+          initialFocus
+          mode="range"
+          defaultMonth={pickerDate?.from}
+          selected={pickerDate}
+          onSelect={setPickerDate}
+          numberOfMonths={2}
+          disabled={{ after: new Date() }}
+        />
+        <div className="flex justify-end gap-2 p-4">
+          <Button variant="ghost" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="default"
+            className="bg-primary-600 hover:bg-primary-700"
+            onClick={handleApply}
+          >
+            Apply
+          </Button>
         </div>
       </PopoverContent>
     </Popover>
